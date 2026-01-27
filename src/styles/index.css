@@ -1,0 +1,49 @@
+@import './theme.css';
+@import './tailwind.css';
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* static orange glow */
+.text-glow-orange {
+  text-shadow:
+    0 0 0.5rem #ff4d2e,
+    0 0 1rem rgba(255,77,46,0.6),
+    0 0 3rem rgba(255,77,46,0.5),
+    0 0 5rem rgba(255,77,46,0.4);
+}
+
+/* white text with orange glow */
+.text-glow-orange {
+  color: #ffffff;
+  text-shadow:
+    0 0 0.5rem #ff4d2e,
+    0 0 1rem rgba(255,77,46,0.6),
+    0 0 3rem rgba(255,77,46,0.5),
+    0 0 5rem rgba(255,77,46,0.4);
+}
+
+@keyframes glow-pulse-orange {
+  0%, 100% {
+    text-shadow:
+      0 0 0.5rem #ff4d2e,
+      0 0 1rem rgba(255,77,46,0.6),
+      0 0 3rem rgba(255,77,46,0.5),
+      0 0 5rem rgba(255,77,46,0.4);
+  }
+  50% {
+    text-shadow:
+      0 0 1rem #ff4d2e,
+      0 0 2rem rgba(255,77,46,0.8),
+      0 0 5rem rgba(255,77,46,0.7),
+      0 0 7rem rgba(255,77,46,0.6);
+  }
+}
+
+.text-glow-orange-animate {
+  color: #ffffff;
+  animation: glow-pulse-orange 2.5s ease-in-out infinite;
+}
+
+
