@@ -281,7 +281,8 @@ export default function Orb({
       program.uniforms.hoverIntensity.value = hoverIntensity;
 
       const effectiveHover = forceHoverState ? 1 : targetHover;
-      program.uniforms.hover.value += (effectiveHover - program.uniforms.hover.value) * 0.25;
+      // Increase interpolation factor to make hover respond faster
+      program.uniforms.hover.value += (effectiveHover - program.uniforms.hover.value) * 0.6;
 
       if (rotateOnHover && effectiveHover > 0.5) {
         currentRot += dt * rotationSpeed;
