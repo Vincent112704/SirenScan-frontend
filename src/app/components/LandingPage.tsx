@@ -74,7 +74,7 @@ export function LandingPage({
   const [showSplitText, setShowSplitText] = useState(false);
 
   return (
-    <div className="relative min-h-screen bg-linear-to-b from-[#0a0a0a] to-[#1c1c1e]">
+    <div className="relative min-h-screen bg-[#0a0a0a]">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -224,7 +224,7 @@ export function LandingPage({
       {/* Features Section */}
         <section
           id="features"
-          className="scroll-mt-24 py-20 px-6 bg-[#121212] relative z-10" // Changed scroll-pt to scroll-mt
+          className="scroll-mt-24 py-20 px-6 relative z-10" // Changed scroll-pt to scroll-mt
         >
           <div className="max-w-7xl mx-auto">
           <FadeInOnScroll>
@@ -266,59 +266,68 @@ export function LandingPage({
       {/* How It Works Section */}
         <section
           id="how-it-works"
-          className="scroll-mt-24 py-20 px-6 relative z-10" // Changed scroll-pt to scroll-mt
+          className="scroll-mt-24 py-20 px-6 relative z-10"
         >
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-white text-4xl font-bold mb-4">
-              How SirenScan Works
-            </h2>
-            <p className="text-white/60 text-lg">
-              Simple, fast, and effective protection in three steps
-            </p>
-          </div>
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-white text-4xl font-bold mb-4">
+                How SirenScan Works
+              </h2>
+              <p className="text-white/60 text-lg">
+                Simple, fast, and effective protection in three steps
+              </p>
+            </div>
 
-          <div className="grid md:grid-cols-3 gap-8 items-stretch">
-            {[
-              {
-                step: "01",
-                title: "Forward Email",
-                description:
-                  "Simply forward any suspicious email to your unique SirenScan address.",
-              },
-              {
-                step: "02",
-                title: "AI Analysis",
-                description:
-                  "Our system analyzes the email using multiple detection engines and AI models.",
-              },
-              {
-                step: "03",
-                title: "Get Results",
-                description:
-                  "Receive instant, detailed analysis with actionable recommendations.",
-              },
-            ].map((step, index) => (
-              <FadeInOnScroll key={index} delay={index * 0.15}>
-                <SpotlightCard
-                  className="custom-spotlight-card relative h-full flex flex-col items-center text-center p-8 rounded-2xl"
-                >
-                  <p className="text-[#ff4d2e] text-5xl font-bold mb-4">{step.step}</p>
-                  <h3 className="text-white text-xl font-medium mb-3">{step.title}</h3>
-                  <p className="text-white/60 leading-relaxed mt-auto">{step.description}</p>
-                </SpotlightCard>
+            {/* Added relative here to anchor the absolute arrows */}
+            <div className="relative grid md:grid-cols-3 gap-8 items-stretch">
+              {[
+                {
+                  step: "01",
+                  title: "Forward Email",
+                  description:
+                    "Simply forward any suspicious email to your unique SirenScan address.",
+                },
+                {
+                  step: "02",
+                  title: "AI Analysis",
+                  description:
+                    "Our system analyzes the email using multiple detection engines and AI models.",
+                },
+                {
+                  step: "03",
+                  title: "Get Results",
+                  description:
+                    "Receive instant, detailed analysis with actionable recommendations.",
+                },
+              ].map((step, index) => (
+                <div key={index} className="relative flex flex-col items-center">
 
-                {/* Arrow between steps */}
-                {index < 2 && (
-                  <div className="hidden md:block absolute top-1/2 -right-8 transform -translate-y-1/2">
-                    <ArrowRight className="w-8 h-8 text-[#ff4d2e]/80" />
-                  </div>
-                )}
-              </FadeInOnScroll>
-            ))}
+                  {/* Only pass animation-related props to FadeInOnScroll */}
+                  <FadeInOnScroll delay={index * 0.15}>
+                    <SpotlightCard
+                      // Consolidated & cleaned up className
+                      className="custom-spotlight-card h-full w-full flex flex-col items-center text-center p-8 rounded-2xl"
+                    >
+                      <p className="text-[#ff4d2e] text-5xl font-bold mb-4">{step.step}</p>
+                      <h3 className="text-white text-xl font-medium mb-3">{step.title}</h3>
+                      <p className="text-white/60 leading-relaxed mt-auto">
+                        {step.description}
+                      </p>
+                    </SpotlightCard>
+                  </FadeInOnScroll>
+
+                  {/* Arrow - only on large screens between steps */}
+                  {index < 2 && (
+                    <div className="hidden lg:block absolute top-1/2 -right-4 translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none">
+                      <ArrowRight className="w-8 h-8 text-[#ff4d2e] opacity-50" />
+                    </div>
+                  )}
+
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
       
       {/* CTA Section */}
       <section className="py-10 px-6 relative z-10">

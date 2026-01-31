@@ -4,6 +4,7 @@ import { useRef } from "react";
 interface FadeInOnScrollProps {
   children: React.ReactNode;
   delay?: number;
+  className?: string;
 }
 
 export function FadeInOnScroll({
