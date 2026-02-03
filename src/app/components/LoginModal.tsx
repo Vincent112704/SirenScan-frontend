@@ -1,5 +1,6 @@
 import { Mail, Lock, Eye, EyeOff, X } from "lucide-react";
 import { useState } from "react";
+import { signUpWithEmail, signInWithGoogle, signInWithEmail } from "@/services/auth/authService";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -20,11 +21,59 @@ export function LoginModal({
     confirmPassword: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Mock login - in real app, this would validate credentials
-    onNavigateToDashboard();
+    //handle submit for login
+    try{ 
+      if (isSignUp){
+        if (formData.password !== formData.confirmPassword){
+          alert("Password does not match");
+          return;
+        }
+        const result = await signUpWithEmail(
+        formData.email,
+        formData.password
+        );
+
+        console.log(result)
+        if (result.success) {
+          onNavigateToDashboard();
+        } else {
+          alert(result.message)
+          
+        }
+        
+      } else { // if sign in 
+        const result = await signInWithEmail(
+          formData.email,
+          formData.password
+        );
+
+        if (result.success){
+          onNavigateToDashboard();
+        } else {
+          alert (result.message)
+        }
+      }
+    } catch (error){
+      console.log(`There is an error: ${error}`)
+    }
+    
   };
+
+  const handleGoogleSignIn = async () => {
+    try{
+      const result = await signInWithGoogle();
+      if (result.success) {
+        onNavigateToDashboard();
+      } else {
+        alert(result.message);
+      }
+    } catch (error){
+      console.log(error)
+    }
+  }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -196,6 +245,7 @@ export function LoginModal({
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
+                  onClick={handleGoogleSignIn}
                   className="col-span-2 mx-auto flex items-center justify-center gap-2 bg-[#232323] hover:bg-[#2a2a2a] border border-white/10 text-white py-3 px-6 rounded-lg transition-all"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
