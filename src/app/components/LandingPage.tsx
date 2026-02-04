@@ -54,7 +54,7 @@ export function LandingPage({
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#0a0a0a]">
+    <div className="relative min-h-screen bg-[#0a0a0a] overflow-x-hidden">
       {/* Background Scroll Animation */}
       <ScrollCurveLine />
 
@@ -97,7 +97,7 @@ export function LandingPage({
       </nav>
 
       {/* HERO SECTION */}
-      <section className="relative h-screen"> 
+      <section className="relative h-screen overflow-hidden"> 
         <div 
           className="absolute inset-0 z-0 scale-115 pointer-events-none"
           style={{
