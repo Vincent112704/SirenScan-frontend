@@ -88,7 +88,7 @@ export function Dashboard({
       <div className="p-4 sm:p-6 lg:p-8 pt-20 sm:pt-24">
         {/* Header with Search Bar */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-white text-3xl sm:text-4xl font-normal mb-4 sm:mb-6">Dashboard</h1>
+          <h1 className="text-white text-3xl sm:text-6xl font-normal mb-4 sm:mb-6">Dashboard</h1>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <button className="w-full max-w-2xl bg-[#232323] rounded-xl p-4 flex items-center gap-3 hover:bg-[#2a2a2a] transition-all border border-white/5">

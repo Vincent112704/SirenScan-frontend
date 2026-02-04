@@ -64,7 +64,7 @@ export function HaveIBeenPwnedPage({
       <div className="p-4 sm:p-6 lg:p-8 pt-20 sm:pt-24">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-white text-3xl sm:text-4xl lg:text-5xl font-normal mb-3 sm:mb-4">
+          <h1 className="text-white text-3xl sm:text-4xl lg:text-6xl font-normal mb-3 sm:mb-4">
             HaveIBeenPwned Check
           </h1>
           <p className="text-white/60 text-base">

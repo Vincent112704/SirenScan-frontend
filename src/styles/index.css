@@ -46,4 +46,26 @@ html {
   animation: glow-pulse-orange 2.5s ease-in-out infinite;
 }
 
+.home_feature_item_card {
+    z-index: 5;
+    /* Frosted glass effect */
+    -webkit-backdrop-filter: blur(2rem);
+    backdrop-filter: blur(2rem);
+    
+    /* Subtle Grid Pattern + Radial Glow */
+    background: 
+        radial-gradient(circle at top left, rgba(255, 77, 46, 0.05), transparent 40%),
+        url("https://www.transparenttextures.com/patterns/carbon-fibre.png"), /* Or your specific webp */
+        #0a0a0a;
+        
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    padding: 3rem; /* Adjusted for better proportion */
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
 
+/* The glowing text effect seen in your screenshot */
+.text-glow-white {
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1);
+}

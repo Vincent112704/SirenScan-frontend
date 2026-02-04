@@ -1,5 +1,6 @@
 import { ShieldAlert, Mail, Database, Sparkles, ChevronRight, Search, AlertCircle, CheckCircle2 } from "lucide-react";
 import { AccountHeader } from "@/app/components/AccountHeader";
+import SpotlightCard from '@/app/components/SpotlightCard'; // Adjust path if necessary
 
 export function Help({ onLogout, onOpenMobileMenu }: { onLogout: () => void; onOpenMobileMenu: () => void }) {
   const sections = [
@@ -285,16 +286,39 @@ export function Help({ onLogout, onOpenMobileMenu }: { onLogout: () => void; onO
           })}
         </div>
 
-        {/* Footer CTA */}
-        <div className="mt-12 bg-linear-to-r from-[#ff4d2e] to-[#ff4d2e]/80 rounded-2xl p-8 text-center">
-          <h3 className="text-white text-2xl font-normal mb-3">Still Need Help?</h3>
-          <p className="text-white/90 text-base mb-6">
-            SirenScan is completely free with no paid features. Forward suspicious emails to start protecting your inbox today.
-          </p>
-          <div className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 px-6 py-3 rounded-lg transition-all cursor-pointer">
-            <Mail className="w-5 h-5 text-white" />
-            <span className="text-white font-medium">support@sirenscan.com</span>
-          </div>
+        {/* Footer CTA - Styled exactly like the Feature Cards */}
+        <div className="mt-16">
+          <SpotlightCard className="home_feature_item_card flex flex-col items-center text-center rounded-3xl p-10 border border-white/5">
+            
+            {/* Hexagon Icon Wrapper (Matching Feature Card Style) */}
+            <div 
+              className="w-14 h-14 bg-[#ff4d2e]/10 flex items-center justify-center mb-6 relative shrink-0"
+              style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
+            >
+              <div className="absolute inset-0 border border-[#ff4d2e]/30" style={{ clipPath: "inherit" }} />
+              <AlertCircle className="w-6 h-6 text-[#ff4d2e]" />
+            </div>
+
+            {/* Title with White Glow */}
+            <h3 className="text-white text-2xl font-semibold mb-4 text-glow-white">
+              Still Need Help?
+            </h3>
+
+            {/* Description */}
+            <p className="text-zinc-400 text-base leading-relaxed mb-8 max-w-lg">
+              SirenScan is completely free with no paid features. Forward suspicious emails to start protecting your inbox today.
+            </p>
+
+            {/* Contact Action */}
+            <a 
+              href="mailto:support@sirenscan.com"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all"
+            >
+              <Mail className="w-4 h-4 text-[#ff4d2e]" />
+              <span className="text-sm font-medium">support@sirenscan.com</span>
+            </a>
+            
+          </SpotlightCard>
         </div>
       </div>
     </div>
