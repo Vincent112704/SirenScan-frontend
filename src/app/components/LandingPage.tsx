@@ -79,13 +79,13 @@ export function LandingPage({
               
               {/* Updated Sign In Button with same effect as Get Started */}
               <button
-                onClick={() => setLoginModalOpen(true)}
-                className="relative items-center box-border flex justify-center overflow-hidden p-1px rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(255,77,46,0.2)]"
+              onClick={() => setLoginModalOpen(true)}
+              className="relative items-center box-border flex justify-center overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(255,77,46,0.2)]"
               >
-                <div className="relative bg-[#0a0a0a] px-6 py-2 rounded-xl z-1 transition-all duration-300 group-hover:bg-zinc-900">
-                  <span className="text-white text-sm font-medium">Sign In</span>
-                </div>
-                <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
+              <div className="relative bg-[#0a0a0a] px-6 py-2 rounded-xl z-[1] transition-all duration-300 group-hover:bg-zinc-900">
+              <span className="text-white text-sm font-medium">Sign In</span>
+              </div>
+              <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
               </button>
             </div>
 
@@ -215,72 +215,72 @@ export function LandingPage({
         </div>
       </section>
 
-{/* CTA SECTION - Expanded Size & Subtle Top Glow */}
-<section id="cta-section" className="py-24 px-6 relative z-10 overflow-hidden">
-  <div className="max-w-7xl mx-auto">
-    <div className="relative box-border z-6">
-      
-      {/* Corner Hexagons */}
-      {[
-        "-top-1.5 -left-0.5",
-        "-top-1.5 -right-0.5",
-        "-bottom-1.5 -left-0.5",
-        "-bottom-1.5 -right-0.5",
-      ].map((position, index) => (
-        <div
-          key={index}
-          className={`absolute ${position} w-5 h-5 bg-white z-20 shadow-[0_0_10px_rgba(255,255,255,0.3)]`}
-          style={{ 
-            clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" 
-          }}
-        />
-      ))}
+      {/* CTA SECTION - Expanded Size & Subtle Top Glow */}
+      <section id="cta-section" className="py-24 px-6 relative z-10 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="relative box-border z-6">
+            
+            {/* Corner Hexagons */}
+            {[
+              "-top-1.5 -left-0.5",
+              "-top-1.5 -right-0.5",
+              "-bottom-1.5 -left-0.5",
+              "-bottom-1.5 -right-0.5",
+            ].map((position, index) => (
+              <div
+                key={index}
+                className={`absolute ${position} w-5 h-5 bg-white z-20 shadow-[0_0_10px_rgba(255,255,255,0.3)]`}
+                style={{ 
+                  clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" 
+                }}
+              />
+            ))}
 
-      {/* Larger Card: Maintained py-32 and md:p-32 for size */}
-      <SpotlightCard className="home_feature_item_card relative items-center box-border flex flex-col justify-center text-center border px-4 py-32 border-solid border-white/10 rounded-3xl overflow-hidden md:p-32">
-        
-        {/* SUBTLE UPPER CENTER GLOW */}
-        <div 
-          className="absolute inset-0 z-0 pointer-events-none"
-          style={{
-            // Subtle 0.15 opacity for a clean look
-            background: `radial-gradient(circle at center top, rgba(255, 77, 46, 0.15) 0%, rgba(255, 77, 46, 0.03) 45%, transparent 80%)`
-          }}
-        />
+            {/* Larger Card: Maintained py-32 and md:p-32 for size */}
+            <SpotlightCard className="home_feature_item_card relative items-center box-border flex flex-col justify-center text-center border px-4 py-32 border-solid border-white/10 rounded-3xl overflow-hidden md:p-32">
+              
+              {/* SUBTLE UPPER CENTER GLOW */}
+              <div 
+                className="absolute inset-0 z-0 pointer-events-none"
+                style={{
+                  // Subtle 0.15 opacity for a clean look
+                  background: `radial-gradient(circle at center top, rgba(255, 77, 46, 0.15) 0%, rgba(255, 77, 46, 0.03) 45%, transparent 80%)`
+                }}
+              />
 
-        <div className="relative z-10 items-center box-border flex flex-col justify-center">
-          <h2 className="box-border mb-6 md:mb-10">
-            {/* Bold Typography for the large card */}
-            <span className="text-4xl font-bold box-border leading-tight text-white md:text-[64px] md:leading-[1.1]">
-              Ready to secure <br />
-              <span className="text-[#ff4d2e]">your inbox.</span>
-            </span>
-          </h2>
+              <div className="relative z-10 items-center box-border flex flex-col justify-center">
+                <h2 className="box-border mb-6 md:mb-10">
+                  {/* Bold Typography for the large card */}
+                  <span className="text-4xl font-bold box-border leading-tight text-white md:text-[64px] md:leading-[1.1]">
+                    Ready to secure <br />
+                    <span className="text-[#ff4d2e]">your inbox.</span>
+                  </span>
+                </h2>
 
-          <div className="box-border mb-10 md:mb-14 max-w-2xl">
-            <p className="text-zinc-400 text-lg md:text-xl leading-relaxed">
-              Join thousands of users protecting themselves from phishing attacks — completely free.
-            </p>
+                <div className="box-border mb-10 md:mb-14 max-w-2xl">
+                  <p className="text-zinc-400 text-lg md:text-xl leading-relaxed">
+                    Join thousands of users protecting themselves from phishing attacks — completely free.
+                  </p>
+                </div>
+
+                {/* Get Started Button */}
+                  <button
+                  onClick={() => setLoginModalOpen(true)}
+                  className="relative items-center box-border flex justify-center max-w-full overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(255,77,46,0.3)]"
+                  >
+                  <div className="relative items-center bg-black box-border gap-x-2 flex z-[1] px-8 py-4 rounded-xl transition-all duration-300 group-hover:bg-zinc-900/90">
+                  <span className="relative text-white font-medium text-lg transition-transform duration-300 group-hover:translate-x-[-2px]">
+                  Get Started Now
+                  </span>
+                  <ArrowRight className="w-5 h-5 text-white transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
+                  <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
+                  </button>
+              </div>
+            </SpotlightCard>
           </div>
-
-          {/* Get Started Button */}
-          <button
-            onClick={() => setLoginModalOpen(true)}
-            className="relative items-center box-border flex justify-center max-w-full overflow-hidden p-1px rounded-xl group transition-all duration-300 hover:scale-[1.05] hover:shadow-[0_0_30px_rgba(255,77,46,0.3)]"
-          >
-            <div className="relative items-center bg-black box-border gap-x-3 flex z-1 px-10 py-5 rounded-xl transition-all duration-300 group-hover:bg-zinc-900">
-              <span className="relative text-white font-bold text-xl transition-transform duration-300 group-hover:translate-x-0.5">
-                Get Started Now
-              </span>
-              <ArrowRight className="w-6 h-6 text-white transition-transform duration-300 group-hover:translate-x-1" />
-            </div>
-            <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
-          </button>
         </div>
-      </SpotlightCard>
-    </div>
-  </div>
-</section>
+      </section>
 
       <footer className="py-6 px-6 border-t border-white/5 relative z-10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
