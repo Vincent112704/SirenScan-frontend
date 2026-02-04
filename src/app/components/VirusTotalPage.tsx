@@ -118,7 +118,7 @@ export function VirusTotalPage({ email, onLogout, onOpenMobileMenu }: VirusTotal
       <div className="p-4 sm:p-6 lg:p-8 pt-20 sm:pt-24">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-white text-3xl sm:text-4xl lg:text-5xl font-normal mb-3 sm:mb-4">
+          <h1 className="text-white text-3xl sm:text-4xl lg:text-6xl font-normal mb-3 sm:mb-4">
             VirusTotal Analysis
           </h1>
           <p className="text-white/60 text-base">
@@ -202,7 +202,7 @@ export function VirusTotalPage({ email, onLogout, onOpenMobileMenu }: VirusTotal
             {activeTab === "detection" && (
               <div>
                 {/* Community Banner */}
-                <div className="bg-gradient-to-r from-cyan-900/30 to-cyan-800/20 border border-cyan-700/30 rounded-xl p-4 mb-6">
+                <div className="bg-linear-to-r from-cyan-900/30 to-cyan-800/20 border border-cyan-700/30 rounded-xl p-4 mb-6">
                   <p className="text-cyan-300 text-sm">
                     <span className="font-medium">Join our Community</span> and enjoy additional community insights and crowdsourced detections, plus an API key to{" "}
                     <span className="underline cursor-pointer">automate checks.</span>

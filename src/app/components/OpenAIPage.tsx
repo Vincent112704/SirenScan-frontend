@@ -17,10 +17,10 @@ export function OpenAIPage({ email, onLogout, onOpenMobileMenu }: OpenAIPageProp
       <div className="p-4 sm:p-6 lg:p-8 pt-20 sm:pt-24">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-white text-3xl sm:text-4xl lg:text-5xl font-normal mb-3 sm:mb-4">
+          <h1 className="text-white text-3xl sm:text-4xl lg:text-6xl font-normal mb-3 sm:mb-4">
             OpenAI Email Analyzer
           </h1>
-          <p className="text-white/60 text-base sm:text-sm">Intelligent analysis powered by OpenAI</p>
+          <p className="text-white/60 text-base">Intelligent analysis powered by OpenAI</p>
         </div>
 
         {/* Email Info */}
@@ -32,7 +32,7 @@ export function OpenAIPage({ email, onLogout, onOpenMobileMenu }: OpenAIPageProp
         </div>
 
         {/* AI Summary Section */}
-        <div className="bg-gradient-to-br from-[#ff4d2e]/10 to-[#ff4d2e]/5 rounded-2xl p-8 mb-6 border border-[#ff4d2e]/20">
+        <div className="bg-linear-to-br from-[#ff4d2e]/10 to-[#ff4d2e]/5 rounded-2xl p-8 mb-6 border border-[#ff4d2e]/20">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-full bg-[#ff4d2e]/20 flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-[#ff4d2e]" />
@@ -48,7 +48,7 @@ export function OpenAIPage({ email, onLogout, onOpenMobileMenu }: OpenAIPageProp
         </div>
 
         {/* AI Mitigation Section */}
-        <div className="bg-gradient-to-br from-[#ff4d2e]/10 to-[#ff4d2e]/5 rounded-2xl p-8 mb-6 border border-[#ff4d2e]/20">
+        <div className="bg-linear-to-br from-[#ff4d2e]/10 to-[#ff4d2e]/5 rounded-2xl p-8 mb-6 border border-[#ff4d2e]/20">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-full bg-[#ff4d2e]/20 flex items-center justify-center">
               <Shield className="w-5 h-5 text-[#ff4d2e]" />
@@ -60,7 +60,7 @@ export function OpenAIPage({ email, onLogout, onOpenMobileMenu }: OpenAIPageProp
             <div className="space-y-3">
               {email.aiMitigation.split(/\d+\.\s/).filter(Boolean).map((step, index) => (
                 <div key={index} className="flex items-start gap-3">
-                  <div className="w-7 h-7 rounded-full bg-[#ff4d2e]/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-7 h-7 rounded-full bg-[#ff4d2e]/20 flex items-center justify-center shrink-0 mt-0.5">
                     <span className="text-[#ff4d2e] text-sm font-medium">{index + 1}</span>
                   </div>
                   <p className="text-white/90 text-base leading-relaxed">{step.trim()}</p>

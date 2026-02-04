@@ -282,7 +282,7 @@ export default function Orb({
 
       const effectiveHover = forceHoverState ? 1 : targetHover;
       // Smooth interpolation for natural hover transitions
-      program.uniforms.hover.value += (effectiveHover - program.uniforms.hover.value) * 0.15;
+      program.uniforms.hover.value += (effectiveHover - program.uniforms.hover.value) * 0.3;
 
       if (rotateOnHover && effectiveHover > 0.5) {
         currentRot += dt * rotationSpeed;
