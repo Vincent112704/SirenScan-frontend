@@ -1,6 +1,5 @@
 import {
   Mail,
-  Search,
   Shield,
   ShieldAlert,
   Database,
@@ -91,13 +90,13 @@ export function Dashboard({
           <h1 className="text-white text-3xl sm:text-6xl font-normal mb-4 sm:mb-6">Dashboard</h1>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <button className="w-full max-w-2xl bg-[#232323] rounded-xl p-4 flex items-center gap-3 hover:bg-[#2a2a2a] transition-all border border-white/5">
-                <Search className="w-5 h-5 text-white/40" />
-                <div className="flex-1 text-left">
-                  <p className="text-white/90 text-sm truncate">{email.subject}</p>
-                  <p className="text-white/40 text-xs mt-0.5">{email.sender}</p>
+              <button className="relative items-center box-border flex justify-center w-auto max-w-sm overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_18px_rgba(255,77,46,0.18)]">
+                <div className="relative bg-[#0a0a0a] px-4 py-2 rounded-xl z-[1] transition-all duration-300 group-hover:bg-zinc-900 flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-white/60" />
+                  <span className="text-white text-sm font-medium">Choose Email</span>
+                  <ChevronDown className="w-5 h-5 text-white/40 ml-2" />
                 </div>
-                <ChevronDown className="w-5 h-5 text-white/40" />
+                <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
               </button>
             </DialogTrigger>
             <DialogContent className="bg-[#1a1a1c] border border-white/10 text-white max-w-2xl max-h-[80vh] overflow-hidden p-0">
