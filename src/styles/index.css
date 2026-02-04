@@ -3,6 +3,7 @@
 
 html {
   scroll-behavior: smooth;
+  zoom: 100%;
 }
 
 /* static orange glow */
