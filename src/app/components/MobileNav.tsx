@@ -1,5 +1,8 @@
-import { LayoutDashboard, Shield, Mail, HelpCircle, LogOut, X } from "lucide-react";
+import { LayoutDashboard, HelpCircle, LogOut, X } from "lucide-react";
 import sirenScanLogo from "@/assets/SirenScanLogo.png";
+import virustotalLogo from "@/assets/VirusTotalLogo.png";
+import haveibeenpwnedLogo from "@/assets/HaveIBeenPwnedLogo.png";
+import openaiLogo from "@/assets/OpenAILogo.png";
 import { useState } from "react";
 import {
   AlertDialog,
@@ -47,10 +50,31 @@ export function MobileNav({
   };
 
   const menuItems = [
-    { icon: LayoutDashboard, label: "Dashboard", active: currentView === "dashboard", onClick: onNavigateToDashboard },
-    { icon: Shield, label: "VirusTotal", active: currentView === "virusTotal", onClick: onNavigateToVirusTotal },
-    { icon: Mail, label: "HaveIBeenPwned", active: currentView === "haveIBeenPwned", onClick: onNavigateToHaveIBeenPwned },
-    { icon: null, label: "OpenAI", active: currentView === "openAI", onClick: onNavigateToOpenAI },
+    {
+      icon: LayoutDashboard,
+      label: "Dashboard",
+      active: currentView === "dashboard",
+      onClick: onNavigateToDashboard,
+    },
+    {
+      logo: virustotalLogo,
+      label: "VirusTotal",
+      active: currentView === "virusTotal",
+      onClick: onNavigateToVirusTotal,
+    },
+    {
+      logo: haveibeenpwnedLogo,
+      label: "HaveIBeenPwned",
+      active: currentView === "haveIBeenPwned",
+      onClick: onNavigateToHaveIBeenPwned,
+    },
+    {
+      icon: null,
+      logo: openaiLogo,
+      label: "OpenAI",
+      active: currentView === "openAI",
+      onClick: onNavigateToOpenAI,
+    },
   ];
 
   const generalItems = [
@@ -63,7 +87,7 @@ export function MobileNav({
   return (
     <>
       {/* Backdrop */}
-      <div 
+      <div
         className="fixed inset-0 bg-black/60 z-40 lg:hidden"
         onClick={onClose}
       />
@@ -73,14 +97,14 @@ export function MobileNav({
         {/* Header with Close Button */}
         <div className="p-6 flex items-center justify-between border-b border-white/10">
           <div className="flex items-center">
-            <img 
-              src={sirenScanLogo} 
-              alt="SirenScan Logo" 
+            <img
+              src={sirenScanLogo}
+              alt="SirenScan Logo"
               className="w-12 h-12 object-contain"
             />
             <h1 className="text-white text-2xl font-normal -mt-3">SirenScan</h1>
           </div>
-          <button 
+          <button
             onClick={onClose}
             className="text-white/80 hover:text-white transition-colors"
           >
@@ -102,7 +126,13 @@ export function MobileNav({
                 }`}
                 onClick={item.onClick}
               >
-                {item.icon ? (
+                {item.logo ? (
+                  <img
+                    src={item.logo}
+                    alt={`${item.label} Logo`}
+                    className={`object-contain ${item.label === "OpenAI" ? "w-8 h-8" : "w-5 h-5"}`}
+                  />
+                ) : item.icon ? (
                   <item.icon className="w-5 h-5" />
                 ) : null}
                 <span className="text-base">{item.label}</span>
@@ -112,7 +142,9 @@ export function MobileNav({
 
           {/* General Section */}
           <div className="mt-8">
-            <p className="text-white/60 text-sm font-normal mb-3 px-3">GENERAL</p>
+            <p className="text-white/60 text-sm font-normal mb-3 px-3">
+              GENERAL
+            </p>
             <nav className="space-y-1">
               {generalItems.map((item) => (
                 <button
@@ -123,11 +155,11 @@ export function MobileNav({
                       : "text-white/80 hover:bg-white/5"
                   }`}
                   onClick={
-                    item.label === "Logout" 
-                      ? handleLogoutClick 
-                      : item.label === "Help" 
-                      ? onNavigateToHelp
-                      : undefined
+                    item.label === "Logout"
+                      ? handleLogoutClick
+                      : item.label === "Help"
+                        ? onNavigateToHelp
+                        : undefined
                   }
                 >
                   <item.icon className="w-5 h-5" />
@@ -142,16 +174,19 @@ export function MobileNav({
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent className="bg-[#1a1a1c] border border-white/10 text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-xl font-normal">Confirm Logout</AlertDialogTitle>
+            <AlertDialogTitle className="text-xl font-normal">
+              Confirm Logout
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-white/60">
-              Are you sure you want to log out? You'll need to sign in again to access your dashboard.
+              Are you sure you want to log out? You'll need to sign in again to
+              access your dashboard.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="bg-[#232323] border-white/10 text-white hover:bg-[#2a2a2a] hover:text-white">
               Cancel
             </AlertDialogCancel>
-            <AlertDialogAction 
+            <AlertDialogAction
               onClick={handleConfirmLogout}
               className="bg-[#ff4d2e] text-white hover:bg-[#ff4d2e]/90"
             >

@@ -53,26 +53,57 @@ html {
     -webkit-backdrop-filter: blur(2rem);
     backdrop-filter: blur(2rem);
     
-    /* Subtle Grid Pattern + Radial Glow */
+    /* Removed the Radial Glow - Kept only the texture and base color */
     background: 
-        radial-gradient(circle at top left, rgba(255, 77, 46, 0.05), transparent 40%),
         url("https://www.transparenttextures.com/patterns/carbon-fibre.png"),
         #0a0a0a;
         
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    /* Slightly increased border opacity for "faint" structure without glow */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    
     position: relative;
     padding: 3rem;
     transition: all 0.3s ease;
     overflow: hidden;
-    box-shadow: none;
 }
 
-.home_feature_item_card.curve-glow {
-    /* Slightly more transparent to let the line "pierce" through the frost */
-    box-shadow: inset 0 0 60px 30px rgba(255, 77, 46, 0.3), 0 0 80px 40px rgba(255, 77, 46, 0.15);
+/* Optional: Add a very slight lift on hover without adding glow */
+.home_feature_item_card:hover {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background-color: #0d0d0d;
 }
 
+/* Sharp, thick orange border with no transparency changes */
+.home_feature_item_card.card-active-border {
+    border: 1px solid #ff4d2e !important; /* Increased thickness */
+    
+    /* Ensure the card keeps its original dark background */
+    background: 
+        url("https://www.transparenttextures.com/patterns/carbon-fibre.png"),
+        #0a0a0a !important;
+    
+    /* Optional: Slight transition for the border width/color */
+    transition: border 0.15s ease-in-out;
+}
 /* The glowing text effect seen in your screenshot */
 .text-glow-white {
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes counter-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.animate-orbit {
+  animation: orbit 30s linear infinite;
+}
+
+.animate-counter-orbit {
+  animation: counter-orbit 30s linear infinite;
 }

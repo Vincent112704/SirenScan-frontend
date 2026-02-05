@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 export const ScrollCurveLine = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -6,11 +6,11 @@ export const ScrollCurveLine = () => {
 
   useEffect(() => {
     const updateDimensions = () => {
-      const startElem = document.getElementById('how-it-works');
-      const cards = document.querySelectorAll('.home_feature_item_card');
+      const startElem = document.getElementById("how-it-works");
+      const cards = document.querySelectorAll(".home_feature_item_card");
 
       if (startElem && cards.length >= 3) {
-        const description = startElem.querySelector('p');
+        const description = startElem.querySelector("p");
         const startOffset = description
           ? description.offsetTop + description.offsetHeight + 5
           : 200;
@@ -19,7 +19,8 @@ export const ScrollCurveLine = () => {
 
         const thirdCard = cards[2] as HTMLElement;
         const thirdCardRect = thirdCard.getBoundingClientRect();
-        const endPointY = thirdCardRect.top + window.scrollY + thirdCardRect.height / 2;
+        const endPointY =
+          thirdCardRect.top + window.scrollY + thirdCardRect.height / 2;
 
         const height = endPointY - top;
         setDimensions({ top, height });
@@ -28,10 +29,10 @@ export const ScrollCurveLine = () => {
 
     updateDimensions();
     const timer = setTimeout(updateDimensions, 400);
-    window.addEventListener('resize', updateDimensions);
+    window.addEventListener("resize", updateDimensions);
 
     return () => {
-      window.removeEventListener('resize', updateDimensions);
+      window.removeEventListener("resize", updateDimensions);
       clearTimeout(timer);
     };
   }, []);
@@ -40,7 +41,7 @@ export const ScrollCurveLine = () => {
     const canvas = canvasRef.current;
     if (!canvas || dimensions.height <= 0) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const updateCanvasScale = () => {
@@ -56,19 +57,23 @@ export const ScrollCurveLine = () => {
       ctx.clearRect(0, 0, width, height);
 
       const currentScroll = window.scrollY;
-      const relativeScroll = currentScroll - dimensions.top;
 
-      const startTrigger = -window.innerHeight * 0.4;
-      const scrollProgress = Math.max(0, Math.min((relativeScroll - startTrigger) / (height * 1.1), 1));
+      const relativeScroll =
+        currentScroll - (dimensions.top - window.innerHeight);
+      const scrollProgress = Math.max(
+        0,
+        Math.min(
+          relativeScroll / (dimensions.height + window.innerHeight * 0.5),
+          1,
+        ),
+      );
 
       const t = scrollProgress;
       const centerX = width / 2;
-
       const curveIntensity = width > 1024 ? 850 : width > 768 ? 500 : 150;
 
       const cp1x = centerX - curveIntensity;
       const cp1y = height * 0.25;
-
       const cp2x = centerX + curveIntensity;
       const cp2y = height * 0.75;
 
@@ -88,38 +93,48 @@ export const ScrollCurveLine = () => {
       const head = getPath(t);
       const headAbsY = dimensions.top + head.y;
 
-      // ── Card glow logic ───────────────────────────────────────────────
-      const howItWorksSection = document.getElementById('how-it-works');
-      if (howItWorksSection) {
-        const cards = howItWorksSection.querySelectorAll('.home_feature_item_card');
+      // ── CARD BORDER LOGIC ──────────────────────────────────────────────
+const howItWorksSection = document.getElementById("how-it-works");
+if (howItWorksSection) {
+  const cards = howItWorksSection.querySelectorAll(
+    ".home_feature_item_card",
+  );
 
-        cards.forEach((card, index) => {
-          const cardElem = card as HTMLElement;
-          const cardRect = cardElem.getBoundingClientRect();
-          const cardTopAbs    = cardRect.top + window.scrollY;
-          const cardBottomAbs = cardTopAbs + cardRect.height;
+  cards.forEach((card, index) => {
+    const cardElem = card as HTMLElement;
+    const cardRect = cardElem.getBoundingClientRect();
+    const cardTopAbs = cardRect.top + window.scrollY;
+    const cardBottomAbs = cardTopAbs + cardRect.height;
+    const cardCenterX = cardRect.left + cardRect.width / 2;
 
-          let shouldGlow = false;
+    let shouldHighlight = false; // Renamed variable for clarity
 
-          if (index === 0) {
-            shouldGlow = headAbsY >= cardTopAbs - 20 && headAbsY <= cardBottomAbs + 60;
-          } else if (index === 1) {
-            shouldGlow = headAbsY >= cardTopAbs - 10 && headAbsY <= cardBottomAbs + 80;
-          } else {
-            // THIRD CARD — very delayed trigger
-            shouldGlow =
-              headAbsY >= cardTopAbs + 120 &&   // ← increased delay (was +70 → now +110)
-              headAbsY <= cardBottomAbs + 180;  // extended tail
-          }
+    if (index === 0) {
+      shouldHighlight =
+        headAbsY >= cardTopAbs - 20 && headAbsY <= cardBottomAbs + 20;
+    } else if (index === 1) {
+      shouldHighlight =
+        headAbsY >= cardTopAbs - 20 && headAbsY <= cardBottomAbs + 20;
+    } else {
+      // ── THIRD CARD: HEAVY DELAY ──
+      const isHorizontallyClose = Math.abs(head.x - centerX) < 100;
+      shouldHighlight =
+        headAbsY >= cardTopAbs + 250 &&
+        headAbsY <= cardBottomAbs + 100 &&
+        isHorizontallyClose;
+    }
 
-          // Safety guard against very early glow
-          if (t < 0.12) shouldGlow = false;
+    if (t <= 0.01) shouldHighlight = false;
 
-          cardElem.classList.toggle('curve-glow', shouldGlow);
-        });
-      }
+    // Force highlight at the very end
+    if (t >= 0.99 && index === 2) shouldHighlight = true;
 
-      // ── GHOST PATH (faint background) ────────────────────────────────
+    // Toggle the new border class instead of the glow class
+    cardElem.classList.toggle("card-active-border", shouldHighlight);
+  });
+}
+
+      // ── DRAWING PATHS ───────────────────────────────────────────────
       ctx.save();
       ctx.beginPath();
       ctx.moveTo(centerX, 0);
@@ -127,15 +142,14 @@ export const ScrollCurveLine = () => {
         const p = getPath(i / 100);
         ctx.lineTo(p.x, p.y);
       }
-      ctx.strokeStyle = 'rgba(255, 77, 46, 0.05)';
+      ctx.strokeStyle = "rgba(255, 77, 46, 0.05)";
       ctx.lineWidth = 1;
       ctx.stroke();
       ctx.restore();
 
-      // ── ACTIVE ANIMATED LINE ─────────────────────────────────────────
       ctx.save();
       ctx.shadowBlur = 60;
-      ctx.shadowColor = '#ff4d2e';
+      ctx.shadowColor = "#ff4d2e";
       ctx.beginPath();
       ctx.moveTo(centerX, 0);
       for (let i = 0; i <= 100; i++) {
@@ -143,19 +157,25 @@ export const ScrollCurveLine = () => {
         const p = getPath(segmentT);
         ctx.lineTo(p.x, p.y);
       }
-      ctx.strokeStyle = '#ff4d2e';
+      ctx.strokeStyle = "#ff4d2e";
       ctx.lineWidth = 1.5;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
       ctx.stroke();
       ctx.restore();
 
-      // ── GLOW HEAD (moving tip) ───────────────────────────────────────
-      if (t > 0 && t < 1) {
+      if (t > 0 && t <= 1) {
         ctx.save();
-        const gradient = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, 80);
-        gradient.addColorStop(0, 'rgba(255, 77, 46, 0.8)');
-        gradient.addColorStop(1, 'rgba(255, 77, 46, 0)');
+        const gradient = ctx.createRadialGradient(
+          head.x,
+          head.y,
+          0,
+          head.x,
+          head.y,
+          80,
+        );
+        gradient.addColorStop(0, "rgba(255, 77, 46, 0.8)");
+        gradient.addColorStop(1, "rgba(255, 77, 46, 0)");
         ctx.fillStyle = gradient;
         ctx.beginPath();
         ctx.arc(head.x, head.y, 80, 0, Math.PI * 2);
@@ -166,10 +186,10 @@ export const ScrollCurveLine = () => {
 
     updateCanvasScale();
     const handleScroll = () => requestAnimationFrame(drawCurve);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     drawCurve();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [dimensions]);
 
   return (
@@ -177,7 +197,7 @@ export const ScrollCurveLine = () => {
       className="absolute left-0 w-full pointer-events-none z-0"
       style={{ top: `${dimensions.top}px`, height: `${dimensions.height}px` }}
     >
-      <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
+      <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );
 };

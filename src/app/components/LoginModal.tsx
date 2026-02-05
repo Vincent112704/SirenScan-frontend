@@ -1,6 +1,10 @@
 import { Mail, Lock, Eye, EyeOff, X } from "lucide-react";
 import { useState } from "react";
-import { signUpWithEmail, signInWithGoogle, signInWithEmail } from "@/services/auth/authService";
+import {
+  signUpWithEmail,
+  signInWithGoogle,
+  signInWithEmail,
+} from "@/services/auth/authService";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -25,59 +29,49 @@ export function LoginModal({
     e.preventDefault();
     // Mock login - in real app, this would validate credentials
     //handle submit for login
-    try{ 
-      if (isSignUp){
-        if (formData.password !== formData.confirmPassword){
+    try {
+      if (isSignUp) {
+        if (formData.password !== formData.confirmPassword) {
           alert("Password does not match");
           return;
         }
-        const result = await signUpWithEmail(
-        formData.email,
-        formData.password
-        );
+        const result = await signUpWithEmail(formData.email, formData.password);
 
-        console.log(result)
+        console.log(result);
         if (result.success) {
           onNavigateToDashboard();
         } else {
-          alert(result.message)
-          
+          alert(result.message);
         }
-        
-      } else { // if sign in 
-        const result = await signInWithEmail(
-          formData.email,
-          formData.password
-        );
+      } else {
+        // if sign in
+        const result = await signInWithEmail(formData.email, formData.password);
 
-        if (result.success){
+        if (result.success) {
           onNavigateToDashboard();
         } else {
-          alert (result.message)
+          alert(result.message);
         }
       }
-    } catch (error){
-      console.log(`There is an error: ${error}`)
+    } catch (error) {
+      console.log(`There is an error: ${error}`);
     }
-    
   };
 
   const handleGoogleSignIn = async () => {
-    try{
+    try {
       const result = await signInWithGoogle();
       if (result.success) {
         onNavigateToDashboard();
       } else {
         alert(result.message);
       }
-    } catch (error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -158,9 +152,7 @@ export function LoginModal({
                   />
                   <button
                     type="button"
-                    onClick={() =>
-                      setShowPassword(!showPassword)
-                    }
+                    onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/60 transition-colors"
                   >
                     {showPassword ? (
@@ -288,8 +280,8 @@ export function LoginModal({
             </form>
 
             <p className="text-white/40 text-xs text-center mt-6">
-              By continuing, you agree to our Terms of Service
-              and Privacy Policy
+              By continuing, you agree to our Terms of Service and Privacy
+              Policy
             </p>
           </div>
         </div>
