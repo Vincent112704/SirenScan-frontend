@@ -1,112 +1,183 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export const ScrollCurveLine = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ top: 0, height: 0 });
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      const startElem = document.getElementById('how-it-works');
+      const cards = document.querySelectorAll('.home_feature_item_card');
+
+      if (startElem && cards.length >= 3) {
+        const description = startElem.querySelector('p');
+        const startOffset = description
+          ? description.offsetTop + description.offsetHeight + 5
+          : 200;
+
+        const top = startElem.offsetTop + startOffset;
+
+        const thirdCard = cards[2] as HTMLElement;
+        const thirdCardRect = thirdCard.getBoundingClientRect();
+        const endPointY = thirdCardRect.top + window.scrollY + thirdCardRect.height / 2;
+
+        const height = endPointY - top;
+        setDimensions({ top, height });
+      }
+    };
+
+    updateDimensions();
+    const timer = setTimeout(updateDimensions, 400);
+    window.addEventListener('resize', updateDimensions);
+
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+      clearTimeout(timer);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
+    if (!canvas || dimensions.height <= 0) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const updateCanvas = () => {
+    const updateCanvasScale = () => {
       const dpr = window.devicePixelRatio || 1;
-      const rect = container.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      canvas.style.width = `${rect.width}px`;
-      canvas.style.height = `${rect.height}px`;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = dimensions.height * dpr;
       ctx.scale(dpr, dpr);
     };
 
     const drawCurve = () => {
-      if (!ctx || !canvas) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const width = canvas.width / (window.devicePixelRatio || 1);
-      const height = canvas.height / (window.devicePixelRatio || 1);
-
-      const startElem = document.getElementById('features');
-      const endElem = document.getElementById('cta-section');
-      
-      if (!startElem || !endElem) return;
+      const width = window.innerWidth;
+      const height = dimensions.height;
+      ctx.clearRect(0, 0, width, height);
 
       const currentScroll = window.scrollY;
-      const startPos = startElem.offsetTop; 
-      const endPos = endElem.offsetTop + (endElem.offsetHeight / 0.2);
+      const relativeScroll = currentScroll - dimensions.top;
 
-      if (currentScroll < startPos) return;
-
-      const scrollProgress = Math.max(0, Math.min((currentScroll - startPos) / (endPos - startPos), 1));
+      const startTrigger = -window.innerHeight * 0.4;
+      const scrollProgress = Math.max(0, Math.min((relativeScroll - startTrigger) / (height * 1.1), 1));
 
       const t = scrollProgress;
-      const cp1x = width / 2 - 250;
-      const cp1y = height * 0.3;
-      const cp2x = width / 2 + 250;
-      const cp2y = height * 0.7;
+      const centerX = width / 2;
 
-      const x = Math.pow(1 - t, 3) * (width / 2) + 3 * Math.pow(1 - t, 2) * t * cp1x + 3 * (1 - t) * Math.pow(t, 2) * cp2x + Math.pow(t, 3) * (width / 2);
-      const y = Math.pow(1 - t, 3) * 0 + 3 * Math.pow(1 - t, 2) * t * cp1y + 3 * (1 - t) * Math.pow(t, 2) * cp2y + Math.pow(t, 3) * height;
+      const curveIntensity = width > 1024 ? 850 : width > 768 ? 500 : 150;
 
-      // 1. DIMMED BACKGROUND PATH
-      ctx.beginPath();
-      ctx.moveTo(width / 2, 0);
-      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, width / 2, height);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)'; 
-      ctx.lineWidth = 2;
-      ctx.stroke();
+      const cp1x = centerX - curveIntensity;
+      const cp1y = height * 0.25;
 
-      // 2. THE ACTIVE LINE
-      ctx.beginPath();
-      ctx.moveTo(width / 2, 0);
-      const segments = 150;
-      for (let i = 1; i <= segments * t; i++) {
-        const sT = i / segments;
-        const sX = Math.pow(1 - sT, 3) * (width / 2) + 3 * Math.pow(1 - sT, 2) * sT * cp1x + 3 * (1 - sT) * Math.pow(sT, 2) * cp2x + Math.pow(sT, 3) * (width / 2);
-        const sY = Math.pow(1 - sT, 3) * 0 + 3 * Math.pow(1 - sT, 2) * sT * cp1y + 3 * (1 - sT) * Math.pow(sT, 2) * cp2y + Math.pow(sT, 3) * height;
-        ctx.lineTo(sX, sY);
+      const cp2x = centerX + curveIntensity;
+      const cp2y = height * 0.75;
+
+      const getPath = (T: number) => ({
+        x:
+          Math.pow(1 - T, 3) * centerX +
+          3 * Math.pow(1 - T, 2) * T * cp1x +
+          3 * (1 - T) * Math.pow(T, 2) * cp2x +
+          Math.pow(T, 3) * centerX,
+        y:
+          Math.pow(1 - T, 3) * 0 +
+          3 * Math.pow(1 - T, 2) * T * cp1y +
+          3 * (1 - T) * Math.pow(T, 2) * cp2y +
+          Math.pow(T, 3.5) * height,
+      });
+
+      const head = getPath(t);
+      const headAbsY = dimensions.top + head.y;
+
+      // ── Card glow logic ───────────────────────────────────────────────
+      const howItWorksSection = document.getElementById('how-it-works');
+      if (howItWorksSection) {
+        const cards = howItWorksSection.querySelectorAll('.home_feature_item_card');
+
+        cards.forEach((card, index) => {
+          const cardElem = card as HTMLElement;
+          const cardRect = cardElem.getBoundingClientRect();
+          const cardTopAbs    = cardRect.top + window.scrollY;
+          const cardBottomAbs = cardTopAbs + cardRect.height;
+
+          let shouldGlow = false;
+
+          if (index === 0) {
+            shouldGlow = headAbsY >= cardTopAbs - 20 && headAbsY <= cardBottomAbs + 60;
+          } else if (index === 1) {
+            shouldGlow = headAbsY >= cardTopAbs - 10 && headAbsY <= cardBottomAbs + 80;
+          } else {
+            // THIRD CARD — very delayed trigger
+            shouldGlow =
+              headAbsY >= cardTopAbs + 120 &&   // ← increased delay (was +70 → now +110)
+              headAbsY <= cardBottomAbs + 180;  // extended tail
+          }
+
+          // Safety guard against very early glow
+          if (t < 0.12) shouldGlow = false;
+
+          cardElem.classList.toggle('curve-glow', shouldGlow);
+        });
       }
-      ctx.shadowBlur = 0; // No line shadow to keep it clean
-      ctx.strokeStyle = '#ff4d2e';
-      ctx.lineWidth = 3;
-      ctx.stroke();
 
-      // 3. SINGLE LAYER UNIFORM GLOW
-      // We use ONLY 2 stops to ensure a single smooth transition without "rings"
-      const glowRadius = 150;
-      const orangeGlow = ctx.createRadialGradient(x, y, 0, x, y, glowRadius);
-      
-      orangeGlow.addColorStop(0, 'rgba(255, 77, 46, 0.8)'); // Solid Orange
-      orangeGlow.addColorStop(1, 'rgba(255, 77, 46, 0)');   // Smooth fade to nothing
-      
-      ctx.fillStyle = orangeGlow;
+      // ── GHOST PATH (faint background) ────────────────────────────────
+      ctx.save();
       ctx.beginPath();
-      ctx.arc(x, y, glowRadius, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.moveTo(centerX, 0);
+      for (let i = 0; i <= 100; i++) {
+        const p = getPath(i / 100);
+        ctx.lineTo(p.x, p.y);
+      }
+      ctx.strokeStyle = 'rgba(255, 77, 46, 0.05)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.restore();
+
+      // ── ACTIVE ANIMATED LINE ─────────────────────────────────────────
+      ctx.save();
+      ctx.shadowBlur = 60;
+      ctx.shadowColor = '#ff4d2e';
+      ctx.beginPath();
+      ctx.moveTo(centerX, 0);
+      for (let i = 0; i <= 100; i++) {
+        const segmentT = (i / 100) * t;
+        const p = getPath(segmentT);
+        ctx.lineTo(p.x, p.y);
+      }
+      ctx.strokeStyle = '#ff4d2e';
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+      ctx.restore();
+
+      // ── GLOW HEAD (moving tip) ───────────────────────────────────────
+      if (t > 0 && t < 1) {
+        ctx.save();
+        const gradient = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, 80);
+        gradient.addColorStop(0, 'rgba(255, 77, 46, 0.8)');
+        gradient.addColorStop(1, 'rgba(255, 77, 46, 0)');
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(head.x, head.y, 80, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
     };
 
+    updateCanvasScale();
     const handleScroll = () => requestAnimationFrame(drawCurve);
-    const handleResize = () => {
-      updateCanvas();
-      drawCurve();
-    };
-
-    updateCanvas();
     window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+    drawCurve();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [dimensions]);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 pointer-events-none z-1">
-      <canvas ref={canvasRef} className="w-full h-full" />
+    <div
+      className="absolute left-0 w-full pointer-events-none z-0"
+      style={{ top: `${dimensions.top}px`, height: `${dimensions.height}px` }}
+    >
+      <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />
     </div>
   );
 };

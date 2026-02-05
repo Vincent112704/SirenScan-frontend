@@ -15,6 +15,7 @@ import { FadeInOnScroll } from "@/app/components/FadeInOnScroll";
 import Orb from '@/app/components/Orb';
 import SpotlightCard from '@/app/components/SpotlightCard';
 import { ScrollCurveLine } from "./ScrollCurveLine";
+import TiltedCard from './TiltedCard'; 
 
 interface LandingPageProps {
   onNavigateToDashboard: () => void;
@@ -55,7 +56,6 @@ export function LandingPage({
 
   return (
     <div className="relative min-h-screen bg-[#0a0a0a] overflow-x-hidden">
-      {/* Background Scroll Animation */}
       <ScrollCurveLine />
 
       {/* Navigation */}
@@ -77,15 +77,14 @@ export function LandingPage({
               <a href="#features" className="text-white/80 hover:text-white transition-colors">Features</a>
               <a href="#how-it-works" className="text-white/80 hover:text-white transition-colors">How It Works</a>
               
-              {/* Updated Sign In Button with same effect as Get Started */}
               <button
-              onClick={() => setLoginModalOpen(true)}
-              className="relative items-center box-border flex justify-center overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(255,77,46,0.2)]"
+                onClick={() => setLoginModalOpen(true)}
+                className="relative items-center box-border flex justify-center overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(255,77,46,0.2)]"
               >
-              <div className="relative bg-[#0a0a0a] px-6 py-2 rounded-xl z-[1] transition-all duration-300 group-hover:bg-zinc-900">
-              <span className="text-white text-sm font-medium">Sign In</span>
-              </div>
-              <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
+                <div className="relative bg-[#0a0a0a] px-6 py-2 rounded-xl z-[1] transition-all duration-300 group-hover:bg-zinc-900">
+                  <span className="text-white text-sm font-medium">Sign In</span>
+                </div>
+                <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
               </button>
             </div>
 
@@ -97,16 +96,18 @@ export function LandingPage({
       </nav>
 
       {/* HERO SECTION */}
-      <section className="relative h-screen overflow-hidden"> 
+      <section className="relative h-[80vh] md:h-screen overflow-hidden"> 
         <div 
-          className="absolute inset-0 z-0 scale-115 pointer-events-none"
+          className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center"
           style={{
-            // This creates a smooth fade-out at the bottom of the Orb section
-            maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)',
           }}
         >
-          <Orb hoverIntensity={1.8} rotateOnHover hue={0} forceHoverState={false} />
+          {/* Adjusted scale to 75% and added a slight top offset to keep it behind the text */}
+          <div className="w-full h-full transform scale-75 md:scale-95 translate-y-[-0%]">
+            <Orb hoverIntensity={1.8} rotateOnHover hue={0} forceHoverState={false} />
+          </div>
         </div>
         
         <div className="relative z-10 h-full flex items-center justify-center pointer-events-none">
@@ -120,107 +121,121 @@ export function LandingPage({
         </div>
       </section>
 
-      {/* FEATURES SECTION */}
-        <section id="features" className="scroll-mt-24 py-20 px-6 relative z-10">
-          <div className="max-w-7xl mx-auto">
-            <FadeInOnScroll>
-              <div className="text-center mb-16">
-                <h2 className="text-white text-5xl font-bold mb-4">Comprehensive Threat Detection</h2>
-                <p className="text-white/60 text-lg">Multiple layers of security working together to keep you safe</p>
-              </div>
-            </FadeInOnScroll>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-              {features.map((feature, index) => (
-                /* 1. Add h-full to the wrapper */
-                <FadeInOnScroll key={index} delay={index * 0.1} className="h-full">
-                  
-                  {/* 2. Add h-full to the SpotlightCard */}
-                  <SpotlightCard className="home_feature_item_card flex flex-col items-start text-left rounded-3xl h-full">
-                    
-                    {/* Hexagon Icon Wrapper */}
-                    <div 
-                      className="w-14 h-14 bg-white/5 flex items-center justify-center mb-6 relative shrink-0"
-                      style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
-                    >
-                      <div className="absolute inset-0 border border-white/10" style={{ clipPath: "inherit" }} />
-                      <feature.icon className="w-6 h-6 text-white" />
-                    </div>
-
-                    {/* Title with Glow */}
-                    <h3 className="text-white text-2xl font-semibold mb-4 text-glow-white">
-                      {feature.title}
-                    </h3>
-
-                    {/* Description - Added flex-grow to push content if needed */}
-                    <p className="text-zinc-400 text-base leading-relaxed grow">
-                      {feature.description}
-                    </p>
-                    
-                  </SpotlightCard>
-                </FadeInOnScroll>
-              ))}
-            </div>
-          </div>
-        </section>
-
-      {/* HOW IT WORKS SECTION */}
+     {/* HOW IT WORKS SECTION */}
       <section id="how-it-works" className="scroll-mt-24 py-20 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
-          <div className="text-left mb-16"> {/* Changed to text-left to match card style */}
-            <h2 className="text-white text-5xl font-bold mb-4">How SirenScan Works</h2>
-            <p className="text-white/60 text-lg">Simple, fast, and effective protection in three steps</p>
+          <div className="text-center mb-24">
+            <h2 className="text-white text-7xl font-bold mb-4">How SirenScan Works</h2>
+            <p className="text-white/60 text-xl">Simple, fast, and effective protection in three steps</p>
           </div>
           
-          <div className="relative grid md:grid-cols-3 gap-8 items-stretch">
+          <div className="relative flex flex-col gap-16 md:gap-0 max-w-6xl mx-auto">
             {[
-              { step: "01", title: "Forward Email", description: "Simply forward any suspicious email to your unique SirenScan address." },
-              { step: "02", title: "AI Analysis", description: "Our system analyzes the email using multiple detection engines and AI models." },
-              { step: "03", title: "Get Results", description: "Receive instant, detailed analysis with actionable recommendations." },
+              { 
+                step: "01", 
+                title: "Forward Email", 
+                description: "Simply forward any suspicious email to your unique SirenScan address.",
+                alignment: "md:self-start md:mt-24 md:ml-12"
+              },
+              { 
+                step: "02", 
+                title: "AI Analysis", 
+                description: "Our system analyzes the email using multiple detection engines and AI models.",
+                alignment: "md:self-end md:mt-24 md:-ml-12"
+              },
+              { 
+                step: "03", 
+                title: "Get Results", 
+                description: "Receive instant, detailed analysis with actionable recommendations.",
+                alignment: "md:self-start md:mt-24 md:ml-12"
+              },
             ].map((step, index) => (
-              <div key={index} className="relative flex flex-col items-start">
-                <FadeInOnScroll delay={index * 0.15} className="h-full w-full">
-                  <SpotlightCard className="home_feature_item_card h-full w-full flex flex-col items-start text-left rounded-3xl">
-                    
-                    {/* Hexagon with Step Number */}
-                    <div 
-                      className="w-16 h-16 bg-white/5 flex items-center justify-center mb-6 relative"
-                      style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
-                    >
-                      <div className="absolute inset-0 border border-[#ff4d2e]/30" style={{ clipPath: "inherit" }} />
-                      <span className="text-[#ff4d2e] text-2xl font-bold text-glow-orange">{step.step}</span>
-                    </div>
-
-                    {/* Title matches the "Phishing as a defense" style */}
-                    <h3 className="text-white text-2xl font-semibold mb-4 text-glow-white">
-                      {step.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-zinc-400 text-base leading-relaxed">
-                      {step.description}
-                    </p>
-                  </SpotlightCard>
+              <div key={index} className={`relative w-full md:w-[45%] ${step.alignment}`}>
+                <FadeInOnScroll delay={index * 0.15}>
+                  <TiltedCard
+                    imageSrc=""
+                    altText=""
+                    containerHeight="320px"
+                    containerWidth="100%"
+                    rotateAmplitude={10}
+                    scaleOnHover={1.03}
+                    showTooltip={false}
+                    displayOverlayContent
+                    overlayContent={
+                      <SpotlightCard className="home_feature_item_card w-full h-full flex flex-col items-start text-left rounded-3xl p-8">
+                        <div 
+                          className="w-16 h-16 bg-white/5 flex items-center justify-center mb-6 relative shrink-0"
+                          style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
+                        >
+                          <div className="absolute inset-0 border border-[#ff4d2e]/30" style={{ clipPath: "inherit" }} />
+                          <span className="text-[#ff4d2e] text-2xl font-bold text-glow-orange">{step.step}</span>
+                        </div>
+                        <h3 className="text-white text-2xl font-semibold mb-4 text-glow-white">{step.title}</h3>
+                        <p className="text-zinc-400 text-base leading-relaxed">{step.description}</p>
+                      </SpotlightCard>
+                    }
+                  />
                 </FadeInOnScroll>
-
-                {/* Optional: Connecting Arrow (Hidden on mobile) */}
-                {index < 2 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-4 translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none">
-                    <ArrowRight className="w-6 h-6 text-[#ff4d2e] opacity-30" />
-                  </div>
-                )}
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA SECTION - Expanded Size & Subtle Top Glow */}
+      /* --- FEATURES SECTION --- */
+      <section id="features" className="scroll-mt-24 py-20 px-6 relative z-10">
+        <div className="max-w-[90rem] mx-auto"> {/* Increased max-width to give the 4-column row more breathing room */}
+          <FadeInOnScroll>
+            <div className="text-center mb-16">
+              <h2 className="text-white text-6xl md:text-7xl font-bold mb-4">Comprehensive Threat Detection</h2>
+              <p className="text-white/60 text-xl">Multiple layers of security working together to keep you safe</p>
+            </div>
+          </FadeInOnScroll>
+
+          {/* Set to grid-cols-4 for desktop to force a single row */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
+            {features.map((feature, index) => (
+              <FadeInOnScroll key={index} delay={index * 0.1} className="h-full">
+                <TiltedCard
+                  imageSrc=""
+                  altText=""
+                  containerHeight="350px" // Adjusted height for 4-column balance
+                  containerWidth="100%"
+                  rotateAmplitude={12}
+                  scaleOnHover={1.05}
+                  showTooltip={false}
+                  displayOverlayContent
+                  overlayContent={
+                    <SpotlightCard className="home_feature_item_card flex flex-col items-start justify-start text-left rounded-3xl h-full p-7 bg-[#0a0a0a]">
+                      <div 
+                        className="w-16 h-16 bg-white/5 flex items-center justify-center mb-6 relative shrink-0"
+                        style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
+                      >
+                        <div className="absolute inset-0 border border-white/10" style={{ clipPath: "inherit" }} />
+                        <feature.icon className="w-7 h-7 text-white" />
+                      </div>
+                      
+                      {/* Optimized font sizes for 4-column layout */}
+                      <h3 className="text-white text-2xl font-bold mb-3 text-glow-white leading-tight">
+                        {feature.title}
+                      </h3>
+                      
+                      <p className="text-zinc-400 text-md leading-relaxed">
+                        {feature.description}
+                      </p>
+                    </SpotlightCard>
+                  }
+                />
+              </FadeInOnScroll>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA SECTION */}
       <section id="cta-section" className="py-24 px-6 relative z-10 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="relative box-border z-6">
-            
-            {/* Corner Hexagons */}
             {[
               "-top-1.5 -left-0.5",
               "-top-1.5 -right-0.5",
@@ -230,52 +245,29 @@ export function LandingPage({
               <div
                 key={index}
                 className={`absolute ${position} w-5 h-5 bg-white z-20 shadow-[0_0_10px_rgba(255,255,255,0.3)]`}
-                style={{ 
-                  clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" 
-                }}
+                style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
               />
             ))}
 
-            {/* Larger Card: Maintained py-32 and md:p-32 for size */}
             <SpotlightCard className="home_feature_item_card relative items-center box-border flex flex-col justify-center text-center border px-4 py-32 border-solid border-white/10 rounded-3xl overflow-hidden md:p-32">
-              
-              {/* SUBTLE UPPER CENTER GLOW */}
-              <div 
-                className="absolute inset-0 z-0 pointer-events-none"
-                style={{
-                  // Subtle 0.15 opacity for a clean look
-                  background: `radial-gradient(circle at center top, rgba(255, 77, 46, 0.15) 0%, rgba(255, 77, 46, 0.03) 45%, transparent 80%)`
-                }}
-              />
-
+              <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: `radial-gradient(circle at center top, rgba(255, 77, 46, 0.15) 0%, rgba(255, 77, 46, 0.03) 45%, transparent 80%)` }} />
               <div className="relative z-10 items-center box-border flex flex-col justify-center">
                 <h2 className="box-border mb-6 md:mb-10">
-                  {/* Bold Typography for the large card */}
                   <span className="text-4xl font-bold box-border leading-tight text-white md:text-[64px] md:leading-[1.1]">
                     Ready to secure <br />
-                    <span className="text-[#ff4d2e]">your inbox.</span>
+                    <span className="block text-glow-orange-animate" >your inbox.</span>
                   </span>
                 </h2>
-
                 <div className="box-border mb-10 md:mb-14 max-w-2xl">
-                  <p className="text-zinc-400 text-lg md:text-xl leading-relaxed">
-                    Join thousands of users protecting themselves from phishing attacks — completely free.
-                  </p>
+                  <p className="text-zinc-400 text-lg md:text-xl leading-relaxed">Join thousands of users protecting themselves from phishing attacks — completely free.</p>
                 </div>
-
-                {/* Get Started Button */}
-                  <button
-                  onClick={() => setLoginModalOpen(true)}
-                  className="relative items-center box-border flex justify-center max-w-full overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(255,77,46,0.3)]"
-                  >
+                <button onClick={() => setLoginModalOpen(true)} className="relative items-center box-border flex justify-center max-w-full overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(255,77,46,0.3)]">
                   <div className="relative items-center bg-black box-border gap-x-2 flex z-[1] px-8 py-4 rounded-xl transition-all duration-300 group-hover:bg-zinc-900/90">
-                  <span className="relative text-white font-medium text-lg transition-transform duration-300 group-hover:translate-x-[-2px]">
-                  Get Started Now
-                  </span>
-                  <ArrowRight className="w-5 h-5 text-white transition-transform duration-300 group-hover:translate-x-1" />
+                    <span className="relative text-white font-medium text-lg transition-transform duration-300 group-hover:translate-x-[-2px]">Get Started Now</span>
+                    <ArrowRight className="w-5 h-5 text-white transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
                   <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
-                  </button>
+                </button>
               </div>
             </SpotlightCard>
           </div>
