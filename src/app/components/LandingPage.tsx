@@ -16,7 +16,10 @@ import Orb from "@/app/components/Orb";
 import SpotlightCard from "@/app/components/SpotlightCard";
 import { ScrollCurveLine } from "./ScrollCurveLine";
 import TiltedCard from "./TiltedCard";
-import { ProfileOrbitCard } from "./ProfileOrbitCard"; // Import the new component
+import { ProfileOrbitCard } from "./ProfileOrbitCard";
+import kenken from "@/assets/kenken.png";
+import vincent from "@/assets/vincentPic.png";
+import wu from "@/assets/wu.png";
 
 interface LandingPageProps {
   onNavigateToDashboard: () => void;
@@ -54,7 +57,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#0a0a0a] overflow-x-hidden">
+    <div className="relative min-h-screen bg-[#0a0a0a] overflow-x-hidden scroll-smooth">
       <ScrollCurveLine />
 
       {/* Navigation */}
@@ -75,19 +78,19 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
             <div className="hidden md:flex items-center gap-10">
               <a
                 href="#how-it-works"
-                className="text-white/80 hover:text-white transition-colors"
+                className="text-white/80 hover:text-white transition-all duration-300"
               >
                 How It Works
               </a>
               <a
                 href="#features"
-                className="text-white/80 hover:text-white transition-colors"
+                className="text-white/80 hover:text-white transition-all duration-300"
               >
                 Features
               </a>
               <a
                 href="#about"
-                className="text-white/80 hover:text-white transition-colors"
+                className="text-white/80 hover:text-white transition-all duration-300"
               >
                 About
               </a>
@@ -154,7 +157,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                 text="     Phishing Threats."
                 animateBy="words"
                 direction="top"
-                delay={200}
+                delay={400}
                 className="block text-glow-orange-animate"
               />
             </h1>
@@ -165,21 +168,23 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
         </div>
       </section>
 
-      {/* HOW IT WORKS SECTION */}
+      {/* HOW IT WORKS SECTION - Fixed Margin and Padding for ScrollCurveLine alignment */}
       <section
         id="how-it-works"
-        className="scroll-mt-24 py-20 px-6 relative z-10"
+        className="scroll-mt-32 pt-2 pb-20 px-6 relative z-10" 
       >
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-24">
-            {/* Removed text-glow-white */}
-            <h2 className="text-white text-6xl font-bold mb-4">
-              How SirenScan Works
-            </h2>
-            <p className="text-white/60 text-xl">
-              Simple, fast, and effective protection in three steps
-            </p>
-          </div>
+          <FadeInOnScroll>
+            {/* Added mb-32 to push the cards down and relative positioning to clear the curve path */}
+            <div className="text-center mb-32 relative pt-20">
+              <h2 className="text-white text-6xl font-bold mb-6">
+                How SirenScan Works
+              </h2>
+              <p className="text-white/60 text-xl">
+                Simple, fast, and effective protection in three steps
+              </p>
+            </div>
+          </FadeInOnScroll>
 
           <div className="relative flex flex-col gap-16 md:gap-0 max-w-6xl mx-auto">
             {[
@@ -188,7 +193,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                 title: "Forward Email",
                 description:
                   "Simply forward any suspicious email to your unique SirenScan address.",
-                alignment: "md:self-start md:mt-24 md:ml-12",
+                alignment: "md:self-start md:mt-12 md:ml-12",
               },
               {
                 step: "02",
@@ -209,7 +214,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                 key={index}
                 className={`relative w-full md:w-[45%] ${step.alignment}`}
               >
-                <FadeInOnScroll delay={index * 0.15}>
+                <FadeInOnScroll delay={index * 0.2}>
                   <TiltedCard
                     imageSrc=""
                     altText=""
@@ -220,7 +225,6 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                     showTooltip={false}
                     displayOverlayContent
                     overlayContent={
-                      /* Changed: Removed glow shadow, added very faint border and surface tint */
                       <SpotlightCard className="home_feature_item_card w-full h-full flex flex-col items-start text-left rounded-3xl p-8 border border-white/10 bg-white/[0.02] backdrop-blur-sm">
                         <div
                           className="w-16 h-16 bg-white/5 flex items-center justify-center mb-6 relative shrink-0"
@@ -233,12 +237,10 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                             className="absolute inset-0 border border-white/10"
                             style={{ clipPath: "inherit" }}
                           />
-                          {/* Removed text-glow-orange */}
                           <span className="text-[#ff4d2e]/80 text-2xl font-bold">
                             {step.step}
                           </span>
                         </div>
-                        {/* Removed text-glow-white */}
                         <h3 className="text-white/90 text-2xl font-semibold mb-4">
                           {step.title}
                         </h3>
@@ -257,10 +259,10 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
 
       {/* --- FEATURES SECTION --- */}
       <section id="features" className="scroll-mt-24 py-20 px-6 relative z-10">
-        <div className="max-w-[90rem] mx-auto">
+        <div className="max-w-7xl mx-auto">
           <FadeInOnScroll>
             <div className="text-center mb-16">
-              <h2 className="text-white text-6xl md:text-6xl font-bold mb-4 text-glow-white">
+              <h2 className="text-white text-5xl md:text-6xl font-bold mb-4 text-glow-white">
                 Comprehensive Threat Detection
               </h2>
               <p className="text-white/60 text-xl">
@@ -269,7 +271,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
             </div>
           </FadeInOnScroll>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
             {features.map((feature, index) => (
               <FadeInOnScroll
                 key={index}
@@ -279,16 +281,16 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                 <TiltedCard
                   imageSrc=""
                   altText=""
-                  containerHeight="280px"
+                  containerHeight="320px" 
                   containerWidth="100%"
                   rotateAmplitude={12}
                   scaleOnHover={1.05}
                   showTooltip={false}
                   displayOverlayContent
                   overlayContent={
-                    <SpotlightCard className="home_feature_item_card flex flex-col items-start justify-start text-left rounded-3xl h-full p-5 bg-[#0a0a0a]">
+                    <SpotlightCard className="home_feature_item_card flex flex-col items-start justify-start text-left rounded-3xl h-full p-6 bg-[#0a0a0a] border border-white/5">
                       <div
-                        className="w-14 h-14 bg-white/5 flex items-center justify-center mb-4 relative shrink-0"
+                        className="w-14 h-14 bg-white/5 flex items-center justify-center mb-6 relative shrink-0"
                         style={{
                           clipPath:
                             "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
@@ -300,7 +302,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                         />
                         <feature.icon className="w-6 h-6 text-white" />
                       </div>
-                      <h3 className="text-white text-lg font-bold mb-2 text-glow-white leading-tight">
+                      <h3 className="text-white text-xl font-bold mb-3 text-glow-white leading-tight">
                         {feature.title}
                       </h3>
                       <p className="text-zinc-400 text-sm leading-relaxed">
@@ -316,11 +318,9 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
       </section>
 
       {/* ABOUT SECTION */}
-
-      <section id="about" className="scroll-mt-24 py-24 px-6 relative z-10">
+      <section id="about" className="scroll-mt-24 pt-24 pb-40 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
-            {/* Left Side - Text Content */}
             <FadeInOnScroll>
               <div>
                 <h2 className="block text-glow-orange-animate text-5xl md:text-6xl font-bold mb-10">
@@ -348,41 +348,36 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
               </div>
             </FadeInOnScroll>
 
-            {/* Right Side - Orbital System */}
-            <FadeInOnScroll delay={0.2}>
+            <FadeInOnScroll delay={0.3}>
               <div className="relative w-full aspect-square max-w-[540px] mx-auto flex items-center justify-center orbit-container">
-                {/* Visual Ring Path */}
                 <div className="absolute w-[75%] h-[75%] border border-white/5 rounded-full" />
 
                 <div className="relative w-full h-full animate-orbit">
-                  {/* Vincent - Top */}
                   <div className="absolute top-[12%] left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <ProfileOrbitCard
                       name="Vincent Paul Bacalso"
                       role="AI engineer / backend developer"
-                      img="YOUR_IMAGE_PATH"
+                      img={vincent}
                       github="https://github.com/Vincent112704"
                       linkedin="https://www.linkedin.com/in/vincent-paul-bacalso-7b8291275/"
                     />
                   </div>
 
-                  {/* Krishnan - Bottom Left */}
                   <div className="absolute top-[70%] left-[18%] -translate-x-1/2 -translate-y-1/2">
                     <ProfileOrbitCard
                       name="Krishnan Mahinay"
                       role="Cybersecurity Analyst"
-                      img="YOUR_IMAGE_PATH"
+                      img={kenken}
                       github="https://github.com/kerokenn"
                       linkedin="https://www.linkedin.com/in/krishnan-mahinay/"
                     />
                   </div>
 
-                  {/* Justine - Bottom Right */}
                   <div className="absolute top-[70%] right-[18%] translate-x-1/2 -translate-y-1/2">
                     <ProfileOrbitCard
                       name="Justine Wu"
                       role="Full Stack / UI UX Designer"
-                      img="YOUR_IMAGE_PATH"
+                      img={wu}
                       github="https://github.com/ScrappyCoco03"
                       linkedin="https://www.linkedin.com/in/justine-wu-1ab543379/"
                     />
@@ -400,69 +395,71 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
         className="py-24 px-6 relative z-10 overflow-hidden"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="relative box-border z-6">
-            {[
-              {
-                pos: "-top-1.5 -left-0.5",
-                clip: "polygon(0% 0%, 100% 0%, 0% 100%)",
-              },
-              {
-                pos: "-top-1.5 -right-0.5",
-                clip: "polygon(0% 0%, 100% 0%, 100% 100%)",
-              },
-              {
-                pos: "-bottom-1.5 -left-0.5",
-                clip: "polygon(0% 0%, 0% 100%, 100% 100%)",
-              },
-              {
-                pos: "-bottom-1.5 -right-0.5",
-                clip: "polygon(100% 0%, 100% 100%, 0% 100%)",
-              },
-            ].map((item, index) => (
-              <div
-                key={index}
-                className={`absolute ${item.pos} w-5 h-5 bg-white z-20`}
-                style={{ clipPath: item.clip }}
-              />
-            ))}
+          <FadeInOnScroll>
+            <div className="relative box-border z-6">
+              {[
+                {
+                  pos: "-top-1.5 -left-0.5",
+                  clip: "polygon(0% 0%, 100% 0%, 0% 100%)",
+                },
+                {
+                  pos: "-top-1.5 -right-0.5",
+                  clip: "polygon(0% 0%, 100% 0%, 100% 100%)",
+                },
+                {
+                  pos: "-bottom-1.5 -left-0.5",
+                  clip: "polygon(0% 0%, 0% 100%, 100% 100%)",
+                },
+                {
+                  pos: "-bottom-1.5 -right-0.5",
+                  clip: "polygon(100% 0%, 100% 100%, 0% 100%)",
+                },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className={`absolute ${item.pos} w-5 h-5 bg-white z-20`}
+                  style={{ clipPath: item.clip }}
+                />
+              ))}
 
-            <SpotlightCard className="home_feature_item_card relative items-center box-border flex flex-col justify-center text-center border px-4 py-32 border-solid border-white/10 rounded-3xl overflow-hidden md:p-32">
-              <div
-                className="absolute inset-0 z-0 pointer-events-none"
-                style={{
-                  background: `radial-gradient(circle at center top, rgba(255, 77, 46, 0.15) 0%, rgba(255, 77, 46, 0.03) 45%, transparent 80%)`,
-                }}
-              />
-              <div className="relative z-10 items-center box-border flex flex-col justify-center">
-                <h2 className="box-border mb-6 md:mb-10">
-                  <span className="text-4xl font-bold box-border leading-tight text-white md:text-[64px] md:leading-[1.1]">
-                    Ready to secure <br />
-                    <span className="block text-glow-orange-animate">
-                      your inbox.
+              <SpotlightCard className="home_feature_item_card relative items-center box-border flex flex-col justify-center text-center border px-4 py-32 border-solid border-white/10 rounded-3xl overflow-hidden md:p-32">
+                <div
+                  className="absolute inset-0 z-0 pointer-events-none"
+                  style={{
+                    background: `radial-gradient(circle at center top, rgba(255, 77, 46, 0.15) 0%, rgba(255, 77, 46, 0.03) 45%, transparent 80%)`,
+                  }}
+                />
+                <div className="relative z-10 items-center box-border flex flex-col justify-center">
+                  <h2 className="box-border mb-6 md:mb-10">
+                    <span className="text-4xl font-bold box-border leading-tight text-white md:text-[64px] md:leading-[1.1]">
+                      Ready to secure <br />
+                      <span className="block text-glow-orange-animate">
+                        your inbox.
+                      </span>
                     </span>
-                  </span>
-                </h2>
-                <div className="box-border mb-10 md:mb-14 max-w-2xl">
-                  <p className="text-zinc-400 text-lg md:text-xl leading-relaxed">
-                    Join thousands of users protecting themselves from phishing
-                    attacks — completely free.
-                  </p>
-                </div>
-                <button
-                  onClick={() => setLoginModalOpen(true)}
-                  className="relative items-center box-border flex justify-center max-w-full overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(255,77,46,0.3)]"
-                >
-                  <div className="relative items-center bg-black box-border gap-x-2 flex z-[1] px-8 py-4 rounded-xl transition-all duration-300 group-hover:bg-zinc-900/90">
-                    <span className="relative text-white font-medium text-lg transition-transform duration-300 group-hover:translate-x-[-2px]">
-                      Get Started Now
-                    </span>
-                    <ArrowRight className="w-5 h-5 text-white transition-transform duration-300 group-hover:translate-x-1" />
+                  </h2>
+                  <div className="box-border mb-10 md:mb-14 max-w-2xl">
+                    <p className="text-zinc-400 text-lg md:text-xl leading-relaxed">
+                      Join thousands of users protecting themselves from phishing
+                      attacks — completely free.
+                    </p>
                   </div>
-                  <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
-                </button>
-              </div>
-            </SpotlightCard>
-          </div>
+                  <button
+                    onClick={() => setLoginModalOpen(true)}
+                    className="relative items-center box-border flex justify-center max-w-full overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(255,77,46,0.3)]"
+                  >
+                    <div className="relative items-center bg-black box-border gap-x-2 flex z-[1] px-8 py-4 rounded-xl transition-all duration-300 group-hover:bg-zinc-900/90">
+                      <span className="relative text-white font-medium text-lg transition-transform duration-300 group-hover:translate-x-[-2px]">
+                        Get Started Now
+                      </span>
+                      <ArrowRight className="w-5 h-5 text-white transition-transform duration-300 group-hover:translate-x-1" />
+                    </div>
+                    <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
+                  </button>
+                </div>
+              </SpotlightCard>
+            </div>
+          </FadeInOnScroll>
         </div>
       </section>
 
