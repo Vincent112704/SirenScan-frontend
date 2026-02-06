@@ -24,7 +24,10 @@ interface AccountHeaderProps {
   onOpenMobileMenu?: () => void;
 }
 
-export function AccountHeader({ onLogout, onOpenMobileMenu }: AccountHeaderProps) {
+export function AccountHeader({
+  onLogout,
+  onOpenMobileMenu,
+}: AccountHeaderProps) {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
 
   const handleLogoutClick = () => {
@@ -57,16 +60,25 @@ export function AccountHeader({ onLogout, onOpenMobileMenu }: AccountHeaderProps
               <div className="w-8 h-8 rounded-full bg-linear-to-br from-[#ff4d2e] to-[#ff4d2e]/70 flex items-center justify-center">
                 <User className="w-4 h-4 text-white" />
               </div>
-              <span className="text-white text-sm font-normal hidden sm:inline">Account</span>
+              <span className="text-white text-sm font-normal hidden sm:inline">
+                Account
+              </span>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56 bg-[#1a1a1c] border border-white/10 text-white">
-            <DropdownMenuLabel className="text-white/60">My Account</DropdownMenuLabel>
+          <DropdownMenuContent
+            align="end"
+            className="w-56 bg-[#1a1a1c] border border-white/10 text-white"
+          >
+            <DropdownMenuLabel className="text-white/60">
+              My Account
+            </DropdownMenuLabel>
             <DropdownMenuSeparator className="bg-white/10" />
             <DropdownMenuItem className="focus:bg-white/5 focus:text-white cursor-default">
               <div className="flex flex-col">
                 <span className="text-sm font-medium">Demo User</span>
-                <span className="text-xs text-white/50">demo@sirenscan.com</span>
+                <span className="text-xs text-white/50">
+                  demo@sirenscan.com
+                </span>
               </div>
             </DropdownMenuItem>
             <DropdownMenuSeparator className="bg-white/10" />
@@ -84,9 +96,12 @@ export function AccountHeader({ onLogout, onOpenMobileMenu }: AccountHeaderProps
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent className="bg-[#1a1a1c] border border-white/10 text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-xl font-normal">Confirm Logout</AlertDialogTitle>
+            <AlertDialogTitle className="text-xl font-normal">
+              Confirm Logout
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-white/60">
-              Are you sure you want to log out? You'll need to sign in again to access your dashboard.
+              Are you sure you want to log out? You'll need to sign in again to
+              access your dashboard.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

@@ -26,10 +26,23 @@ interface SidebarProps {
   currentView?: string;
 }
 
-export function Sidebar({ onLogout, onNavigateToHelp, onNavigateToDashboard, onNavigateToVirusTotal, onNavigateToHaveIBeenPwned, onNavigateToOpenAI, currentView = "dashboard" }: SidebarProps) {
+export function Sidebar({
+  onLogout,
+  onNavigateToHelp,
+  onNavigateToDashboard,
+  onNavigateToVirusTotal,
+  onNavigateToHaveIBeenPwned,
+  onNavigateToOpenAI,
+  currentView = "dashboard",
+}: SidebarProps) {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  
-  console.log("Sidebar rendered with:", { onLogout, onNavigateToHelp, onNavigateToDashboard, currentView });
+
+  console.log("Sidebar rendered with:", {
+    onLogout,
+    onNavigateToHelp,
+    onNavigateToDashboard,
+    currentView,
+  });
 
   const handleLogoutClick = () => {
     setShowLogoutDialog(true);
@@ -39,30 +52,34 @@ export function Sidebar({ onLogout, onNavigateToHelp, onNavigateToDashboard, onN
     setShowLogoutDialog(false);
     onLogout();
   };
-  
+
   const menuItems = [
-    { icon: LayoutDashboard, label: "Dashboard", active: currentView === "dashboard", onClick: onNavigateToDashboard },
-    { 
+    {
+      icon: LayoutDashboard,
+      label: "Dashboard",
+      active: currentView === "dashboard",
+      onClick: onNavigateToDashboard,
+    },
+    {
       logo: virustotalLogo,
-      label: "VirusTotal", 
-      active: currentView === "virusTotal", 
-      onClick: onNavigateToVirusTotal 
+      label: "VirusTotal",
+      active: currentView === "virusTotal",
+      onClick: onNavigateToVirusTotal,
     },
-    { 
+    {
       logo: haveibeenpwnedLogo,
-      label: "HaveIBeenPwned", 
-      active: currentView === "haveIBeenPwned", 
-      onClick: onNavigateToHaveIBeenPwned 
+      label: "HaveIBeenPwned",
+      active: currentView === "haveIBeenPwned",
+      onClick: onNavigateToHaveIBeenPwned,
     },
-    { 
-      icon: null, 
+    {
+      icon: null,
       logo: openaiLogo,
-      label: "OpenAI", 
-      active: currentView === "openAI", 
+      label: "OpenAI",
+      active: currentView === "openAI",
       onClick: onNavigateToOpenAI,
     },
   ];
-
 
   const generalItems = [
     { icon: HelpCircle, label: "Help", active: currentView === "help" },
@@ -73,9 +90,9 @@ export function Sidebar({ onLogout, onNavigateToHelp, onNavigateToDashboard, onN
     <div className="w-70 h-screen bg-[#121212] flex flex-col">
       {/* Logo Section */}
       <div className="p-6 flex items-center">
-        <img 
-          src={sirenScanLogo} 
-          alt="SirenScan Logo" 
+        <img
+          src={sirenScanLogo}
+          alt="SirenScan Logo"
           className="w-12 h-12 object-contain"
         />
         <h1 className="text-white text-2xl font-normal -mt-3">SirenScan</h1>
@@ -104,11 +121,13 @@ export function Sidebar({ onLogout, onNavigateToHelp, onNavigateToDashboard, onN
               ) : item.icon ? (
                 <item.icon className="w-5 h-5" />
               ) : null}
-              <span 
+              <span
                 className={`text-base ${
                   item.label === "OpenAI" ? "-ml-1" : "" // move text closer to the logo
                 }`}
-              >{item.label}</span>
+              >
+                {item.label}
+              </span>
             </button>
           ))}
         </nav>
@@ -127,14 +146,17 @@ export function Sidebar({ onLogout, onNavigateToHelp, onNavigateToDashboard, onN
                   : "text-white/80 hover:bg-white/5"
               }`}
               onClick={
-                item.label === "Logout" 
-                  ? handleLogoutClick 
-                  : item.label === "Help" 
-                  ? () => {
-                      console.log("Help clicked, onNavigateToHelp:", onNavigateToHelp);
-                      if (onNavigateToHelp) onNavigateToHelp();
-                    }
-                  : undefined
+                item.label === "Logout"
+                  ? handleLogoutClick
+                  : item.label === "Help"
+                    ? () => {
+                        console.log(
+                          "Help clicked, onNavigateToHelp:",
+                          onNavigateToHelp,
+                        );
+                        if (onNavigateToHelp) onNavigateToHelp();
+                      }
+                    : undefined
               }
             >
               <item.icon className="w-5 h-5" />
@@ -147,16 +169,19 @@ export function Sidebar({ onLogout, onNavigateToHelp, onNavigateToDashboard, onN
       <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
         <AlertDialogContent className="bg-[#1a1a1c] border border-white/10 text-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-xl font-normal">Confirm Logout</AlertDialogTitle>
+            <AlertDialogTitle className="text-xl font-normal">
+              Confirm Logout
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-white/60">
-              Are you sure you want to log out? You'll need to sign in again to access your dashboard.
+              Are you sure you want to log out? You'll need to sign in again to
+              access your dashboard.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="bg-[#232323] border-white/10 text-white hover:bg-[#2a2a2a] hover:text-white">
               Cancel
             </AlertDialogCancel>
-            <AlertDialogAction 
+            <AlertDialogAction
               onClick={handleConfirmLogout}
               className="bg-[#ff4d2e] text-white hover:bg-[#ff4d2e]/90"
             >
