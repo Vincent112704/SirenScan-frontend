@@ -311,7 +311,7 @@ export function Dashboard({
               <div className="flex items-center gap-3">
                 <Sparkles className="w-6 h-6 text-[#ff4d2e]" />
                 <h3 className="text-white text-lg font-normal">
-                  OpenAI Summarizer
+                  Summarized Analysis
                 </h3>
               </div>
             </div>
@@ -366,7 +366,7 @@ export function Dashboard({
               <div className="flex items-center gap-3">
                 <ShieldCheck className="w-6 h-6 text-[#ff4d2e]" />
                 <h3 className="text-white text-lg font-normal">
-                  OpenAI Mitigation
+                  Mitigation Techniques
                 </h3>
               </div>
             </div>

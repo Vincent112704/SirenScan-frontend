@@ -54,7 +54,7 @@ export function OpenAIPage({
               <Sparkles className="w-5 h-5 text-[#ff4d2e]" />
             </div>
             <h3 className="text-white text-2xl font-normal">
-              AI Analysis Summary
+              Analysis Summary
             </h3>
           </div>
 
@@ -72,7 +72,7 @@ export function OpenAIPage({
               <Shield className="w-5 h-5 text-[#ff4d2e]" />
             </div>
             <h3 className="text-white text-2xl font-normal">
-              AI Mitigation Recommendations
+              Mitigation Techniques
             </h3>
           </div>
 
@@ -246,7 +246,7 @@ export function OpenAIPage({
           {/* Recommendations */}
           <div className="bg-[#232323] rounded-2xl p-6 border border-white/5">
             <h3 className="text-white text-lg font-normal mb-4">
-              AI Recommendations
+              Recommendations
             </h3>
 
             <div className="space-y-3">
