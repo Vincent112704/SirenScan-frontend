@@ -1,5 +1,5 @@
-import { Mesh, Program, Renderer, Triangle, Vec3 } from 'ogl';
-import { useEffect, useRef } from 'react';
+import { Mesh, Program, Renderer, Triangle, Vec3 } from "ogl";
+import { useEffect, useRef } from "react";
 
 interface OrbProps {
   width?: number | string;
@@ -16,7 +16,7 @@ export default function Orb({
   hoverIntensity = 0.2,
   rotateOnHover = true,
   forceHoverState = false,
-  backgroundColor = '#000000'
+  backgroundColor = "#000000",
 }: OrbProps) {
   const ctnDom = useRef<HTMLDivElement>(null);
 
@@ -210,14 +210,18 @@ export default function Orb({
       uniforms: {
         iTime: { value: 0 },
         iResolution: {
-          value: new Vec3(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height)
+          value: new Vec3(
+            gl.canvas.width,
+            gl.canvas.height,
+            gl.canvas.width / gl.canvas.height,
+          ),
         },
         hue: { value: hue },
         hover: { value: 0 },
         rot: { value: 0 },
         hoverIntensity: { value: hoverIntensity },
-        backgroundColor: { value: hexToVec3(backgroundColor) }
-      }
+        backgroundColor: { value: hexToVec3(backgroundColor) },
+      },
     });
 
     const mesh = new Mesh(gl, { geometry, program });
@@ -228,11 +232,15 @@ export default function Orb({
       const width = container.clientWidth;
       const height = container.clientHeight;
       renderer.setSize(width * dpr, height * dpr);
-      gl.canvas.style.width = width + 'px';
-      gl.canvas.style.height = height + 'px';
-      program.uniforms.iResolution.value.set(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height);
+      gl.canvas.style.width = width + "px";
+      gl.canvas.style.height = height + "px";
+      program.uniforms.iResolution.value.set(
+        gl.canvas.width,
+        gl.canvas.height,
+        gl.canvas.width / gl.canvas.height,
+      );
     }
-    window.addEventListener('resize', resize);
+    window.addEventListener("resize", resize);
     resize();
 
     let targetHover = 0;
@@ -253,26 +261,37 @@ export default function Orb({
       const uvY = ((y - centerY) / size) * 2.0;
 
       const inside = Math.sqrt(uvX * uvX + uvY * uvY) < 0.8;
-      const prev = targetHover;
       targetHover = inside ? 1 : 0;
-      if (prev !== targetHover) {
-        // debug: log hover state changes
-        // eslint-disable-next-line no-console
-        console.log('[Orb] hover changed', { inside, targetHover });
-      }
     };
 
     const handleMouseLeave = () => {
       targetHover = 0;
-      // eslint-disable-next-line no-console
-      console.log('[Orb] mouse leave');
     };
 
-    container.addEventListener('mousemove', handleMouseMove);
-    container.addEventListener('mouseleave', handleMouseLeave);
+    container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseleave", handleMouseLeave);
+
+    // Pause rendering when the orb is off-screen
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        // Resume the loop when scrolling back into view
+        if (isVisible && rafId === 0) {
+          lastTime = performance.now();
+          rafId = requestAnimationFrame(update);
+        }
+      },
+      { threshold: 0 },
+    );
+    observer.observe(container);
 
     let rafId: number;
     const update = (t: number) => {
+      if (!isVisible) {
+        rafId = 0;
+        return;
+      }
       rafId = requestAnimationFrame(update);
       const dt = (t - lastTime) * 0.001;
       lastTime = t;
@@ -281,7 +300,9 @@ export default function Orb({
       program.uniforms.hoverIntensity.value = hoverIntensity;
 
       const effectiveHover = forceHoverState ? 1 : targetHover;
-      program.uniforms.hover.value += (effectiveHover - program.uniforms.hover.value) * 0.25;
+      // Smooth interpolation for natural hover transitions
+      program.uniforms.hover.value +=
+        (effectiveHover - program.uniforms.hover.value) * 0.3;
 
       if (rotateOnHover && effectiveHover > 0.5) {
         currentRot += dt * rotationSpeed;
@@ -295,11 +316,12 @@ export default function Orb({
 
     return () => {
       cancelAnimationFrame(rafId);
-      window.removeEventListener('resize', resize);
-      container.removeEventListener('mousemove', handleMouseMove);
-      container.removeEventListener('mouseleave', handleMouseLeave);
+      observer.disconnect();
+      window.removeEventListener("resize", resize);
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseleave", handleMouseLeave);
       container.removeChild(gl.canvas);
-      gl.getExtension('WEBGL_lose_context')?.loseContext();
+      gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
   }, [hue, hoverIntensity, rotateOnHover, forceHoverState, backgroundColor]);
 
@@ -333,7 +355,7 @@ function hslToRgb(h: number, s: number, l: number) {
 }
 
 function hexToVec3(color: string) {
-  if (color.startsWith('#')) {
+  if (color.startsWith("#")) {
     const r = parseInt(color.slice(1, 3), 16) / 255;
     const g = parseInt(color.slice(3, 5), 16) / 255;
     const b = parseInt(color.slice(5, 7), 16) / 255;
@@ -342,7 +364,11 @@ function hexToVec3(color: string) {
 
   const rgbMatch = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
   if (rgbMatch) {
-    return new Vec3(parseInt(rgbMatch[1]) / 255, parseInt(rgbMatch[2]) / 255, parseInt(rgbMatch[3]) / 255);
+    return new Vec3(
+      parseInt(rgbMatch[1]) / 255,
+      parseInt(rgbMatch[2]) / 255,
+      parseInt(rgbMatch[3]) / 255,
+    );
   }
 
   const hslMatch = color.match(/hsla?\((\d+),\s*(\d+)%,\s*(\d+)%/);

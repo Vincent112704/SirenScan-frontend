@@ -1,6 +1,5 @@
 import {
   Mail,
-  Search,
   Shield,
   ShieldAlert,
   Database,
@@ -10,13 +9,7 @@ import {
   ChevronDown,
   Clock,
 } from "lucide-react";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  Legend,
-} from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import type { Email } from "@/app/App";
 import { useState } from "react";
 import {
@@ -59,9 +52,7 @@ export function Dashboard({
 
     if (emailDate.toDateString() === today.toDateString()) {
       return "Today";
-    } else if (
-      emailDate.toDateString() === yesterday.toDateString()
-    ) {
+    } else if (emailDate.toDateString() === yesterday.toDateString()) {
       return "Yesterday";
     } else {
       return emailDate.toLocaleDateString("en-US", {
@@ -78,11 +69,7 @@ export function Dashboard({
 
   // Prepare data for VirusTotal chart
   const virusTotalData = [
-    {
-      name: "Clean",
-      value: email.virusTotalResults.clean,
-      color: "#10b981",
-    },
+    { name: "Clean", value: email.virusTotalResults.clean, color: "#10b981" },
     {
       name: "Threats",
       value: email.virusTotalResults.threats,
@@ -91,8 +78,10 @@ export function Dashboard({
   ];
 
   const totalEngines =
-    email.virusTotalResults.clean +
-    email.virusTotalResults.threats;
+    email.virusTotalResults.clean + email.virusTotalResults.threats;
+  const safeRate = Math.round(
+    (email.virusTotalResults.clean / totalEngines) * 100,
+  );
 
   return (
     <div className="flex-1 overflow-y-auto relative">
@@ -100,27 +89,22 @@ export function Dashboard({
       <div className="p-4 sm:p-6 lg:p-8 pt-20 sm:pt-24">
         {/* Header with Search Bar */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-white text-3xl sm:text-4xl font-normal mb-4 sm:mb-6">
+          <h1 className="text-white text-3xl sm:text-6xl font-normal mb-4 sm:mb-6">
             Dashboard
           </h1>
-
-          {/* Search Bar Trigger */}
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <button className="w-full max-w-2xl bg-[#232323] rounded-xl p-4 flex items-center gap-3 hover:bg-[#2a2a2a] transition-all border border-white/5">
-                <Search className="w-5 h-5 text-white/40" />
-                <div className="flex-1 text-left">
-                  <p className="text-white/90 text-sm truncate">
-                    {email.subject}
-                  </p>
-                  <p className="text-white/40 text-xs mt-0.5">
-                    {email.sender}
-                  </p>
+              <button className="relative items-center box-border flex justify-center w-auto max-w-sm overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_18px_rgba(255,77,46,0.18)]">
+                <div className="relative bg-[#0a0a0a] px-4 py-2 rounded-xl z-[1] transition-all duration-300 group-hover:bg-zinc-900 flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-white/60" />
+                  <span className="text-white text-sm font-medium">
+                    Choose Email
+                  </span>
+                  <ChevronDown className="w-5 h-5 text-white/40 ml-2" />
                 </div>
-                <ChevronDown className="w-5 h-5 text-white/40" />
+                <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
               </button>
             </DialogTrigger>
-
             <DialogContent className="bg-[#1a1a1c] border border-white/10 text-white max-w-2xl max-h-[80vh] overflow-hidden p-0">
               <DialogHeader className="p-6 pb-4 border-b border-white/10">
                 <DialogTitle className="text-xl font-normal">
@@ -130,7 +114,6 @@ export function Dashboard({
                   {emails.length} emails forwarded
                 </p>
               </DialogHeader>
-
               <div className="overflow-y-auto max-h-[60vh]">
                 {emails.map((emailItem) => (
                   <button
@@ -150,25 +133,19 @@ export function Dashboard({
                         <span
                           className={`text-sm font-medium ${emailItem.phishingDetected ? "text-[#ff4d2e]" : "text-green-500"}`}
                         >
-                          {emailItem.phishingDetected
-                            ? "Threat"
-                            : "Clean"}
+                          {emailItem.phishingDetected ? "Threat" : "Clean"}
                         </span>
                       </div>
                       <div className="flex items-center gap-1 text-white/40 text-xs">
                         <Clock className="w-3 h-3" />
-                        <span>
-                          {formatDate(emailItem.date)}
-                        </span>
+                        <span>{formatDate(emailItem.date)}</span>
                       </div>
                     </div>
-
                     <div className="mb-1">
                       <p className="text-white text-sm font-normal">
                         {emailItem.sender}
                       </p>
                     </div>
-
                     <div>
                       <p className="text-white/60 text-sm">
                         {emailItem.subject}
@@ -181,16 +158,13 @@ export function Dashboard({
           </Dialog>
         </div>
 
-        {/* Metrics Grid - 3 metrics in one row */}
+        {/* Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
-          {/* ================= PHISHING DETECTION ================= */}
+          {/* PHISHING DETECTION */}
           <button
             onClick={onNavigateToVirusTotal}
-            className="bg-[#232323] rounded-2xl p-6 flex flex-col text-left
-                       hover:bg-[#2a2a2a] transition-all cursor-pointer
-                       border border-white/5 hover:border-[#ff4d2e]/30"
+            className="bg-[#232323] rounded-2xl p-6 flex flex-col text-left hover:bg-[#2a2a2a] transition-all cursor-pointer border border-white/5 hover:border-[#ff4d2e]/30"
           >
-            {/* Header */}
             <div className="flex items-start justify-between">
               <h3 className="text-white text-lg font-normal leading-tight">
                 Phishing
@@ -201,8 +175,6 @@ export function Dashboard({
                 <ExternalLink className="w-4 h-4 text-black" />
               </div>
             </div>
-
-            {/* Content */}
             <div className="flex-1 flex items-center justify-center min-h-45">
               {email.phishingDetected ? (
                 <div className="text-center">
@@ -217,80 +189,85 @@ export function Dashboard({
               ) : (
                 <div className="text-center">
                   <Shield className="w-16 h-16 text-green-500 mx-auto mb-3" />
-                  <p className="text-green-500 text-2xl mb-1">
-                    Clean
-                  </p>
-                  <p className="text-white/60 text-xs">
-                    No threats detected
-                  </p>
+                  <p className="text-green-500 text-2xl mb-1">Clean</p>
+                  <p className="text-white/60 text-xs">No threats detected</p>
                 </div>
               )}
             </div>
           </button>
 
-          {/* ================= VIRUSTOTAL ================= */}
+          {/* VIRUSTOTAL - UPDATED GRAPH DESIGN */}
           <button
             onClick={onNavigateToVirusTotal}
-            className="bg-[#232323] rounded-2xl p-6 flex flex-col text-left
-                       hover:bg-[#2a2a2a] transition-all cursor-pointer
-                       border border-white/5 hover:border-[#ff4d2e]/30"
+            className="bg-[#232323] rounded-2xl p-6 flex flex-col text-left hover:bg-[#2a2a2a] transition-all cursor-pointer border border-white/5 hover:border-[#ff4d2e]/30"
           >
-            {/* Header */}
             <div className="flex items-start justify-between">
-              <h3 className="text-white text-lg font-normal">
-                VirusTotal
-              </h3>
+              <h3 className="text-white text-lg font-normal">VirusTotal</h3>
               <div className="w-7 h-7 rounded-full bg-[#ff4d2e] flex items-center justify-center">
                 <ExternalLink className="w-4 h-4 text-black" />
               </div>
             </div>
 
-            {/* Content */}
             <div className="flex-1 flex flex-col items-center justify-center min-h-45">
-              <div className="h-35 w-full">
+              <div className="h-40 w-full relative">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={virusTotalData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={35}
-                      outerRadius={55}
-                      paddingAngle={5}
+                      innerRadius={50}
+                      outerRadius={65}
+                      paddingAngle={8}
                       dataKey="value"
+                      stroke="none"
                     >
                       {virusTotalData.map((entry, index) => (
                         <Cell key={index} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Legend
-                      verticalAlign="bottom"
-                      height={24}
-                      formatter={(value) => (
-                        <span className="text-white text-xs">
-                          {value}
-                        </span>
-                      )}
-                    />
                   </PieChart>
                 </ResponsiveContainer>
+
+                {/* Center Percentage Overlay */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                  <span className="text-3xl font-bold text-white leading-none">
+                    {safeRate}%
+                  </span>
+                  <span className="text-[10px] uppercase tracking-widest text-white/40 mt-1">
+                    Secure
+                  </span>
+                </div>
               </div>
 
-              <p className="text-white/60 text-xs mt-2 text-center">
-                {email.virusTotalResults.threats}/{totalEngines}{" "}
-                engines detected threats
+              {/* Data Labels Legeng */}
+              <div className="flex justify-center gap-6 mt-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-[#10b981]" />
+                  <span className="text-xs text-white/60">
+                    {email.virusTotalResults.clean} Clean
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-[#ff4d2e]" />
+                  <span className="text-xs text-white/60">
+                    {email.virusTotalResults.threats} Threats
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-white/30 text-[10px] mt-4 uppercase tracking-tighter text-center">
+                {email.virusTotalResults.clean}/{totalEngines} engines detected
+                no threats
               </p>
             </div>
           </button>
 
-          {/* ================= HAVE I BEEN PWNED ================= */}
+          {/* HAVE I BEEN PWNED */}
           <button
             onClick={onNavigateToHaveIBeenPwned}
-            className="bg-[#232323] rounded-2xl p-6 flex flex-col text-left
-                       hover:bg-[#2a2a2a] transition-all cursor-pointer
-                       border border-white/5 hover:border-[#ff4d2e]/30"
+            className="bg-[#232323] rounded-2xl p-6 flex flex-col text-left hover:bg-[#2a2a2a] transition-all cursor-pointer border border-white/5 hover:border-[#ff4d2e]/30"
           >
-            {/* Header */}
             <div className="flex items-start justify-between">
               <h3 className="text-white text-lg font-normal leading-tight">
                 HaveIBeen
@@ -301,29 +278,18 @@ export function Dashboard({
                 <ExternalLink className="w-4 h-4 text-black" />
               </div>
             </div>
-
-            {/* Content */}
             <div className="flex-1 flex items-center justify-center min-h-45">
               <div className="text-center">
                 <Database
-                  className={`w-16 h-16 mx-auto mb-3 ${
-                    email.breachCount > 0
-                      ? "text-[#ff4d2e]"
-                      : "text-green-500"
-                  }`}
+                  className={`w-16 h-16 mx-auto mb-3 ${email.breachCount > 0 ? "text-[#ff4d2e]" : "text-green-500"}`}
                 />
                 <p
-                  className={`text-4xl mb-1 ${
-                    email.breachCount > 0
-                      ? "text-[#ff4d2e]"
-                      : "text-green-500"
-                  }`}
+                  className={`text-4xl mb-1 ${email.breachCount > 0 ? "text-[#ff4d2e]" : "text-green-500"}`}
                 >
                   {email.breachCount}
                 </p>
                 <p className="text-white text-sm mb-1">
-                  Data Breach
-                  {email.breachCount !== 1 ? "es" : ""}
+                  Data Breach{email.breachCount !== 1 ? "es" : ""}
                 </p>
                 <p className="text-white/60 text-xs">
                   {email.breachCount > 0
@@ -335,24 +301,20 @@ export function Dashboard({
           </button>
         </div>
 
-        {/* OpenAI Cards - Two side by side */}
+        {/* OpenAI Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 items-stretch">
-          {/* OpenAI Summarizer Card */}
           <button
             onClick={onNavigateToOpenAI}
             className="bg-[#121212] rounded-2xl p-6 relative overflow-hidden text-left hover:bg-[#1a1a1a] transition-all cursor-pointer border border-white/5 hover:border-[#ff4d2e]/30 h-full flex flex-col"
           >
-            {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
                 <Sparkles className="w-6 h-6 text-[#ff4d2e]" />
                 <h3 className="text-white text-lg font-normal">
-                  OpenAI Summarizer
+                  Summarized Analysis
                 </h3>
               </div>
             </div>
-
-            {/* Body */}
             <div className="bg-[#1a1a1c] rounded-xl p-6 border border-white/5 flex flex-col flex-1 justify-start">
               <div className="space-y-4">
                 <div>
@@ -363,46 +325,29 @@ export function Dashboard({
                     {email.aiSummary}
                   </p>
                 </div>
-
                 <div className="pt-4 border-t border-white/10">
                   <h4 className="text-white/60 text-xs font-medium mb-3 uppercase tracking-wide">
                     Key Indicators
                   </h4>
                   <div className="grid grid-cols-3 gap-3">
                     <div className="bg-[#232323] rounded-lg p-3">
-                      <p className="text-white/50 text-xs mb-1">
-                        Phishing Status
-                      </p>
+                      <p className="text-white/50 text-xs mb-1">Status</p>
                       <p
-                        className={`text-sm font-medium ${
-                          email.phishingDetected
-                            ? "text-[#ff4d2e]"
-                            : "text-green-500"
-                        }`}
+                        className={`text-sm font-medium ${email.phishingDetected ? "text-[#ff4d2e]" : "text-green-500"}`}
                       >
                         {email.phishingDetected ? "Detected" : "Clean"}
                       </p>
                     </div>
-
                     <div className="bg-[#232323] rounded-lg p-3">
-                      <p className="text-white/50 text-xs mb-1">
-                        Threat Engines
-                      </p>
+                      <p className="text-white/50 text-xs mb-1">Threats</p>
                       <p className="text-sm font-medium text-white">
                         {email.virusTotalResults.threats}/{totalEngines}
                       </p>
                     </div>
-
                     <div className="bg-[#232323] rounded-lg p-3">
-                      <p className="text-white/50 text-xs mb-1">
-                        Data Breaches
-                      </p>
+                      <p className="text-white/50 text-xs mb-1">Breaches</p>
                       <p
-                        className={`text-sm font-medium ${
-                          email.breachCount > 0
-                            ? "text-[#ff4d2e]"
-                            : "text-green-500"
-                        }`}
+                        className={`text-sm font-medium ${email.breachCount > 0 ? "text-[#ff4d2e]" : "text-green-500"}`}
                       >
                         {email.breachCount}
                       </p>
@@ -413,27 +358,22 @@ export function Dashboard({
             </div>
           </button>
 
-          {/* OpenAI Mitigation Card */}
           <button
             onClick={onNavigateToOpenAI}
             className="bg-[#121212] rounded-2xl p-6 relative overflow-hidden text-left hover:bg-[#1a1a1a] transition-all cursor-pointer border border-white/5 hover:border-[#ff4d2e]/30 h-full flex flex-col"
           >
-            {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
                 <ShieldCheck className="w-6 h-6 text-[#ff4d2e]" />
                 <h3 className="text-white text-lg font-normal">
-                  OpenAI Mitigation
+                  Mitigation Techniques
                 </h3>
               </div>
             </div>
-
-            {/* Body */}
             <div className="bg-[#1a1a1c] rounded-xl p-6 border border-white/5 flex flex-col flex-1 justify-start">
               <h4 className="text-[#ff4d2e] text-sm font-medium mb-3 uppercase tracking-wide">
                 Recommended Actions
               </h4>
-
               <div className="text-white/90 text-base leading-relaxed space-y-2">
                 {email.aiMitigation
                   .split(/\d+\.\s/)

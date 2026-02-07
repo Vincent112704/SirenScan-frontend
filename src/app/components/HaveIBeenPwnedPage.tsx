@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import type { Email } from "@/app/App";
 import { AccountHeader } from "@/app/components/AccountHeader";
+import haveibeenpwnedLogo from "@/assets/HaveIBeenPwnedLogo.png";
 
 interface HaveIBeenPwnedPageProps {
   email: Email;
@@ -46,10 +47,7 @@ export function HaveIBeenPwnedPage({
                   dateShort: "Jun 2012",
                   description:
                     "In May 2016, LinkedIn had 164 million email addresses and passwords exposed. Originally hacked in 2012, the data remained out of sight until being offered for sale on a dark market site 4 years later. The passwords in the breach were stored as SHA1 hashes without salt.",
-                  compromisedData: [
-                    "Email addresses",
-                    "Passwords",
-                  ],
+                  compromisedData: ["Email addresses", "Passwords"],
                   pwnCount: 164611595,
                   logo: "L",
                 },
@@ -64,12 +62,18 @@ export function HaveIBeenPwnedPage({
       <div className="p-4 sm:p-6 lg:p-8 pt-20 sm:pt-24">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
-          <h1 className="text-white text-3xl sm:text-4xl lg:text-5xl font-normal mb-3 sm:mb-4">
-            HaveIBeenPwned Check
-          </h1>
+          <div className="flex items-center gap-4 mb-3 sm:mb-4">
+            <img
+              src={haveibeenpwnedLogo}
+              alt="HaveIBeenPwned Logo"
+              className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
+            />
+            <h1 className="text-white text-3xl sm:text-4xl lg:text-6xl font-normal">
+              HaveIBeenPwned Check
+            </h1>
+          </div>
           <p className="text-white/60 text-base">
-            Checking if the sender's email has been exposed in
-            data breaches
+            Checking if the sender's email has been exposed in data breaches
           </p>
         </div>
 
@@ -78,12 +82,8 @@ export function HaveIBeenPwnedPage({
           <h3 className="text-white/60 text-sm uppercase tracking-wide mb-3">
             Analyzing Email
           </h3>
-          <p className="text-white text-lg mb-1">
-            {email.subject}
-          </p>
-          <p className="text-white/50 text-sm">
-            {email.sender}
-          </p>
+          <p className="text-white text-lg mb-1">{email.subject}</p>
+          <p className="text-white/50 text-sm">{email.sender}</p>
         </div>
 
         {/* Main Result */}
@@ -106,10 +106,7 @@ export function HaveIBeenPwnedPage({
                   className={`text-3xl font-normal mb-1 ${email.breachCount > 0 ? "text-[#ff4d2e]" : "text-green-500"}`}
                 >
                   {email.breachCount}{" "}
-                  {email.breachCount === 1
-                    ? "Breach"
-                    : "Breaches"}{" "}
-                  Found
+                  {email.breachCount === 1 ? "Breach" : "Breaches"} Found
                 </h2>
                 <p className="text-white/60 text-base">
                   {email.breachCount > 0
@@ -131,9 +128,7 @@ export function HaveIBeenPwnedPage({
         {/* Breach Details */}
         {email.breachCount > 0 ? (
           <div className="space-y-6">
-            <h3 className="text-white text-2xl font-normal">
-              Breach Details
-            </h3>
+            <h3 className="text-white text-2xl font-normal">Breach Details</h3>
 
             {mockBreaches.map((breach, index) => (
               <div
@@ -185,19 +180,14 @@ export function HaveIBeenPwnedPage({
                       Compromised data:
                     </h5>
                     <ul className="space-y-2">
-                      {breach.compromisedData.map(
-                        (data, idx) => (
-                          <li
-                            key={idx}
-                            className="flex items-center gap-3"
-                          >
-                            <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
-                            <span className="text-white/70 text-base">
-                              {data}
-                            </span>
-                          </li>
-                        ),
-                      )}
+                      {breach.compromisedData.map((data, idx) => (
+                        <li key={idx} className="flex items-center gap-3">
+                          <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
+                          <span className="text-white/70 text-base">
+                            {data}
+                          </span>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>
@@ -206,8 +196,8 @@ export function HaveIBeenPwnedPage({
                 <div className="mt-6 pt-6 border-t border-white/5 flex items-center gap-2 text-white/40 text-sm">
                   <Info className="w-4 h-4" />
                   <p>
-                    {breach.pwnCount.toLocaleString()} accounts
-                    compromised in this breach
+                    {breach.pwnCount.toLocaleString()} accounts compromised in
+                    this breach
                   </p>
                 </div>
               </div>
@@ -224,14 +214,10 @@ export function HaveIBeenPwnedPage({
                   <p className="text-white/80 text-sm leading-relaxed">
                     This email address has been compromised in{" "}
                     {email.breachCount} known data{" "}
-                    {email.breachCount === 1
-                      ? "breach"
-                      : "breaches"}
-                    . The sender may be targeted by phishing
-                    attacks. Exercise extreme caution when
-                    responding to emails from this address and
-                    verify the sender's identity through
-                    alternative channels.
+                    {email.breachCount === 1 ? "breach" : "breaches"}. The
+                    sender may be targeted by phishing attacks. Exercise extreme
+                    caution when responding to emails from this address and
+                    verify the sender's identity through alternative channels.
                   </p>
                 </div>
               </div>
@@ -245,10 +231,9 @@ export function HaveIBeenPwnedPage({
                 No Breaches Detected
               </h3>
               <p className="text-white/60 text-base leading-relaxed">
-                Good news! This email address has not been found
-                in any known data breaches. However, always
-                remain vigilant and verify suspicious emails
-                before taking action.
+                Good news! This email address has not been found in any known
+                data breaches. However, always remain vigilant and verify
+                suspicious emails before taking action.
               </p>
             </div>
           </div>
@@ -260,10 +245,9 @@ export function HaveIBeenPwnedPage({
             About HaveIBeenPwned
           </h4>
           <p className="text-white/80 text-sm leading-relaxed">
-            HaveIBeenPwned is a free resource for checking if
-            email addresses have been compromised in data
-            breaches. The service aggregates breach data from
-            thousands of sources to help users understand their
+            HaveIBeenPwned is a free resource for checking if email addresses
+            have been compromised in data breaches. The service aggregates
+            breach data from thousands of sources to help users understand their
             exposure to security incidents.
           </p>
         </div>

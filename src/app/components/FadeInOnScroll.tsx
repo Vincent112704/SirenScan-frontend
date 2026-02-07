@@ -4,12 +4,10 @@ import { useRef } from "react";
 interface FadeInOnScrollProps {
   children: React.ReactNode;
   delay?: number;
+  className?: string;
 }
 
-export function FadeInOnScroll({
-  children,
-  delay = 0,
-}: FadeInOnScrollProps) {
+export function FadeInOnScroll({ children, delay = 0 }: FadeInOnScrollProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
