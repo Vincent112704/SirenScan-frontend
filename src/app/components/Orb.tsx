@@ -261,26 +261,37 @@ export default function Orb({
       const uvY = ((y - centerY) / size) * 2.0;
 
       const inside = Math.sqrt(uvX * uvX + uvY * uvY) < 0.8;
-      const prev = targetHover;
       targetHover = inside ? 1 : 0;
-      if (prev !== targetHover) {
-        // debug: log hover state changes
-        // eslint-disable-next-line no-console
-        console.log("[Orb] hover changed", { inside, targetHover });
-      }
     };
 
     const handleMouseLeave = () => {
       targetHover = 0;
-      // eslint-disable-next-line no-console
-      console.log("[Orb] mouse leave");
     };
 
     container.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("mouseleave", handleMouseLeave);
 
+    // Pause rendering when the orb is off-screen
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        // Resume the loop when scrolling back into view
+        if (isVisible && rafId === 0) {
+          lastTime = performance.now();
+          rafId = requestAnimationFrame(update);
+        }
+      },
+      { threshold: 0 },
+    );
+    observer.observe(container);
+
     let rafId: number;
     const update = (t: number) => {
+      if (!isVisible) {
+        rafId = 0;
+        return;
+      }
       rafId = requestAnimationFrame(update);
       const dt = (t - lastTime) * 0.001;
       lastTime = t;
@@ -305,6 +316,7 @@ export default function Orb({
 
     return () => {
       cancelAnimationFrame(rafId);
+      observer.disconnect();
       window.removeEventListener("resize", resize);
       container.removeEventListener("mousemove", handleMouseMove);
       container.removeEventListener("mouseleave", handleMouseLeave);

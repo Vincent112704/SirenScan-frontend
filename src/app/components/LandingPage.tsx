@@ -15,8 +15,7 @@ import { FadeInOnScroll } from "@/app/components/FadeInOnScroll";
 import Orb from "@/app/components/Orb";
 import SpotlightCard from "@/app/components/SpotlightCard";
 import { ScrollCurveLine } from "./ScrollCurveLine";
-import TiltedCard from "./TiltedCard";
-import { ProfileOrbitCard } from "./ProfileOrbitCard"; // Import the new component
+import { ProfileOrbitCard } from "./ProfileOrbitCard";
 
 interface LandingPageProps {
   onNavigateToDashboard: () => void;
@@ -94,14 +93,9 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
 
               <button
                 onClick={() => setLoginModalOpen(true)}
-                className="relative items-center box-border flex justify-center overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(255,77,46,0.2)]"
+                className="px-6 py-2 rounded-xl border border-white/15 bg-[#0a0a0a] text-white text-sm font-medium transition-colors duration-200 hover:border-[#ff4d2e]/60 hover:bg-zinc-900"
               >
-                <div className="relative bg-[#0a0a0a] px-6 py-2 rounded-xl z-[1] transition-all duration-300 group-hover:bg-zinc-900">
-                  <span className="text-white text-sm font-medium">
-                    Sign In
-                  </span>
-                </div>
-                <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
+                Sign In
               </button>
             </div>
 
@@ -155,7 +149,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                 animateBy="words"
                 direction="top"
                 delay={200}
-                className="block text-glow-orange-animate"
+                className="block text-[#ff4d2e]"
               />
             </h1>
             <p className="mt-8 text-white/50 text-xl">
@@ -210,44 +204,29 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                 className={`relative w-full md:w-[45%] ${step.alignment}`}
               >
                 <FadeInOnScroll delay={index * 0.15}>
-                  <TiltedCard
-                    imageSrc=""
-                    altText=""
-                    containerHeight="320px"
-                    containerWidth="100%"
-                    rotateAmplitude={10}
-                    scaleOnHover={1.03}
-                    showTooltip={false}
-                    displayOverlayContent
-                    overlayContent={
-                      /* Changed: Removed glow shadow, added very faint border and surface tint */
-                      <SpotlightCard className="home_feature_item_card w-full h-full flex flex-col items-start text-left rounded-3xl p-8 border border-white/10 bg-white/[0.02] backdrop-blur-sm">
-                        <div
-                          className="w-16 h-16 bg-white/5 flex items-center justify-center mb-6 relative shrink-0"
-                          style={{
-                            clipPath:
-                              "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-                          }}
-                        >
-                          <div
-                            className="absolute inset-0 border border-white/10"
-                            style={{ clipPath: "inherit" }}
-                          />
-                          {/* Removed text-glow-orange */}
-                          <span className="text-[#ff4d2e]/80 text-2xl font-bold">
-                            {step.step}
-                          </span>
-                        </div>
-                        {/* Removed text-glow-white */}
-                        <h3 className="text-white/90 text-2xl font-semibold mb-4">
-                          {step.title}
-                        </h3>
-                        <p className="text-zinc-500 text-base leading-relaxed">
-                          {step.description}
-                        </p>
-                      </SpotlightCard>
-                    }
-                  />
+                  <SpotlightCard className="home_feature_item_card w-full h-full flex flex-col items-start text-left rounded-3xl p-8 border border-white/10">
+                    <div
+                      className="w-16 h-16 bg-white/5 flex items-center justify-center mb-6 relative shrink-0"
+                      style={{
+                        clipPath:
+                          "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                      }}
+                    >
+                      <div
+                        className="absolute inset-0 border border-white/10"
+                        style={{ clipPath: "inherit" }}
+                      />
+                      <span className="text-[#ff4d2e]/80 text-2xl font-bold">
+                        {step.step}
+                      </span>
+                    </div>
+                    <h3 className="text-white/90 text-2xl font-semibold mb-4">
+                      {step.title}
+                    </h3>
+                    <p className="text-zinc-500 text-base leading-relaxed">
+                      {step.description}
+                    </p>
+                  </SpotlightCard>
                 </FadeInOnScroll>
               </div>
             ))}
@@ -260,7 +239,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
         <div className="max-w-[90rem] mx-auto">
           <FadeInOnScroll>
             <div className="text-center mb-16">
-              <h2 className="text-white text-6xl md:text-6xl font-bold mb-4 text-glow-white">
+              <h2 className="text-white text-6xl md:text-6xl font-bold mb-4">
                 Comprehensive Threat Detection
               </h2>
               <p className="text-white/60 text-xl">
@@ -276,39 +255,27 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                 delay={index * 0.1}
                 className="h-full"
               >
-                <TiltedCard
-                  imageSrc=""
-                  altText=""
-                  containerHeight="280px"
-                  containerWidth="100%"
-                  rotateAmplitude={12}
-                  scaleOnHover={1.05}
-                  showTooltip={false}
-                  displayOverlayContent
-                  overlayContent={
-                    <SpotlightCard className="home_feature_item_card flex flex-col items-start justify-start text-left rounded-3xl h-full p-5 bg-[#0a0a0a]">
-                      <div
-                        className="w-14 h-14 bg-white/5 flex items-center justify-center mb-4 relative shrink-0"
-                        style={{
-                          clipPath:
-                            "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-                        }}
-                      >
-                        <div
-                          className="absolute inset-0 border border-white/10"
-                          style={{ clipPath: "inherit" }}
-                        />
-                        <feature.icon className="w-6 h-6 text-white" />
-                      </div>
-                      <h3 className="text-white text-lg font-bold mb-2 text-glow-white leading-tight">
-                        {feature.title}
-                      </h3>
-                      <p className="text-zinc-400 text-sm leading-relaxed">
-                        {feature.description}
-                      </p>
-                    </SpotlightCard>
-                  }
-                />
+                <SpotlightCard className="home_feature_item_card flex flex-col items-start justify-start text-left rounded-3xl h-full p-5 bg-[#0a0a0a]">
+                  <div
+                    className="w-14 h-14 bg-white/5 flex items-center justify-center mb-4 relative shrink-0"
+                    style={{
+                      clipPath:
+                        "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+                    }}
+                  >
+                    <div
+                      className="absolute inset-0 border border-white/10"
+                      style={{ clipPath: "inherit" }}
+                    />
+                    <feature.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-white text-lg font-bold mb-2 leading-tight">
+                    {feature.title}
+                  </h3>
+                  <p className="text-zinc-400 text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
+                </SpotlightCard>
               </FadeInOnScroll>
             ))}
           </div>
@@ -323,7 +290,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
             {/* Left Side - Text Content */}
             <FadeInOnScroll>
               <div>
-                <h2 className="block text-glow-orange-animate text-5xl md:text-6xl font-bold mb-10">
+                <h2 className="block text-[#ff4d2e] text-5xl md:text-6xl font-bold mb-10">
                   About Us
                 </h2>
                 <p className="text-white/70 text-lg leading-relaxed mb-4 text-justify">
@@ -437,7 +404,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                 <h2 className="box-border mb-6 md:mb-10">
                   <span className="text-4xl font-bold box-border leading-tight text-white md:text-[64px] md:leading-[1.1]">
                     Ready to secure <br />
-                    <span className="block text-glow-orange-animate">
+                    <span className="block text-[#ff4d2e]">
                       your inbox.
                     </span>
                   </span>
@@ -450,15 +417,10 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                 </div>
                 <button
                   onClick={() => setLoginModalOpen(true)}
-                  className="relative items-center box-border flex justify-center max-w-full overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_30px_rgba(255,77,46,0.3)]"
+                  className="flex items-center gap-x-2 px-8 py-4 rounded-xl border border-white/15 bg-black text-white font-medium text-lg transition-colors duration-200 hover:border-[#ff4d2e]/60 hover:bg-zinc-900/90"
                 >
-                  <div className="relative items-center bg-black box-border gap-x-2 flex z-[1] px-8 py-4 rounded-xl transition-all duration-300 group-hover:bg-zinc-900/90">
-                    <span className="relative text-white font-medium text-lg transition-transform duration-300 group-hover:translate-x-[-2px]">
-                      Get Started Now
-                    </span>
-                    <ArrowRight className="w-5 h-5 text-white transition-transform duration-300 group-hover:translate-x-1" />
-                  </div>
-                  <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
+                  Get Started Now
+                  <ArrowRight className="w-5 h-5" />
                 </button>
               </div>
             </SpotlightCard>

@@ -6,88 +6,32 @@ html {
   zoom: 100%;
 }
 
-/* static orange glow */
-.text-glow-orange {
-  text-shadow:
-    0 0 0.5rem #ff4d2e,
-    0 0 1rem rgba(255,77,46,0.6),
-    0 0 3rem rgba(255,77,46,0.5),
-    0 0 5rem rgba(255,77,46,0.4);
-}
-
-/* white text with orange glow */
-.text-glow-orange {
-  color: #ffffff;
-  text-shadow:
-    0 0 0.5rem #ff4d2e,
-    0 0 1rem rgba(255,77,46,0.6),
-    0 0 3rem rgba(255,77,46,0.5),
-    0 0 5rem rgba(255,77,46,0.4);
-}
-
-@keyframes glow-pulse-orange {
-  0%, 100% {
-    text-shadow:
-      0 0 0.5rem #ff4d2e,
-      0 0 1rem rgba(255,77,46,0.6),
-      0 0 3rem rgba(255,77,46,0.5),
-      0 0 5rem rgba(255,77,46,0.4);
-  }
-  50% {
-    text-shadow:
-      0 0 1rem #ff4d2e,
-      0 0 2rem rgba(255,77,46,0.8),
-      0 0 5rem rgba(255,77,46,0.7),
-      0 0 7rem rgba(255,77,46,0.6);
-  }
-}
-
+/* static orange text color (no animated shadow) */
 .text-glow-orange-animate {
-  color: #ffffff;
-  animation: glow-pulse-orange 2.5s ease-in-out infinite;
+  color: #ff4d2e;
 }
 
 .home_feature_item_card {
     z-index: 5;
-    /* Frosted glass effect */
-    -webkit-backdrop-filter: blur(2rem);
-    backdrop-filter: blur(2rem);
-    
-    /* Removed the Radial Glow - Kept only the texture and base color */
-    background: 
-        url("https://www.transparenttextures.com/patterns/carbon-fibre.png"),
-        #0a0a0a;
+
+    background: #0a0a0a;
         
-    /* Slightly increased border opacity for "faint" structure without glow */
     border: 1px solid rgba(255, 255, 255, 0.08);
     
     position: relative;
     padding: 3rem;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease;
     overflow: hidden;
 }
 
-/* Optional: Add a very slight lift on hover without adding glow */
 .home_feature_item_card:hover {
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background-color: #0d0d0d;
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Sharp, thick orange border with no transparency changes */
+/* Sharp orange border when the scroll-line head touches the card */
 .home_feature_item_card.card-active-border {
-    border: 1px solid #ff4d2e !important; /* Increased thickness */
-    
-    /* Ensure the card keeps its original dark background */
-    background: 
-        url("https://www.transparenttextures.com/patterns/carbon-fibre.png"),
-        #0a0a0a !important;
-    
-    /* Optional: Slight transition for the border width/color */
+    border: 1px solid #ff4d2e !important;
     transition: border 0.15s ease-in-out;
-}
-/* The glowing text effect seen in your screenshot */
-.text-glow-white {
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.1);
 }
 
 @keyframes orbit {

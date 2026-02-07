@@ -1,5 +1,5 @@
 import type { SpringOptions } from "motion/react";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
 
 interface TiltedCardProps {
@@ -52,28 +52,33 @@ export default function TiltedCard({
     mass: 1,
   });
 
-  const [lastY, setLastY] = useState(0);
+  const lastYRef = useRef(0);
+  const tiltRafRef = useRef(0);
 
-  function handleMouse(e: React.MouseEvent<HTMLElement>) {
-    if (!ref.current) return;
+  const handleMouse = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    if (tiltRafRef.current) return; // skip if a frame is already queued
+    tiltRafRef.current = requestAnimationFrame(() => {
+      tiltRafRef.current = 0;
+      if (!ref.current) return;
 
-    const rect = ref.current.getBoundingClientRect();
-    const offsetX = e.clientX - rect.left - rect.width / 2;
-    const offsetY = e.clientY - rect.top - rect.height / 2;
+      const rect = ref.current.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left - rect.width / 2;
+      const offsetY = e.clientY - rect.top - rect.height / 2;
 
-    const rotationX = (offsetY / (rect.height / 2)) * -rotateAmplitude;
-    const rotationY = (offsetX / (rect.width / 2)) * rotateAmplitude;
+      const rotationX = (offsetY / (rect.height / 2)) * -rotateAmplitude;
+      const rotationY = (offsetX / (rect.width / 2)) * rotateAmplitude;
 
-    rotateX.set(rotationX);
-    rotateY.set(rotationY);
+      rotateX.set(rotationX);
+      rotateY.set(rotationY);
 
-    x.set(e.clientX - rect.left);
-    y.set(e.clientY - rect.top);
+      x.set(e.clientX - rect.left);
+      y.set(e.clientY - rect.top);
 
-    const velocityY = offsetY - lastY;
-    rotateFigcaption.set(-velocityY * 0.6);
-    setLastY(offsetY);
-  }
+      const velocityY = offsetY - lastYRef.current;
+      rotateFigcaption.set(-velocityY * 0.6);
+      lastYRef.current = offsetY;
+    });
+  }, [rotateAmplitude, rotateX, rotateY, x, y, rotateFigcaption]);
 
   function handleMouseEnter() {
     scale.set(scaleOnHover);
