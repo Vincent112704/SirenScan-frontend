@@ -11,9 +11,13 @@ export const ScrollCurveLine = () => {
 
       if (startElem && cards.length >= 3) {
         const description = startElem.querySelector("p");
+        
+        // --- BALANCED OFFSET ---
+        // 120px is enough to clear the paragraph and some margin 
+        // without leaving too much empty space before the line starts.
         const startOffset = description
-          ? description.offsetTop + description.offsetHeight + 5
-          : 200;
+          ? description.offsetTop + description.offsetHeight + 200
+          : 300;
 
         const top = startElem.offsetTop + startOffset;
 
@@ -87,52 +91,47 @@ export const ScrollCurveLine = () => {
           Math.pow(1 - T, 3) * 0 +
           3 * Math.pow(1 - T, 2) * T * cp1y +
           3 * (1 - T) * Math.pow(T, 2) * cp2y +
-          Math.pow(T, 3.5) * height,
+          Math.pow(T, 3) * height,
       });
 
       const head = getPath(t);
       const headAbsY = dimensions.top + head.y;
 
       // ── CARD BORDER LOGIC ──────────────────────────────────────────────
-const howItWorksSection = document.getElementById("how-it-works");
-if (howItWorksSection) {
-  const cards = howItWorksSection.querySelectorAll(
-    ".home_feature_item_card",
-  );
+      const howItWorksSection = document.getElementById("how-it-works");
+      if (howItWorksSection) {
+        const cards = howItWorksSection.querySelectorAll(
+          ".home_feature_item_card",
+        );
 
-  cards.forEach((card, index) => {
-    const cardElem = card as HTMLElement;
-    const cardRect = cardElem.getBoundingClientRect();
-    const cardTopAbs = cardRect.top + window.scrollY;
-    const cardBottomAbs = cardTopAbs + cardRect.height;
-    const cardCenterX = cardRect.left + cardRect.width / 2;
+        cards.forEach((card, index) => {
+          const cardElem = card as HTMLElement;
+          const cardRect = cardElem.getBoundingClientRect();
+          const cardTopAbs = cardRect.top + window.scrollY;
+          const cardBottomAbs = cardTopAbs + cardRect.height;
 
-    let shouldHighlight = false; // Renamed variable for clarity
+          let shouldHighlight = false;
 
-    if (index === 0) {
-      shouldHighlight =
-        headAbsY >= cardTopAbs - 20 && headAbsY <= cardBottomAbs + 20;
-    } else if (index === 1) {
-      shouldHighlight =
-        headAbsY >= cardTopAbs - 20 && headAbsY <= cardBottomAbs + 20;
-    } else {
-      // ── THIRD CARD: HEAVY DELAY ──
-      const isHorizontallyClose = Math.abs(head.x - centerX) < 100;
-      shouldHighlight =
-        headAbsY >= cardTopAbs + 250 &&
-        headAbsY <= cardBottomAbs + 100 &&
-        isHorizontallyClose;
-    }
+          if (index === 0) {
+            shouldHighlight =
+              headAbsY >= cardTopAbs - 20 && headAbsY <= cardBottomAbs + 20;
+          } else if (index === 1) {
+            shouldHighlight =
+              headAbsY >= cardTopAbs - 20 && headAbsY <= cardBottomAbs + 20;
+          } else {
+            const isHorizontallyClose = Math.abs(head.x - centerX) < 100;
+            shouldHighlight =
+              headAbsY >= cardTopAbs + 250 &&
+              headAbsY <= cardBottomAbs + 100 &&
+              isHorizontallyClose;
+          }
 
-    if (t <= 0.01) shouldHighlight = false;
+          if (t <= 0.01) shouldHighlight = false;
+          if (t >= 0.99 && index === 2) shouldHighlight = true;
 
-    // Force highlight at the very end
-    if (t >= 0.99 && index === 2) shouldHighlight = true;
-
-    // Toggle the new border class instead of the glow class
-    cardElem.classList.toggle("card-active-border", shouldHighlight);
-  });
-}
+          cardElem.classList.toggle("card-active-border", shouldHighlight);
+        });
+      }
 
       // ── DRAWING PATHS ───────────────────────────────────────────────
       ctx.save();

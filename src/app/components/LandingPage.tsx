@@ -57,7 +57,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
   ];
 
   return (
-    <div className="relative min-h-screen bg-[#0a0a0a] overflow-x-hidden scroll-smooth">
+    <div className="relative min-h-screen bg-[#0a0a0a] overflow-x-hidden">
       <ScrollCurveLine />
 
       {/* Navigation */}
@@ -76,33 +76,27 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
             </div>
 
             <div className="hidden md:flex items-center gap-10">
-              <a
-                href="#how-it-works"
-                className="text-white/80 hover:text-white transition-all duration-300"
-              >
-                How It Works
-              </a>
-              <a
-                href="#features"
-                className="text-white/80 hover:text-white transition-all duration-300"
-              >
-                Features
-              </a>
-              <a
-                href="#about"
-                className="text-white/80 hover:text-white transition-all duration-300"
-              >
-                About
-              </a>
+              {[
+                { name: "How It Works", href: "#how-it-works" },
+                { name: "Features", href: "#features" },
+                { name: "About", href: "#about" },
+              ].map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="relative text-white/80 hover:text-white transition-all duration-300 py-1 group"
+                >
+                  {link.name}
+                  <span className="absolute bottom-0 left-1/2 w-0 h-[2px] bg-[#ff4d2e] transition-all duration-300 ease-out -translate-x-1/2 group-hover:w-full" />
+                </a>
+              ))}
 
               <button
                 onClick={() => setLoginModalOpen(true)}
                 className="relative items-center box-border flex justify-center overflow-hidden p-[1px] rounded-xl group transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(255,77,46,0.2)]"
               >
                 <div className="relative bg-[#0a0a0a] px-6 py-2 rounded-xl z-[1] transition-all duration-300 group-hover:bg-zinc-900">
-                  <span className="text-white text-sm font-medium">
-                    Sign In
-                  </span>
+                  <span className="text-white text-sm font-medium">Sign In</span>
                 </div>
                 <div className="absolute aspect-square bg-[conic-gradient(from_0deg,transparent_120deg,#ff4d2e_180deg,transparent_240deg)] w-[200%] animate-[spin_3s_linear_infinite]" />
               </button>
@@ -157,7 +151,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                 text="     Phishing Threats."
                 animateBy="words"
                 direction="top"
-                delay={400}
+                delay={200}
                 className="block text-glow-orange-animate"
               />
             </h1>
@@ -168,15 +162,14 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
         </div>
       </section>
 
-      {/* HOW IT WORKS SECTION - Fixed Margin and Padding for ScrollCurveLine alignment */}
+      {/* HOW IT WORKS SECTION - Increased padding (pt-48 pb-48) and margin (mb-48) */}
       <section
         id="how-it-works"
-        className="scroll-mt-32 pt-2 pb-20 px-6 relative z-10" 
+        className="scroll-mt-32 pt-48 pb-48 px-6 relative z-10" 
       >
         <div className="max-w-7xl mx-auto">
           <FadeInOnScroll>
-            {/* Added mb-32 to push the cards down and relative positioning to clear the curve path */}
-            <div className="text-center mb-32 relative pt-20">
+            <div className="text-center mb-48 relative pt-20">
               <h2 className="text-white text-6xl font-bold mb-6">
                 How SirenScan Works
               </h2>
@@ -186,7 +179,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
             </div>
           </FadeInOnScroll>
 
-          <div className="relative flex flex-col gap-16 md:gap-0 max-w-6xl mx-auto">
+          <div className="relative flex flex-col gap-24 md:gap-0 max-w-6xl mx-auto">
             {[
               {
                 step: "01",
@@ -200,14 +193,14 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                 title: "AI Analysis",
                 description:
                   "Our system analyzes the email using multiple detection engines and AI models.",
-                alignment: "md:self-end md:mt-24 md:-ml-12",
+                alignment: "md:self-end md:mt-32 md:-ml-12",
               },
               {
                 step: "03",
                 title: "Get Results",
                 description:
                   "Receive instant, detailed analysis with actionable recommendations.",
-                alignment: "md:self-start md:mt-24 md:ml-12",
+                alignment: "md:self-start md:mt-32 md:ml-12",
               },
             ].map((step, index) => (
               <div
@@ -257,15 +250,15 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
         </div>
       </section>
 
-      {/* --- FEATURES SECTION --- */}
-      <section id="features" className="scroll-mt-24 py-20 px-6 relative z-10">
+      {/* FEATURES SECTION - Increased vertical padding (py-48) */}
+      <section id="features" className="scroll-mt-24 py-48 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           <FadeInOnScroll>
-            <div className="text-center mb-16">
-              <h2 className="text-white text-5xl md:text-6xl font-bold mb-4 text-glow-white">
+            <div className="text-center mb-24">
+              <h2 className="text-white text-5xl md:text-6xl font-bold mb-6 text-glow-white">
                 Comprehensive Threat Detection
               </h2>
-              <p className="text-white/60 text-xl">
+              <p className="text-white/60 text-xl mb-24">
                 Multiple layers of security working together to keep you safe
               </p>
             </div>
@@ -300,7 +293,7 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                           className="absolute inset-0 border border-white/10"
                           style={{ clipPath: "inherit" }}
                         />
-                        <feature.icon className="w-6 h-6 text-white" />
+                        <feature.icon className="w-6 h-6 text-[#ff4d2e] drop-shadow-[0_0_8px_rgba(255,77,46,0.5)]" />
                       </div>
                       <h3 className="text-white text-xl font-bold mb-3 text-glow-white leading-tight">
                         {feature.title}
@@ -317,42 +310,40 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
         </div>
       </section>
 
-      {/* ABOUT SECTION */}
-      <section id="about" className="scroll-mt-24 pt-24 pb-40 px-6 relative z-10">
+      {/* ABOUT SECTION - Increased padding (py-48) and content gap (gap-24) */}
+      <section id="about" className="scroll-mt-24 py-48 px-6 relative z-10">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <FadeInOnScroll>
-              <div>
-                <h2 className="block text-glow-orange-animate text-5xl md:text-6xl font-bold mb-10">
+          <FadeInOnScroll>
+            <div className="grid md:grid-cols-2 gap-24 items-center transform-gpu">
+              
+              <div className="will-change-transform">
+                <h2 className="text-5xl md:text-6xl font-bold mb-10 block text-glow-orange-animate">
                   About Us
                 </h2>
-                <p className="text-white/70 text-lg leading-relaxed mb-4 text-justify">
-                  SirenScan is a project developed by third-year Computer
-                  Science students as part of our Software Engineering course.
-                  We're a passionate team dedicated to creating practical
-                  solutions that address real-world security challenges.
-                </p>
-                <p className="text-white/70 text-lg leading-relaxed mb-4 text-justify">
-                  Through this project, we've combined our knowledge of machine
-                  learning, web development, and cybersecurity to build an
-                  intelligent email threat detection system. Our goal was to
-                  create something that's not only technically sound but also
-                  genuinely useful for protecting users from phishing attacks.
-                </p>
-                <p className="text-white/70 text-lg leading-relaxed text-justify">
-                  This experience has taught us the importance of user-centered
-                  design, security best practices, and collaborative
-                  development. We're proud to present SirenScan as a testament
-                  to what dedicated students can achieve.
-                </p>
+                <div className="space-y-4 text-white/70 text-lg leading-relaxed text-justify">
+                  <p>
+                    SirenScan is a project developed by third-year Computer
+                    Science students as part of our Software Engineering course.
+                    We're a passionate team dedicated to creating practical
+                    solutions that address real-world security challenges.
+                  </p>
+                  <p>
+                    Through this project, we've combined our knowledge of machine
+                    learning, web development, and cybersecurity to build an
+                    intelligent email threat detection system.
+                  </p>
+                  <p>
+                    This experience has taught us the importance of user-centered
+                    design, security best practices, and collaborative
+                    development. We're proud to present SirenScan as a testament
+                    to what dedicated students can achieve.
+                  </p>
+                </div>
               </div>
-            </FadeInOnScroll>
 
-            <FadeInOnScroll delay={0.3}>
-              <div className="relative w-full aspect-square max-w-[540px] mx-auto flex items-center justify-center orbit-container">
+              <div className="relative w-full aspect-square max-w-[540px] mx-auto flex items-center justify-center orbit-container transform-gpu">
                 <div className="absolute w-[75%] h-[75%] border border-white/5 rounded-full" />
-
-                <div className="relative w-full h-full animate-orbit">
+                <div className="relative w-full h-full animate-orbit transform-gpu will-change-transform">
                   <div className="absolute top-[12%] left-1/2 -translate-x-1/2 -translate-y-1/2">
                     <ProfileOrbitCard
                       name="Vincent Paul Bacalso"
@@ -362,7 +353,6 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                       linkedin="https://www.linkedin.com/in/vincent-paul-bacalso-7b8291275/"
                     />
                   </div>
-
                   <div className="absolute top-[70%] left-[18%] -translate-x-1/2 -translate-y-1/2">
                     <ProfileOrbitCard
                       name="Krishnan Mahinay"
@@ -372,7 +362,6 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                       linkedin="https://www.linkedin.com/in/krishnan-mahinay/"
                     />
                   </div>
-
                   <div className="absolute top-[70%] right-[18%] translate-x-1/2 -translate-y-1/2">
                     <ProfileOrbitCard
                       name="Justine Wu"
@@ -384,36 +373,24 @@ export function LandingPage({ onNavigateToDashboard }: LandingPageProps) {
                   </div>
                 </div>
               </div>
-            </FadeInOnScroll>
-          </div>
+            </div>
+          </FadeInOnScroll>
         </div>
       </section>
 
-      {/* CTA SECTION */}
+      {/* CTA SECTION - Increased padding (py-48) */}
       <section
         id="cta-section"
-        className="py-24 px-6 relative z-10 overflow-hidden"
+        className="py-48 px-6 relative z-10 overflow-hidden"
       >
         <div className="max-w-7xl mx-auto">
           <FadeInOnScroll>
             <div className="relative box-border z-6">
               {[
-                {
-                  pos: "-top-1.5 -left-0.5",
-                  clip: "polygon(0% 0%, 100% 0%, 0% 100%)",
-                },
-                {
-                  pos: "-top-1.5 -right-0.5",
-                  clip: "polygon(0% 0%, 100% 0%, 100% 100%)",
-                },
-                {
-                  pos: "-bottom-1.5 -left-0.5",
-                  clip: "polygon(0% 0%, 0% 100%, 100% 100%)",
-                },
-                {
-                  pos: "-bottom-1.5 -right-0.5",
-                  clip: "polygon(100% 0%, 100% 100%, 0% 100%)",
-                },
+                { pos: "-top-1.5 -left-0.5", clip: "polygon(0% 0%, 100% 0%, 0% 100%)" },
+                { pos: "-top-1.5 -right-0.5", clip: "polygon(0% 0%, 100% 0%, 100% 100%)" },
+                { pos: "-bottom-1.5 -left-0.5", clip: "polygon(0% 0%, 0% 100%, 100% 100%)" },
+                { pos: "-bottom-1.5 -right-0.5", clip: "polygon(100% 0%, 100% 100%, 0% 100%)" },
               ].map((item, index) => (
                 <div
                   key={index}

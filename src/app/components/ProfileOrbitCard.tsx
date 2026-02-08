@@ -1,3 +1,5 @@
+import React from 'react';
+
 interface ProfileOrbitCardProps {
   name: string;
   role: string;
@@ -8,19 +10,27 @@ interface ProfileOrbitCardProps {
 
 export function ProfileOrbitCard({ name, role, img, github, linkedin }: ProfileOrbitCardProps) {
   return (
-    /* The counter-orbit keeps the card and icons perfectly upright */
-    <div className="animate-counter-orbit">
+    /* Counter-orbit keeps the card upright while the parent rotates */
+    <div className="animate-counter-orbit transform-gpu will-change-transform [backface-visibility:hidden]">
       <div className="flex flex-col items-center group">
         
-        {/* Profile Image Circle - Original Size preserved */}
-        <div className="relative w-60 h-60 rounded-full bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center transition-all duration-300 group-hover:border-[#ff4d2e]/50 hover:scale-105 overflow-hidden mb-4 shadow-2xl">
+        {/* Profile Image Circle - GPU Optimized */}
+        <div className="relative w-60 h-60 rounded-full bg-gradient-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center transition-all duration-300 group-hover:border-[#ff4d2e]/50 hover:scale-105 overflow-hidden mb-4 shadow-2xl isolate transform-gpu">
           <img 
             src={img} 
             alt={name} 
-            className="w-full h-full object-cover" 
+            /* Fixes the rendering lag */
+            decoding="async" 
+            loading="eager"
+            className="w-full h-full object-cover transform-gpu" 
+            style={{ 
+              WebkitTransform: 'translateZ(0)',
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden'
+            }}
           />
           
-          {/* Social Icons - Returned INSIDE the card and PERMANENTLY visible */}
+          {/* Social Icons - Permanently visible for ease of use */}
           <div className="absolute bottom-6 flex justify-center gap-3 z-20">
             <a 
               href={github} 
@@ -45,7 +55,6 @@ export function ProfileOrbitCard({ name, role, img, github, linkedin }: ProfileO
           </div>
         </div>
 
-        {/* Text Labels */}
         <div className="text-center">
           <p className="text-white font-bold text-lg leading-tight whitespace-nowrap">
             {name}
