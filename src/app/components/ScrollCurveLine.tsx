@@ -40,9 +40,13 @@ export const ScrollCurveLine = () => {
 
       if (startElem && cards.length >= 3) {
         const description = startElem.querySelector("p");
+        
+        // --- BALANCED OFFSET ---
+        // 120px is enough to clear the paragraph and some margin 
+        // without leaving too much empty space before the line starts.
         const startOffset = description
-          ? description.offsetTop + description.offsetHeight + 5
-          : 200;
+          ? description.offsetTop + description.offsetHeight + 200
+          : 300;
 
         const top = startElem.offsetTop + startOffset;
 
@@ -133,7 +137,7 @@ export const ScrollCurveLine = () => {
           Math.pow(1 - T, 3) * 0 +
           3 * Math.pow(1 - T, 2) * T * cp1y +
           3 * (1 - T) * Math.pow(T, 2) * cp2y +
-          Math.pow(T, 3.5) * height,
+          Math.pow(T, 3) * height,
       });
 
       const head = getPath(t);
