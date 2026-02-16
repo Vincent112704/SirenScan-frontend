@@ -7,6 +7,8 @@ import { VirusTotalPage } from "@/app/components/VirusTotalPage";
 import { HaveIBeenPwnedPage } from "@/app/components/HaveIBeenPwnedPage";
 import { OpenAIPage } from "@/app/components/OpenAIPage";
 import { MobileNav } from "@/app/components/MobileNav";
+import { useAuth } from "@/services/auth/AuthContext";
+import { logOut } from "@/services/auth/authService";
 
 // Mock email data
 export interface Email {
@@ -88,8 +90,15 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<Page>("landing");
   const [selectedEmail, setSelectedEmail] = useState<Email>(mockEmails[0]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, loading } = useAuth();
 
-  console.log("Current page:", currentPage);
+  const handleLogout = async () => {
+    await logOut();               // This kills the Firebase session
+    setCurrentPage("landing");    // This moves the UI back to landing
+    setIsMobileMenuOpen(false);   // Close menu if on mobile
+  };
+
+  
 
   // Render based on current page
   if (currentPage === "landing") {
@@ -102,7 +111,7 @@ export default function App() {
       {/* Desktop Sidebar - Hidden on mobile */}
       <div className="hidden lg:block">
         <Sidebar 
-          onLogout={() => setCurrentPage("landing")} 
+          onLogout={handleLogout} 
           onNavigateToHelp={() => setCurrentPage("help")}
           onNavigateToDashboard={() => setCurrentPage("dashboard")}
           onNavigateToVirusTotal={() => setCurrentPage("virusTotal")}
@@ -117,10 +126,7 @@ export default function App() {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         currentView={currentPage}
-        onLogout={() => {
-          setIsMobileMenuOpen(false);
-          setCurrentPage("landing");
-        }}
+        onLogout={handleLogout}
         onNavigateToHelp={() => {
           setIsMobileMenuOpen(false);
           setCurrentPage("help");
@@ -152,17 +158,17 @@ export default function App() {
           onNavigateToVirusTotal={() => setCurrentPage("virusTotal")}
           onNavigateToHaveIBeenPwned={() => setCurrentPage("haveIBeenPwned")}
           onNavigateToOpenAI={() => setCurrentPage("openAI")}
-          onLogout={() => setCurrentPage("landing")}
+          onLogout={handleLogout}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />
       ) : currentPage === "help" ? (
-        <Help onLogout={() => setCurrentPage("landing")} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
+        <Help onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
       ) : currentPage === "virusTotal" ? (
-        <VirusTotalPage email={selectedEmail} onLogout={() => setCurrentPage("landing")} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
+        <VirusTotalPage email={selectedEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
       ) : currentPage === "haveIBeenPwned" ? (
-        <HaveIBeenPwnedPage email={selectedEmail} onLogout={() => setCurrentPage("landing")} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
+        <HaveIBeenPwnedPage email={selectedEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
       ) : currentPage === "openAI" ? (
-        <OpenAIPage email={selectedEmail} onLogout={() => setCurrentPage("landing")} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
+        <OpenAIPage email={selectedEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
       ) : (
         <div>Unknown Page</div>
       )}
