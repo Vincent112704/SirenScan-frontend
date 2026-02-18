@@ -8,6 +8,7 @@ import {
 import type { Email } from "@/app/App";
 import { AccountHeader } from "@/app/components/AccountHeader";
 import haveibeenpwnedLogo from "@/assets/HaveIBeenPwnedLogo.png";
+import { firestore } from "@/firebase/firebaseConfig";
 
 interface HaveIBeenPwnedPageProps {
   email: Email;

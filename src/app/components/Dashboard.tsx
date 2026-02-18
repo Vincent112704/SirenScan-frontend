@@ -33,8 +33,8 @@ interface DashboardProps {
 }
 
 export function Dashboard({
-  email,
-  emails,
+  email, //selected email
+  emails, //all emails 
   onSelectEmail,
   onNavigateToVirusTotal,
   onNavigateToHaveIBeenPwned,
@@ -43,30 +43,32 @@ export function Dashboard({
   onOpenMobileMenu,
 }: DashboardProps) {
   const [open, setOpen] = useState(false);
+  
+  // const formatDate = (date: string) => {
+  //   const emailDate = new Date(date);
+  //   const today = new Date();
+  //   const yesterday = new Date(today);
+  //   yesterday.setDate(yesterday.getDate() - 1);
 
-  const formatDate = (date: string) => {
-    const emailDate = new Date(date);
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    if (emailDate.toDateString() === today.toDateString()) {
-      return "Today";
-    } else if (emailDate.toDateString() === yesterday.toDateString()) {
-      return "Yesterday";
-    } else {
-      return emailDate.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      });
-    }
-  };
-
+  //   if (emailDate.toDateString() === today.toDateString()) {
+  //     return "Today";
+  //   } else if (emailDate.toDateString() === yesterday.toDateString()) {
+  //     return "Yesterday";
+  //   } else {
+  //     return emailDate.toLocaleDateString("en-US", {
+  //       month: "short",
+  //       day: "numeric",
+  //     });
+  //   }
+  // };
+  console.log("Dashboard received email prop:", email); // Check if emails are passed correctly
+  console.log("Rendering Dashboard with email:", emails); // returns undefined. 
+  //Go to app first to fix the issue. 
   const handleSelectEmail = (selectedEmail: Email) => {
     onSelectEmail(selectedEmail);
     setOpen(false);
   };
-
+  //email could be placeholder. Check on it 
   // Prepare data for VirusTotal chart
   const virusTotalData = [
     { name: "Clean", value: email.virusTotalResults.clean, color: "#10b981" },
@@ -77,12 +79,12 @@ export function Dashboard({
     },
   ];
 
+  console.log("VirusTotal Data in dashboard:", virusTotalData); // Check if data is correct
+
   const totalEngines =
     email.virusTotalResults.clean + email.virusTotalResults.threats;
-  const safeRate = Math.round(
-    (email.virusTotalResults.clean / totalEngines) * 100,
-  );
-
+  const safeRate = totalEngines > 0 ? Math.round((email.virusTotalResults.clean / totalEngines) * 100) : 0;
+  
   return (
     <div className="flex-1 overflow-y-auto relative">
       <AccountHeader onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
@@ -138,7 +140,7 @@ export function Dashboard({
                       </div>
                       <div className="flex items-center gap-1 text-white/40 text-xs">
                         <Clock className="w-3 h-3" />
-                        <span>{formatDate(emailItem.date)}</span>
+                        {/* <span>{formatDate(emailItem.date)}</span> No date field*/} 
                       </div>
                     </div>
                     <div className="mb-1">

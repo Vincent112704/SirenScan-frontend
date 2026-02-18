@@ -14,7 +14,7 @@ interface OpenAIPageProps {
   onLogout: () => void;
   onOpenMobileMenu: () => void;
 }
-
+//Data is passed from App
 export function OpenAIPage({
   email,
   onLogout,
@@ -44,7 +44,6 @@ export function OpenAIPage({
           </h3>
           <p className="text-white text-lg mb-1">{email.subject}</p>
           <p className="text-white/50 text-sm">{email.sender}</p>
-          <p className="text-white/40 text-xs mt-2">{email.date}</p>
         </div>
 
         {/* AI Summary Section */}

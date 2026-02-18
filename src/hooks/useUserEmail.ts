@@ -1,0 +1,36 @@
+import { useState, useEffect } from 'react';
+import { emailService } from '@/services/emailService';
+import { getAuth } from 'firebase/auth';
+import { sha256 } from '@/lib/crypto';
+import { Email } from '@/app/App';
+
+export function useUserEmails() {
+  const [emails, setEmails] = useState<Email[]>([]); // Using your Email interface
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user?.email) {
+        try {
+          setLoading(true); // Ensure loading is true while fetching
+          const hashed = await sha256(user.email);
+          const res = await emailService.fetchUserEmails(hashed);
+          console.log("Fetched emails in userUserEmail hook:", res);
+          setEmails(res);
+        } catch (error) {
+          console.error("Data fetch failed:", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        // No user found or logged out
+        setLoading(false);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  return { emails, loading };
+}
