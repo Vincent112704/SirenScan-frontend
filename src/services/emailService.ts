@@ -1,7 +1,14 @@
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { firestore as db } from "@/firebase/firebaseConfig";
 import { Email } from "@/app/App";
-import { url } from "node:inspector";
+import DOMPurify from 'dompurify';
+
+function purifyBreaches(breaches: Email["breaches"]) {
+  return breaches.map(b => ({
+    ...b,
+    Description: DOMPurify.sanitize(b.Description)
+  }));
+}
 
 export const emailService = {
   async fetchUserEmails(userEmail: string): Promise<Email[]> {
@@ -45,20 +52,16 @@ export const emailService = {
       
       
       const { aiSummary, aiMitigation } = parseSynthesis(emailData.LLM_synthesis);
-      // const rawSynthesis = emailData.LLM_synthesis || "";
-      // const parts = rawSynthesis.split(/--- \*\*3\. Suggested Next Actions:\*\*/);
-      // const aiSummary = parts[0]
-      // const aiMitigation = parts[1] || "No mitigation suggestions available.";
-
-      // Let's assume you want the first analysis found or a count
+      
       const urlData = urlSnapshot.docs[0]?.data() || {};
       const HIBPData = HIBPsnapshot.docs[0]?.data() || {};
+      
       
       const malicious = urlData.stats?.malicious ?? 0;
       const suspicious = urlData.stats?.suspicious ?? 0;
       const threats = malicious + suspicious;
-      
-      
+      const breaches = purifyBreaches(HIBPData?.breaches)
+      console.log("Breaches after purify:", breaches[0].Description);
       return {
         id: emailDoc.id,
         sender: emailData.sender,
@@ -69,6 +72,7 @@ export const emailService = {
           threats: threats,
         },
         breachCount: HIBPData?.breaches?.length || 0,
+        breaches: breaches || [],
         aiSummary: aiSummary,
         aiMitigation: aiMitigation,
       } as Email;

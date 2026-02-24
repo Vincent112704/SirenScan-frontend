@@ -8,7 +8,7 @@ import {
 import type { Email } from "@/app/App";
 import { AccountHeader } from "@/app/components/AccountHeader";
 import haveibeenpwnedLogo from "@/assets/HaveIBeenPwnedLogo.png";
-import { firestore } from "@/firebase/firebaseConfig";
+
 
 interface HaveIBeenPwnedPageProps {
   email: Email;
@@ -21,42 +21,7 @@ export function HaveIBeenPwnedPage({
   onLogout,
   onOpenMobileMenu,
 }: HaveIBeenPwnedPageProps) {
-  // Mock breach data - in real app this would come from API
-  const mockBreaches =
-    email.breachCount > 0
-      ? [
-          {
-            name: "Adobe",
-            date: "October 2013",
-            dateShort: "Oct 2013",
-            description:
-              "In October 2013, 153 million Adobe accounts were breached with each containing an internal ID, username, email, encrypted password and a password hint in plain text. The password cryptography was poorly done and many were quickly resolved back to plain text.",
-            compromisedData: [
-              "Email addresses",
-              "Password hints",
-              "Passwords",
-              "Usernames",
-            ],
-            pwnCount: 152445165,
-            logo: "A",
-          },
-          ...(email.breachCount > 1
-            ? [
-                {
-                  name: "LinkedIn",
-                  date: "June 2012",
-                  dateShort: "Jun 2012",
-                  description:
-                    "In May 2016, LinkedIn had 164 million email addresses and passwords exposed. Originally hacked in 2012, the data remained out of sight until being offered for sale on a dark market site 4 years later. The passwords in the breach were stored as SHA1 hashes without salt.",
-                  compromisedData: ["Email addresses", "Passwords"],
-                  pwnCount: 164611595,
-                  logo: "L",
-                },
-              ]
-            : []),
-        ]
-      : [];
-
+  
   return (
     <div className="flex-1 overflow-y-auto relative">
       <AccountHeader onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
@@ -131,7 +96,7 @@ export function HaveIBeenPwnedPage({
           <div className="space-y-6">
             <h3 className="text-white text-2xl font-normal">Breach Details</h3>
 
-            {mockBreaches.map((breach, index) => (
+            {email.breaches?.map((breach, index) => (
               <div
                 key={index}
                 className="bg-[#1a1a1c] rounded-2xl p-8 border border-white/5 relative"
@@ -140,7 +105,7 @@ export function HaveIBeenPwnedPage({
                 <div className="absolute top-8 right-8">
                   <div className="w-24 h-24 rounded-full bg-cyan-900/50 border-2 border-cyan-600/50 flex items-center justify-center">
                     <span className="text-cyan-300 text-sm font-medium text-center leading-tight">
-                      {breach.dateShort}
+                      {breach.BreachDate}
                     </span>
                   </div>
                 </div>
@@ -148,13 +113,12 @@ export function HaveIBeenPwnedPage({
                 <div className="pr-32">
                   {/* Logo and Name */}
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center">
+                    {/* <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center">
                       <span className="text-black text-2xl font-bold">
-                        {breach.logo}
                       </span>
-                    </div>
+                    </div> */}
                     <h4 className="text-white text-3xl font-normal">
-                      {breach.name}
+                      {breach.Name}
                     </h4>
                   </div>
 
@@ -163,25 +127,28 @@ export function HaveIBeenPwnedPage({
                     <p className="text-white/80 text-base leading-relaxed">
                       In{" "}
                       <span className="text-white font-medium">
-                        {breach.date}
+                        {breach.BreachDate}
                       </span>
-                      , the {breach.name.toLowerCase()} website{" "}
+                      , the {breach.Name.toLowerCase()} website{" "}
                       <span className="text-cyan-400 underline cursor-pointer">
-                        {breach.name} suffered a data breach
+                        {breach.Name} suffered a data breach
                       </span>{" "}
-                      {breach.description.split(
-                        breach.name + " suffered a data breach",
-                      )[1] || breach.description}
+                      <span 
+                        dangerouslySetInnerHTML={{ 
+                          __html: breach.Description.split(
+                            breach.Name + " suffered a data breach"
+                          )[1] || breach.Description 
+                        }} 
+                      />
                     </p>
                   </div>
-
                   {/* Compromised Data */}
                   <div className="mb-6">
                     <h5 className="text-white font-medium text-base mb-3">
                       Compromised data:
                     </h5>
                     <ul className="space-y-2">
-                      {breach.compromisedData.map((data, idx) => (
+                      {breach.DataClasses.map((data, idx) => (
                         <li key={idx} className="flex items-center gap-3">
                           <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full"></span>
                           <span className="text-white/70 text-base">
@@ -191,15 +158,6 @@ export function HaveIBeenPwnedPage({
                       ))}
                     </ul>
                   </div>
-                </div>
-
-                {/* Footer Info */}
-                <div className="mt-6 pt-6 border-t border-white/5 flex items-center gap-2 text-white/40 text-sm">
-                  <Info className="w-4 h-4" />
-                  <p>
-                    {breach.pwnCount.toLocaleString()} accounts compromised in
-                    this breach
-                  </p>
                 </div>
               </div>
             ))}

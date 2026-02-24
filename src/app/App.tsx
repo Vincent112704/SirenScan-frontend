@@ -11,6 +11,13 @@ import { useUserEmails } from "@/hooks/useUserEmail";
 import { logOut } from "@/services/auth/authService";
 
 // Mock email data
+interface HaveIBeenPwnedData {
+  BreachDate: string;
+  DataClasses: string[];
+  Description: string;
+  Name: string;
+  Title: string;
+}
 export interface Email {
   id: string;
   sender: string;
@@ -21,6 +28,7 @@ export interface Email {
     threats: number;
   };
   breachCount: number;
+  breaches?: HaveIBeenPwnedData[]; // Optional, only if breachCount > 0
   aiSummary: string;
   aiMitigation: string;
 }
