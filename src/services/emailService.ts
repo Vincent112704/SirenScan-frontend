@@ -10,7 +10,7 @@ export const emailService = {
       where("sender", "==", userEmail)
     );
 
-    console.log("Querying for emails with sender:", userEmail);
+    
 
     const querySnapshot = await getDocs(q); // queries to firebase with q as query
 
@@ -26,7 +26,7 @@ export const emailService = {
       
       const HIBPQuery = query(
         collection(db, "hibp_analyses"),
-        where("inbound_email_id", "==", inboundId) // Use doc.id or data.inbound_id
+        where("email", "==", userEmail) // Use doc.id or data.inbound_id
       );
 
       const parseSynthesis = (rawSynthesis: string | null | undefined) => {
@@ -42,7 +42,8 @@ export const emailService = {
 
       const urlSnapshot = await getDocs(urlQuery);
       const HIBPsnapshot = await getDocs(HIBPQuery);
-      console.log("LLM res in dashboard: ", emailData.LLM_synthesis)
+      
+      
       const { aiSummary, aiMitigation } = parseSynthesis(emailData.LLM_synthesis);
       // const rawSynthesis = emailData.LLM_synthesis || "";
       // const parts = rawSynthesis.split(/--- \*\*3\. Suggested Next Actions:\*\*/);
@@ -56,6 +57,7 @@ export const emailService = {
       const malicious = urlData.stats?.malicious ?? 0;
       const suspicious = urlData.stats?.suspicious ?? 0;
       const threats = malicious + suspicious;
+      
       
       return {
         id: emailDoc.id,

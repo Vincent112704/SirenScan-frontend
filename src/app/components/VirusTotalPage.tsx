@@ -18,6 +18,7 @@ interface VirusTotalPageProps {
 }
 
 // Mock security vendors
+// Query from firestore
 const SECURITY_VENDORS = [
   "Cylance",
   "Acronis",
@@ -103,10 +104,10 @@ export function VirusTotalPage({
 
   const totalEngines =
     email.virusTotalResults.clean + email.virusTotalResults.threats;
-  const threatPercentage = (
+  const threatPercentage = totalEngines > 0 ? (
     (email.virusTotalResults.threats / totalEngines) *
     100
-  ).toFixed(1);
+  ).toFixed(1) : "0.0";
 
   // Generate vendor results based on the threat ratio
   const vendorResults = SECURITY_VENDORS.slice(0, totalEngines).map(

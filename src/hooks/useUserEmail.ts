@@ -16,7 +16,6 @@ export function useUserEmails() {
           setLoading(true); // Ensure loading is true while fetching
           const hashed = await sha256(user.email);
           const res = await emailService.fetchUserEmails(hashed);
-          console.log("Fetched emails in userUserEmail hook:", res);
           setEmails(res);
         } catch (error) {
           console.error("Data fetch failed:", error);

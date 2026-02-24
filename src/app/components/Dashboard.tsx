@@ -61,8 +61,7 @@ export function Dashboard({
   //     });
   //   }
   // };
-  console.log("Dashboard received email prop:", email); // Check if emails are passed correctly
-  console.log("Rendering Dashboard with email:", emails); // returns undefined. 
+  
   //Go to app first to fix the issue. 
   const handleSelectEmail = (selectedEmail: Email) => {
     onSelectEmail(selectedEmail);
@@ -79,7 +78,7 @@ export function Dashboard({
     },
   ];
 
-  console.log("VirusTotal Data in dashboard:", virusTotalData); // Check if data is correct
+  
 
   const totalEngines =
     email.virusTotalResults.clean + email.virusTotalResults.threats;
