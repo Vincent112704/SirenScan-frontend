@@ -61,7 +61,9 @@ export const emailService = {
       const suspicious = urlData.stats?.suspicious ?? 0;
       const threats = malicious + suspicious;
       const breaches = purifyBreaches(HIBPData?.breaches)
-      console.log("Breaches after purify:", breaches[0].Description);
+      const vTotalVendors = urlData?.results
+
+      
       return {
         id: emailDoc.id,
         sender: emailData.sender,
@@ -73,6 +75,7 @@ export const emailService = {
         },
         breachCount: HIBPData?.breaches?.length || 0,
         breaches: breaches || [],
+        VirusTotalVendors: vTotalVendors || {},
         aiSummary: aiSummary,
         aiMitigation: aiMitigation,
       } as Email;

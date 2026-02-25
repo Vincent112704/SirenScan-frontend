@@ -18,6 +18,18 @@ interface HaveIBeenPwnedData {
   Name: string;
   Title: string;
 }
+
+export interface vendor {
+  category: string;
+  engine_name: string;
+  method: string;
+  result: string;
+}
+
+interface VirusTotalVendors {
+  results: Record<string, vendor>;
+}
+
 export interface Email {
   id: string;
   sender: string;
@@ -28,7 +40,8 @@ export interface Email {
     threats: number;
   };
   breachCount: number;
-  breaches?: HaveIBeenPwnedData[]; // Optional, only if breachCount > 0
+  breaches?: HaveIBeenPwnedData[];
+  VirusTotalVendors?: VirusTotalVendors; 
   aiSummary: string;
   aiMitigation: string;
 }

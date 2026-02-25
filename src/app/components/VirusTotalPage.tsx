@@ -10,88 +10,12 @@ import { useState } from "react";
 import type { Email } from "@/app/App";
 import { AccountHeader } from "@/app/components/AccountHeader";
 import virusTotalLogo from "@/assets/VirusTotalLogo.png";
-
+import { vendor } from "@/app/App";
 interface VirusTotalPageProps {
   email: Email;
   onLogout: () => void;
   onOpenMobileMenu: () => void;
 }
-
-// Mock security vendors
-// Query from firestore
-const SECURITY_VENDORS = [
-  "Cylance",
-  "Acronis",
-  "AiLabs (MONITORAPP)",
-  "alphaMountain.ai",
-  "Antiy-AVL",
-  "Arcabit",
-  "Avast",
-  "AVG",
-  "Avira",
-  "Baidu",
-  "Bitdefender",
-  "Bkav",
-  "BlockList",
-  "BluPhy",
-  "CATQuarantined",
-  "Certego",
-  "ChainPatrol",
-  "Chong Lua Dao",
-  "CIDF",
-  "CMC Threat Intelligence",
-  "Comodo",
-  "CrowdStrike",
-  "Criminal IP",
-  "Cyble",
-  "Cyren",
-  "desenmascara.me",
-  "DNS8",
-  "Dr.Web",
-  "Emsisoft",
-  "ESET",
-  "Feodo Tracker",
-  "Forcepoint ThreatSeeker",
-  "Fortinet",
-  "G-Data",
-  "Google Safebrowsing",
-  "GreenSnow",
-  "Gridinsoft",
-  "Hoplite Industries",
-  "Kaspersky",
-  "Lionic",
-  "Malware Domain Blocklist",
-  "MalwarePatrol",
-  "Malwarebytes",
-  "McAfee",
-  "Microsoft",
-  "MISP-Project",
-  "OpenPhish",
-  "Palo Alto Networks",
-  "PhishLabs",
-  "Phishing Database",
-  "Qihoo 360",
-  "Quick Heal",
-  "Rising",
-  "Sangfor",
-  "Sophos",
-  "Spam404",
-  "Spamhaus",
-  "StopForumSpam",
-  "Symantec",
-  "Tencent",
-  "Trustwave",
-  "Trend Micro",
-  "URLhaus",
-  "VBA32",
-  "VIPRE",
-  "Webroot",
-  "Xcitium Verdict Cloud",
-  "Yandex",
-  "Zillya",
-  "ZoneAlarm",
-  "ZScaler",
-];
 
 export function VirusTotalPage({
   email,
@@ -102,6 +26,10 @@ export function VirusTotalPage({
     "detection",
   );
 
+  const VENDORS = email.VirusTotalVendors || {};
+
+  
+
   const totalEngines =
     email.virusTotalResults.clean + email.virusTotalResults.threats;
   const threatPercentage = totalEngines > 0 ? (
@@ -109,17 +37,45 @@ export function VirusTotalPage({
     100
   ).toFixed(1) : "0.0";
 
-  // Generate vendor results based on the threat ratio
-  const vendorResults = SECURITY_VENDORS.slice(0, totalEngines).map(
-    (vendor, index) => {
-      const isMalware = index < email.virusTotalResults.threats;
-      return {
-        vendor,
-        status: isMalware ? "malware" : "clean",
-        detection: isMalware ? "Malware" : "Clean",
-      };
-    },
-  );
+  // const VendorArray = Object.entries(VENDORS).map(([key, data]) => {
+  //   return {
+  //     vendor: key,               // The unique key (e.g., "Cloudmark")
+  //     engine_name: data.engine_name, // The engine name from the object
+  //     method: data.method,    // The scan result
+  //     category: data.category === "malicious"
+  //   };
+  // });
+  
+  
+  
+  // const vendorResults = SECURITY_VENDORS.slice(0, totalEngines).map(
+  //   (vendor, index) => {
+  //     const isMalware = index < email.virusTotalResults.threats;
+  //     return {
+  //       vendor,
+  //       status: isMalware ? "malware" : "clean",
+  //       detection: isMalware ? "Malware" : "Clean",
+  //     };
+  //   },
+  // );
+
+  console.log("VENDORS from email data:", VENDORS);
+  const vendorsData: Record<string, vendor> = VENDORS;
+
+  const vendorResults = Object.entries(vendorsData).map(([key, data]) => {
+    const isMalicious = data.category === "malicious"; 
+    
+    return {
+      vendor: key, // e.g., "Cloudmark"
+      engine_name: data.engine_name,
+      status: isMalicious ? "malware" : "clean",
+      detection: isMalicious ? "Malware" : "Clean",
+      method: data.method
+    };
+  });
+
+  
+  
 
   return (
     <div className="flex-1 overflow-y-auto relative">
