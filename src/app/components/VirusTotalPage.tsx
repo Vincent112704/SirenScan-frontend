@@ -11,13 +11,17 @@ import type { Email } from "@/app/App";
 import { AccountHeader } from "@/app/components/AccountHeader";
 import virusTotalLogo from "@/assets/VirusTotalLogo.png";
 import { vendor } from "@/app/App";
+import { UserProfile } from "@/hooks/useUserEmail";
+
 interface VirusTotalPageProps {
+  UserProfile: UserProfile;
   email: Email;
   onLogout: () => void;
   onOpenMobileMenu: () => void;
 }
 
 export function VirusTotalPage({
+  UserProfile,
   email,
   onLogout,
   onOpenMobileMenu,
@@ -27,7 +31,7 @@ export function VirusTotalPage({
   );
 
   const VENDORS = email.VirusTotalVendors || {};
-
+  
   
 
   const totalEngines =
@@ -37,28 +41,6 @@ export function VirusTotalPage({
     100
   ).toFixed(1) : "0.0";
 
-  // const VendorArray = Object.entries(VENDORS).map(([key, data]) => {
-  //   return {
-  //     vendor: key,               // The unique key (e.g., "Cloudmark")
-  //     engine_name: data.engine_name, // The engine name from the object
-  //     method: data.method,    // The scan result
-  //     category: data.category === "malicious"
-  //   };
-  // });
-  
-  
-  
-  // const vendorResults = SECURITY_VENDORS.slice(0, totalEngines).map(
-  //   (vendor, index) => {
-  //     const isMalware = index < email.virusTotalResults.threats;
-  //     return {
-  //       vendor,
-  //       status: isMalware ? "malware" : "clean",
-  //       detection: isMalware ? "Malware" : "Clean",
-  //     };
-  //   },
-  // );
-
   console.log("VENDORS from email data:", VENDORS);
   const vendorsData: Record<string, vendor> = VENDORS;
 
@@ -66,20 +48,18 @@ export function VirusTotalPage({
     const isMalicious = data.category === "malicious"; 
     
     return {
-      vendor: key, // e.g., "Cloudmark"
+      vendor: key, 
       engine_name: data.engine_name,
       status: isMalicious ? "malware" : "clean",
       detection: isMalicious ? "Malware" : "Clean",
       method: data.method
     };
   });
-
-  
-  
+  console.log("Vtotal userProfile: ", UserProfile)
 
   return (
     <div className="flex-1 overflow-y-auto relative">
-      <AccountHeader onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
+      <AccountHeader email={UserProfile} onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
       <div className="p-4 sm:p-6 lg:p-8 pt-20 sm:pt-24">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
@@ -249,7 +229,8 @@ export function VirusTotalPage({
                 </div>
               </div>
             )}
-
+            
+            {/* Details should be deleted no data available in DB*/}
             {activeTab === "details" && (
               <div className="space-y-6">
                 {/* Categories */}

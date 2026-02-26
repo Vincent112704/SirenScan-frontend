@@ -10,6 +10,7 @@ import { MobileNav } from "@/app/components/MobileNav";
 import { useUserEmails } from "@/hooks/useUserEmail";
 import { logOut } from "@/services/auth/authService";
 
+
 // Mock email data
 interface HaveIBeenPwnedData {
   BreachDate: string;
@@ -50,10 +51,11 @@ export interface Email {
 type Page = "landing" | "dashboard" | "help" | "virusTotal" | "haveIBeenPwned" | "openAI";
 
 export default function App() {
-  const { emails, loading } = useUserEmails();
-  const [currentPage, setCurrentPage] = useState<Page>("landing");
+  const { userEmail, emails, loading } = useUserEmails();
+  const [currentPage, setCurrentPage] = useState<Page>("landing"); 
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null); //dropdown to select email in dashboard, default to first email in list
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
   
   useEffect(() => {
     if (!selectedEmail && emails.length > 0) {
@@ -61,13 +63,12 @@ export default function App() {
     }
   }, [emails, selectedEmail]);
 
-
+  
   const handleLogout = async () => {
     await logOut();               // This kills the Firebase session
     setCurrentPage("landing");    // This moves the UI back to landing
     setIsMobileMenuOpen(false);   // Close menu if on mobile
   };
-  
   
 
   // Render based on current page
@@ -118,10 +119,10 @@ export default function App() {
           setCurrentPage("openAI");
         }}
       />
-
       {/* Main Content */}
       {currentPage === "dashboard" ? (
         <Dashboard 
+          UserProfile={userEmail}
           email={selectedEmail} 
           emails={emails} 
           onSelectEmail={setSelectedEmail}
@@ -132,13 +133,13 @@ export default function App() {
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />
       ) : currentPage === "help" ? (
-        <Help onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
+        <Help email={userEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
       ) : currentPage === "virusTotal" ? (
-        <VirusTotalPage email={selectedEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
+        <VirusTotalPage UserProfile={userEmail} email={selectedEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
       ) : currentPage === "haveIBeenPwned" ? (
-        <HaveIBeenPwnedPage email={selectedEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
+        <HaveIBeenPwnedPage UserProfile={userEmail} email={selectedEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
       ) : currentPage === "openAI" ? (
-        <OpenAIPage email={selectedEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
+        <OpenAIPage UserProfile={userEmail} email={selectedEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
       ) : (
         <div>Unknown Page</div>
       )}

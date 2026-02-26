@@ -18,18 +18,21 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/components/ui/alert-dialog";
+import { UserProfile } from "@/hooks/useUserEmail";
 
 interface AccountHeaderProps {
+  email: UserProfile;
   onLogout: () => void;
   onOpenMobileMenu?: () => void;
 }
 
 export function AccountHeader({
+  email,
   onLogout,
   onOpenMobileMenu,
 }: AccountHeaderProps) {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-
+  console.log("email in account header: ", email)
   const handleLogoutClick = () => {
     setShowLogoutDialog(true);
   };
@@ -75,9 +78,9 @@ export function AccountHeader({
             <DropdownMenuSeparator className="bg-white/10" />
             <DropdownMenuItem className="focus:bg-white/5 focus:text-white cursor-default">
               <div className="flex flex-col">
-                <span className="text-sm font-medium">Demo User</span>
+                <span className="text-sm font-medium">{email.Name}</span>
                 <span className="text-xs text-white/50">
-                  demo@sirenscan.com
+                  {email.email}
                 </span>
               </div>
             </DropdownMenuItem>

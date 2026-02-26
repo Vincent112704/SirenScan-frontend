@@ -8,15 +8,17 @@ import {
 import type { Email } from "@/app/App";
 import { AccountHeader } from "@/app/components/AccountHeader";
 import haveibeenpwnedLogo from "@/assets/HaveIBeenPwnedLogo.png";
-
+import { UserProfile } from "@/hooks/useUserEmail";
 
 interface HaveIBeenPwnedPageProps {
+  UserProfile:UserProfile;
   email: Email;
   onLogout: () => void;
   onOpenMobileMenu: () => void;
 }
 
 export function HaveIBeenPwnedPage({
+  UserProfile,
   email,
   onLogout,
   onOpenMobileMenu,
@@ -24,7 +26,7 @@ export function HaveIBeenPwnedPage({
   
   return (
     <div className="flex-1 overflow-y-auto relative">
-      <AccountHeader onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
+      <AccountHeader email={UserProfile} onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
       <div className="p-4 sm:p-6 lg:p-8 pt-20 sm:pt-24">
         {/* Header */}
         <div className="mb-6 sm:mb-8">

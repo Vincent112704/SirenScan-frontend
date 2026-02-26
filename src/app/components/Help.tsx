@@ -10,11 +10,14 @@ import {
 } from "lucide-react";
 import { AccountHeader } from "@/app/components/AccountHeader";
 import SpotlightCard from "@/app/components/SpotlightCard"; // Adjust path if necessary
+import { UserProfile } from "@/hooks/useUserEmail";
 
 export function Help({
+  email,
   onLogout,
   onOpenMobileMenu,
 }: {
+  email: UserProfile;
   onLogout: () => void;
   onOpenMobileMenu: () => void;
 }) {
@@ -165,7 +168,7 @@ export function Help({
 
   return (
     <div className="flex-1 overflow-y-auto bg-[#1c1c1e] relative">
-      <AccountHeader onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
+      <AccountHeader email={email} onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
       <div className="max-w-5xl mx-auto p-4 sm:p-6 lg:p-8 pt-20 sm:pt-24">
         {/* Header */}
         <div className="mb-8 sm:mb-12">

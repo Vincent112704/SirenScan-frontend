@@ -20,8 +20,10 @@ import {
   DialogTrigger,
 } from "@/app/components/ui/dialog";
 import { AccountHeader } from "@/app/components/AccountHeader";
+import { UserProfile } from "@/hooks/useUserEmail";
 
 interface DashboardProps {
+  UserProfile: UserProfile;
   email: Email;
   emails: Email[];
   onSelectEmail: (email: Email) => void;
@@ -33,6 +35,7 @@ interface DashboardProps {
 }
 
 export function Dashboard({
+  UserProfile,
   email, //selected email
   emails, //all emails 
   onSelectEmail,
@@ -44,25 +47,7 @@ export function Dashboard({
 }: DashboardProps) {
   const [open, setOpen] = useState(false);
   
-  // const formatDate = (date: string) => {
-  //   const emailDate = new Date(date);
-  //   const today = new Date();
-  //   const yesterday = new Date(today);
-  //   yesterday.setDate(yesterday.getDate() - 1);
-
-  //   if (emailDate.toDateString() === today.toDateString()) {
-  //     return "Today";
-  //   } else if (emailDate.toDateString() === yesterday.toDateString()) {
-  //     return "Yesterday";
-  //   } else {
-  //     return emailDate.toLocaleDateString("en-US", {
-  //       month: "short",
-  //       day: "numeric",
-  //     });
-  //   }
-  // };
-  
-  //Go to app first to fix the issue. 
+  console.log("Dashboard userProfile: ", UserProfile)
   const handleSelectEmail = (selectedEmail: Email) => {
     onSelectEmail(selectedEmail);
     setOpen(false);
@@ -86,7 +71,7 @@ export function Dashboard({
   
   return (
     <div className="flex-1 overflow-y-auto relative">
-      <AccountHeader onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
+      <AccountHeader email={UserProfile} onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
       <div className="p-4 sm:p-6 lg:p-8 pt-20 sm:pt-24">
         {/* Header with Search Bar */}
         <div className="mb-6 sm:mb-8">
@@ -377,7 +362,7 @@ export function Dashboard({
               </h4>
               <div className="text-white/90 text-base leading-relaxed space-y-2">
                 {email.aiMitigation
-                  .split(/\d+\.\s/)
+                  ?.split(/\d+\.\s/)
                   .filter(Boolean)
                   .map((step, index) => (
                     <div key={index} className="flex items-start gap-3">

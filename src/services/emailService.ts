@@ -37,13 +37,20 @@ export const emailService = {
       );
 
       const parseSynthesis = (rawSynthesis: string | null | undefined) => {
-        const mitigationRegex = /(?:\n|---)*\s*(?:\*\*|###)?\s*\d\.\s*(?:Suggested\s*)?Next\s*Actions:?\s*(?:\*\*|###)?/;
+        if(!rawSynthesis) {
+          return {
+            aiSummary: "No AI synthesis available.",
+            aiMitigation: "No AI mitigation available."
+          };
+        }
+        const sections = rawSynthesis.split(/\d\.\s+[^:]+:\n?/);
+        const summary = `${sections[1] || ""} ${sections[2] || ""}`.trim();
+        const mitigation = `${sections[3] || ""} \n\n${sections[4] || ""}`.trim();
         
-        const parts = rawSynthesis ? rawSynthesis.split(mitigationRegex) : ["", "No analysis available."];
-        
+        console.log(sections[4])
         return {
-          aiSummary: parts[0]?.trim(),
-          aiMitigation: parts[1]?.trim()
+          aiSummary: summary || "Analysis pending...",
+          aiMitigation: mitigation
         };
       };
 
@@ -63,7 +70,8 @@ export const emailService = {
       const breaches = purifyBreaches(HIBPData?.breaches)
       const vTotalVendors = urlData?.results
 
-      
+      console.log("AI mitigation:", aiMitigation);
+      console.log("Email sender: ", emailData.sender);
       return {
         id: emailDoc.id,
         sender: emailData.sender,

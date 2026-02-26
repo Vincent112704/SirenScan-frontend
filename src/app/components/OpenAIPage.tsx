@@ -8,14 +8,16 @@ import {
 } from "lucide-react";
 import type { Email } from "@/app/App";
 import { AccountHeader } from "@/app/components/AccountHeader";
-
+import { UserProfile } from "@/hooks/useUserEmail";
 interface OpenAIPageProps {
+  UserProfile: UserProfile;
   email: Email;
   onLogout: () => void;
   onOpenMobileMenu: () => void;
 }
 //Data is passed from App
 export function OpenAIPage({
+  UserProfile,
   email,
   onLogout,
   onOpenMobileMenu,
@@ -25,7 +27,7 @@ export function OpenAIPage({
 
   return (
     <div className="flex-1 overflow-y-auto relative">
-      <AccountHeader onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
+      <AccountHeader email={UserProfile} onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
       <div className="p-4 sm:p-6 lg:p-8 pt-20 sm:pt-24">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
@@ -78,7 +80,7 @@ export function OpenAIPage({
           <div className="bg-[#1a1a1c] rounded-xl p-6 border border-white/10">
             <div className="space-y-3">
               {email.aiMitigation
-                .split(/\d+\.\s/)
+                ?.split(/\d+\.\s/)
                 .filter(Boolean)
                 .map((step, index) => (
                   <div key={index} className="flex items-start gap-3">
