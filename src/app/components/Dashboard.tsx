@@ -47,13 +47,30 @@ export function Dashboard({
 }: DashboardProps) {
   const [open, setOpen] = useState(false);
   
-  console.log("Dashboard userProfile: ", UserProfile)
+  
   const handleSelectEmail = (selectedEmail: Email) => {
     onSelectEmail(selectedEmail);
     setOpen(false);
   };
-  //email could be placeholder. Check on it 
-  // Prepare data for VirusTotal chart
+
+  if (emails.length === 0) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-[#1c1c1e]">
+        <div className="loading text-white">Loading your emails...</div>
+      </div>
+    );
+  }
+
+  if (!email) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-[#1c1c1e]">
+        <div className="loading text-white">Preparing dashboard...</div>
+      </div>
+    );
+  }
+
+
+
   const virusTotalData = [
     { name: "Clean", value: email.virusTotalResults.clean, color: "#10b981" },
     {
@@ -64,11 +81,10 @@ export function Dashboard({
   ];
 
   
-
   const totalEngines =
     email.virusTotalResults.clean + email.virusTotalResults.threats;
   const safeRate = totalEngines > 0 ? Math.round((email.virusTotalResults.clean / totalEngines) * 100) : 0;
-  
+  console.log("Inside dashboard - Emails length: ", emails.length);
   return (
     <div className="flex-1 overflow-y-auto relative">
       <AccountHeader email={UserProfile} onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />

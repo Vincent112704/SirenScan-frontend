@@ -9,6 +9,7 @@ import { OpenAIPage } from "@/app/components/OpenAIPage";
 import { MobileNav } from "@/app/components/MobileNav";
 import { useUserEmails } from "@/hooks/useUserEmail";
 import { logOut } from "@/services/auth/authService";
+import { set } from "date-fns";
 
 
 // Mock email data
@@ -53,30 +54,41 @@ type Page = "landing" | "dashboard" | "help" | "virusTotal" | "haveIBeenPwned" |
 export default function App() {
   const { userEmail, emails, loading } = useUserEmails();
   const [currentPage, setCurrentPage] = useState<Page>("landing"); 
-  const [selectedEmail, setSelectedEmail] = useState<Email | null>(null); //dropdown to select email in dashboard, default to first email in list
+  const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
-  
+
   useEffect(() => {
-    if (!selectedEmail && emails.length > 0) {
+    if (emails.length > 0 && !selectedEmail) {
       setSelectedEmail(emails[0]);
     }
-  }, [emails, selectedEmail]);
+  }, [emails]); 
+
+  useEffect(() => {
+    if (!loading && userEmail) {
+      setCurrentPage("dashboard"); // Auto-navigate to dashboard when logged in
+    }
+  }, [loading, userEmail]);
 
   
+
   const handleLogout = async () => {
-    await logOut();               // This kills the Firebase session
-    setCurrentPage("landing");    // This moves the UI back to landing
-    setIsMobileMenuOpen(false);   // Close menu if on mobile
+    setSelectedEmail(null);       // Clear immediately
+    setCurrentPage("landing");           // Clear page to prevent Dashboard render
+    setIsMobileMenuOpen(false);
+    await logOut();
   };
   
-
-  // Render based on current page
-  if (currentPage === "landing") {
-    return <LandingPage onNavigateToDashboard={() => setCurrentPage("dashboard")} />;
+  
+  if (loading) {
+    return <div className="loading">Checking Session...</div>;
   }
+  
+  
+  if (!selectedEmail) {
+    return <LandingPage onNavigateToDashboard={() => setCurrentPage("dashboard")} />;
+  } 
+  console.log("UserEmail in App component: ", userEmail); 
 
-  // Dashboard and Help views share the same sidebar
   return (
     <div className="flex h-screen bg-[#1c1c1e] overflow-hidden">
       {/* Desktop Sidebar - Hidden on mobile */}
@@ -141,7 +153,9 @@ export default function App() {
       ) : currentPage === "openAI" ? (
         <OpenAIPage UserProfile={userEmail} email={selectedEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
       ) : (
-        <div>Unknown Page</div>
+        <div className="flex-1 flex items-center justify-center bg-[#1c1c1e]">
+          <div className="loading text-white">Loading...</div>
+        </div>  // ← Generic loading instead of "Unknown Page"
       )}
     </div>
   );

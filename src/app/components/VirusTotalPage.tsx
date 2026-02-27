@@ -55,7 +55,7 @@ export function VirusTotalPage({
       method: data.method
     };
   });
-  console.log("Vtotal userProfile: ", UserProfile)
+  
 
   return (
     <div className="flex-1 overflow-y-auto relative">

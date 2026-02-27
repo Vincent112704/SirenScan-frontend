@@ -47,7 +47,6 @@ export const emailService = {
         const summary = `${sections[1] || ""} ${sections[2] || ""}`.trim();
         const mitigation = `${sections[3] || ""} \n\n${sections[4] || ""}`.trim();
         
-        console.log(sections[4])
         return {
           aiSummary: summary || "Analysis pending...",
           aiMitigation: mitigation
@@ -70,8 +69,6 @@ export const emailService = {
       const breaches = purifyBreaches(HIBPData?.breaches)
       const vTotalVendors = urlData?.results
 
-      console.log("AI mitigation:", aiMitigation);
-      console.log("Email sender: ", emailData.sender);
       return {
         id: emailDoc.id,
         sender: emailData.sender,
