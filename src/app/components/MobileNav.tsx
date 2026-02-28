@@ -2,7 +2,7 @@ import { LayoutDashboard, HelpCircle, LogOut, X } from "lucide-react";
 import sirenScanLogo from "@/assets/SirenScanLogo.png";
 import virustotalLogo from "@/assets/VirusTotalLogo.png";
 import haveibeenpwnedLogo from "@/assets/HaveIBeenPwnedLogo.png";
-import openaiLogo from "@/assets/OpenAILogo.png";
+import openaiLogo from "@/assets/OpenAiLogo.png";
 import { useState } from "react";
 import {
   AlertDialog,
