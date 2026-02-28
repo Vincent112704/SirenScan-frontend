@@ -32,7 +32,7 @@ export function AccountHeader({
   onOpenMobileMenu,
 }: AccountHeaderProps) {
   const [showLogoutDialog, setShowLogoutDialog] = useState(false);
-  console.log("email in account header: ", email)
+  
   const handleLogoutClick = () => {
     setShowLogoutDialog(true);
   };

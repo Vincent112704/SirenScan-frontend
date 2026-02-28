@@ -69,8 +69,6 @@ export function Dashboard({
     );
   }
 
-
-
   const virusTotalData = [
     { name: "Clean", value: email.virusTotalResults.clean, color: "#10b981" },
     {
@@ -84,7 +82,7 @@ export function Dashboard({
   const totalEngines =
     email.virusTotalResults.clean + email.virusTotalResults.threats;
   const safeRate = totalEngines > 0 ? Math.round((email.virusTotalResults.clean / totalEngines) * 100) : 0;
-  console.log("Inside dashboard - Emails length: ", emails.length);
+  
   return (
     <div className="flex-1 overflow-y-auto relative">
       <AccountHeader email={UserProfile} onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />

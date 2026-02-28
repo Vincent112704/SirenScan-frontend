@@ -55,8 +55,8 @@ export function VirusTotalPage({
       method: data.method
     };
   });
+  console.log("V total file confirmed timeout: ", email.vTotalFileAnalysis?.stats?.["confirmed-timeout"])
   
-
   return (
     <div className="flex-1 overflow-y-auto relative">
       <AccountHeader email={UserProfile} onLogout={onLogout} onOpenMobileMenu={onOpenMobileMenu} />
@@ -237,117 +237,83 @@ export function VirusTotalPage({
                 <div className="bg-[#1a1a1c] rounded-xl p-6 border border-white/5">
                   <div className="flex items-center gap-2 mb-4">
                     <h3 className="text-white text-lg font-medium">
-                      Categories
+                      File Analysis
                     </h3>
                     <Info className="w-4 h-4 text-white/40" />
                   </div>
                   <div className="space-y-3">
                     <div className="flex items-start gap-3">
                       <span className="text-white/60 text-sm w-48">
-                        alphaMountain.ai
+                        Analysis ID
                       </span>
                       <span className="text-white/90 text-sm">
-                        Search Engines/Portals (alphaMountain.ai), searchengines
+                        {email.vTotalFileAnalysis?.analysis_id ?? "N/A"}
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <span className="text-white/60 text-sm w-48">
-                        Bitdefender
+                        Confirmed-timeout
                       </span>
                       <span className="text-white/90 text-sm">
-                        search engines
+                        {email.vTotalFileAnalysis?.stats?.["confirmed-timeout"] ?? "N/A"}
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
-                      <span className="text-white/60 text-sm w-48">Sophos</span>
+                      <span className="text-white/60 text-sm w-48">Failure</span>
                       <span className="text-white/90 text-sm">
-                        search engines
+                        {email.vTotalFileAnalysis?.stats?.failure ?? "N/A"}
                       </span>
                     </div>
                     <div className="flex items-start gap-3">
                       <span className="text-white/60 text-sm w-48">
-                        Forcepoint ThreatSeeker
+                        Harmless
                       </span>
                       <span className="text-white/90 text-sm">
-                        search engines and portals
+                        {email.vTotalFileAnalysis?.stats?.harmless ?? "N/A"}
                       </span>
                     </div>
-                  </div>
-                </div>
-
-                {/* History */}
-                <div className="bg-[#1a1a1c] rounded-xl p-6 border border-white/5">
-                  <div className="flex items-center gap-2 mb-4">
-                    <h3 className="text-white text-lg font-medium">History</h3>
-                    <Info className="w-4 h-4 text-white/40" />
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-white/60 text-sm">
-                        First Submission
+                    <div className="flex items-start gap-3">
+                      <span className="text-white/60 text-sm w-48">
+                        Malicious
                       </span>
                       <span className="text-white/90 text-sm">
-                        2010-06-14 10:31:58 UTC
+                        {email.vTotalFileAnalysis?.stats?.malicious ?? "N/A"}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-white/60 text-sm">
-                        Last Submission
+                    <div className="flex items-start gap-3">
+                      <span className="text-white/60 text-sm w-48">
+                        Suspicious
                       </span>
                       <span className="text-white/90 text-sm">
-                        2026-01-24 09:00:55 UTC
+                        {email.vTotalFileAnalysis?.stats?.suspicious ?? "N/A"}
                       </span>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-white/60 text-sm">
-                        Last Analysis
+                    <div className="flex items-start gap-3">
+                      <span className="text-white/60 text-sm w-48">
+                        Timeout
                       </span>
                       <span className="text-white/90 text-sm">
-                        2026-01-24 09:00:55 UTC
+                        {email.vTotalFileAnalysis?.stats?.timeout ?? "N/A"}
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="text-white/60 text-sm w-48">
+                        Type-unsupported
+                      </span>
+                      <span className="text-white/90 text-sm">
+                        {email.vTotalFileAnalysis?.stats?.["type-unsupported"] ?? "N/A"}
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="text-white/60 text-sm w-48">
+                        Undetected
+                      </span>
+                      <span className="text-white/90 text-sm">
+                        {email.vTotalFileAnalysis?.stats?.undetected ?? "N/A"}
                       </span>
                     </div>
                   </div>
-                </div>
-
-                {/* HTTP Response */}
-                <div className="bg-[#1a1a1c] rounded-xl p-6 border border-white/5">
-                  <div className="flex items-center gap-2 mb-4">
-                    <h3 className="text-white text-lg font-medium">
-                      HTTP Response
-                    </h3>
-                    <Info className="w-4 h-4 text-white/40" />
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-white/60 text-sm">Final URL</span>
-                      <span className="text-cyan-400 text-sm break-all font-mono">
-                        {email.sender.includes("paypal")
-                          ? "http://www.paypal-security.com/"
-                          : email.sender.includes("amazon")
-                            ? "http://www.amazon.com/"
-                            : email.sender.includes("bank")
-                              ? "http://www.bankofamerica-verify.net/"
-                              : email.sender.includes("github")
-                                ? "http://www.github.com/"
-                                : "http://www.lottery-international.biz/"}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-white/60 text-sm">
-                        Serving IP Address
-                      </span>
-                      <span className="text-white/90 text-sm font-mono">
-                        173.194.193.139
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-white/60 text-sm">Status Code</span>
-                      <span className="text-green-500 text-sm font-mono">
-                        302
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                </div>             
               </div>
             )}
           </div>

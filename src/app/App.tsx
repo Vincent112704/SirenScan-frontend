@@ -46,6 +46,19 @@ export interface Email {
   VirusTotalVendors?: VirusTotalVendors; 
   aiSummary: string;
   aiMitigation: string;
+  vTotalFileAnalysis?: {
+    analysis_id: string;
+    stats: {
+      "confirmed-timeout": number;
+      failure: number;
+      harmless: number;
+      malicious: number;
+      suspicious: number;
+      timeout: number;
+      "type-unsupported": number;
+      undetected: number;
+    }
+  }
 }
 
 
@@ -87,7 +100,7 @@ export default function App() {
   if (!selectedEmail) {
     return <LandingPage onNavigateToDashboard={() => setCurrentPage("dashboard")} />;
   } 
-  console.log("UserEmail in App component: ", userEmail); 
+  
 
   return (
     <div className="flex h-screen bg-[#1c1c1e] overflow-hidden">

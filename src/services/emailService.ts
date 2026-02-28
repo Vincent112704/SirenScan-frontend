@@ -36,6 +36,13 @@ export const emailService = {
         where("email", "==", userEmail) // Use doc.id or data.inbound_id
       );
 
+      const vTotalFileAnalysisQuery = query(
+        collection(db, "file_analyses"),
+        where("inbound_email_id", "==", inboundId) // Use doc.id or data.inbound_id
+      );
+
+      
+
       const parseSynthesis = (rawSynthesis: string | null | undefined) => {
         if(!rawSynthesis) {
           return {
@@ -55,12 +62,14 @@ export const emailService = {
 
       const urlSnapshot = await getDocs(urlQuery);
       const HIBPsnapshot = await getDocs(HIBPQuery);
+      const vTotalFileAnalysisSnapshot = await getDocs(vTotalFileAnalysisQuery);
       
       
       const { aiSummary, aiMitigation } = parseSynthesis(emailData.LLM_synthesis);
       
       const urlData = urlSnapshot.docs[0]?.data() || {};
       const HIBPData = HIBPsnapshot.docs[0]?.data() || {};
+      const vTotalFileAnalysisData = vTotalFileAnalysisSnapshot.docs[0]?.data() || {};
       
       
       const malicious = urlData.stats?.malicious ?? 0;
@@ -83,6 +92,7 @@ export const emailService = {
         VirusTotalVendors: vTotalVendors || {},
         aiSummary: aiSummary,
         aiMitigation: aiMitigation,
+        vTotalFileAnalysis: vTotalFileAnalysisData || null
       } as Email;
     });
 
