@@ -58,7 +58,9 @@ export interface Email {
       "type-unsupported": number;
       undetected: number;
     }
-  }
+  };
+  /** ISO string when the email was processed/received. */
+  processedAt?: string;
 }
 
 
@@ -70,9 +72,18 @@ export default function App() {
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // helper to convert ISO to safe millisecond timestamp, fallback zero
+  const ts = (iso?: string) => {
+    if (!iso) return 0;
+    const t = new Date(iso).getTime();
+    return isNaN(t) ? 0 : t;
+  };
+
   useEffect(() => {
     if (emails.length > 0 && !selectedEmail) {
-      setSelectedEmail(emails[0]);
+      // pick most recent email by date (safe against missing/invalid strings)
+      const sorted = [...emails].sort((a, b) => ts(b.processedAt) - ts(a.processedAt));
+      setSelectedEmail(sorted[0]);
     }
   }, [emails]); 
 
@@ -146,10 +157,13 @@ export default function App() {
       />
       {/* Main Content */}
       {currentPage === "dashboard" ? (
-        <Dashboard 
+        <>
+          {/* sort emails before passing down so the dashboard list is always most-recent-first */}
+          {/* creating a copy protects the original state */}
+          <Dashboard 
           UserProfile={userEmail}
-          email={selectedEmail} 
-          emails={emails} 
+          email={selectedEmail}
+          emails={[...emails].sort((a, b) => ts(b.processedAt) - ts(a.processedAt))}
           onSelectEmail={setSelectedEmail}
           onNavigateToVirusTotal={() => setCurrentPage("virusTotal")}
           onNavigateToHaveIBeenPwned={() => setCurrentPage("haveIBeenPwned")}
@@ -157,6 +171,7 @@ export default function App() {
           onLogout={handleLogout}
           onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         />
+      </>
       ) : currentPage === "help" ? (
         <Help email={userEmail} onLogout={handleLogout} onOpenMobileMenu={() => setIsMobileMenuOpen(true)} />
       ) : currentPage === "virusTotal" ? (

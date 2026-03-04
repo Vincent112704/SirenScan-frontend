@@ -34,6 +34,29 @@ interface DashboardProps {
   onOpenMobileMenu: () => void;
 }
 
+// helper to make a readable date string from an ISO timestamp
+const formatDate = (iso?: string) => {
+  if (!iso) return "";
+  try {
+    return new Date(iso).toLocaleString(undefined, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch {
+    return iso;
+  }
+};
+
+// convert ISO to safe numeric time for sorting
+const ts = (iso?: string) => {
+  if (!iso) return 0;
+  const t = new Date(iso).getTime();
+  return isNaN(t) ? 0 : t;
+};
+
 export function Dashboard({
   UserProfile,
   email, //selected email
@@ -68,6 +91,9 @@ export function Dashboard({
       </div>
     );
   }
+
+  // keep emails sorted newest-first inside this component as well
+  const sortedEmails = [...emails].sort((a, b) => ts(b.processedAt) - ts(a.processedAt));
 
   const virusTotalData = [
     { name: "Clean", value: email.virusTotalResults.clean, color: "#10b981" },
@@ -115,7 +141,7 @@ export function Dashboard({
                 </p>
               </DialogHeader>
               <div className="overflow-y-auto max-h-[60vh]">
-                {emails.map((emailItem) => (
+                {sortedEmails.map((emailItem) => (
                   <button
                     key={emailItem.id}
                     onClick={() => handleSelectEmail(emailItem)}
@@ -138,7 +164,7 @@ export function Dashboard({
                       </div>
                       <div className="flex items-center gap-1 text-white/40 text-xs">
                         <Clock className="w-3 h-3" />
-                        {/* <span>{formatDate(emailItem.date)}</span> No date field*/} 
+                        <span>{formatDate(emailItem.processedAt)}</span>
                       </div>
                     </div>
                     <div className="mb-1">

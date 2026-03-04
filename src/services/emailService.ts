@@ -78,6 +78,16 @@ export const emailService = {
       const breaches = purifyBreaches(HIBPData?.breaches)
       const vTotalVendors = urlData?.results
 
+      // determine a timestamp string from whatever field might exist in Firestore
+      const processedAt =
+        emailData.processedAt ||
+        emailData.date ||
+        // Firestore Timestamp objects have a toDate method
+        (emailData.timestamp && typeof emailData.timestamp.toDate === "function"
+          ? emailData.timestamp.toDate().toISOString()
+          : undefined) ||
+        undefined;
+
       return {
         id: emailDoc.id,
         sender: emailData.sender,
@@ -92,11 +102,19 @@ export const emailService = {
         VirusTotalVendors: vTotalVendors || {},
         aiSummary: aiSummary,
         aiMitigation: aiMitigation,
-        vTotalFileAnalysis: vTotalFileAnalysisData || null
+        vTotalFileAnalysis: vTotalFileAnalysisData || null,
+        processedAt,
       } as Email;
     });
 
     // 4. Wait for all nested queries to finish
-    return Promise.all(emailPromises);
+    const all = await Promise.all(emailPromises);
+    // sort most recent first
+    all.sort((a, b) => {
+      const ta = a.processedAt ? new Date(a.processedAt).getTime() : 0;
+      const tb = b.processedAt ? new Date(b.processedAt).getTime() : 0;
+      return tb - ta;
+    });
+    return all;
   }
 };

@@ -14,6 +14,7 @@ export function useUserEmails() {
   const [userEmail, setUserEmail] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
